@@ -27,6 +27,7 @@ end
 class Books_stores < ActiveRecord::Base
 end
 
+=begin
 # POPULATE
 store0 = Store.create(:name => 'Store0')
 store1 = Store.create(:name => 'Store1')
@@ -71,6 +72,8 @@ book.stores << store2
 store1.name = "NewStore1"
 store1.save
 # /POPULATE
+=end
+
 def submenu()
     puts "1 - Livro"
     puts "2 - Loja"
