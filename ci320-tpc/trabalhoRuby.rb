@@ -428,20 +428,17 @@ while(!quit)
             sub = submenu()
             case sub
             	when "1"
-            		num_books = Book.count
-            		i = 0
-            		while i < num_books
-            			i+=1
-						a = Book.find(i)
-						puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.performer}, ISBN: #{a.code.name}"
-						a.editions.each do |t|
-							puts "EDICAO ID: #{t.id}, Titulo: #{t.title}, Paginas da edicao: #{t.edition_number}"
-						end
-						a.stores.each do |t|
-							puts "LOJA ID: #{t.id}, Nome: #{t.name}"
-						end
-				    	puts "============================================================================="
-				    end
+            		allBooks = Book.all
+                    allBooks.each do |a|
+                        puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.performer}, ISBN: #{a.code.name}"
+                        a.editions.each do |t|
+                            puts "EDICAO ID: #{t.id}, Titulo: #{t.title}, Paginas da edicao: #{t.edition_number}"
+                        end
+                        a.stores.each do |t|
+                            puts "LOJA ID: #{t.id}, Nome: #{t.name}"
+                        end
+                        puts "============================================================================="                        
+                    end
                     #puts "Albums-Stores"
                     #bs = Books_stores.all
                     #bs.each do |tb|
