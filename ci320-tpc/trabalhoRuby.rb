@@ -418,8 +418,8 @@ while(!quit)
                     end
                     puts "Digite o ID da Edicao: " 
                     chosenEdition = gets.chomp
-                    chosenEdition = chosenBook.editions.find(chosenEdition.to_i) 
-                    chosenEdition.destroy               
+                    cs = Edition.find(chosenEdition.to_i)
+                    cs.delete               
             end
 
      	when "4" 
