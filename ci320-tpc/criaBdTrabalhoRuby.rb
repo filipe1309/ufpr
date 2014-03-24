@@ -9,7 +9,7 @@ ActiveRecord::Base.establish_connection(
 ActiveRecord::Schema.define do
     create_table :books do |table|
         table.column :title, :string
-        table.column :performer, :string
+        table.column :author, :string
     end
 
     create_table :editions do |table|
