@@ -27,7 +27,7 @@ end
 class Books_stores < ActiveRecord::Base
 end
 
-=begin
+
 # POPULATE
 store0 = Store.create(:name => 'Store0')
 store1 = Store.create(:name => 'Store1')
@@ -72,7 +72,7 @@ book.stores << store2
 store1.name = "NewStore1"
 store1.save
 # /POPULATE
-=end
+
 
 def submenu()
     puts "1 - Livro"
@@ -83,50 +83,107 @@ def submenu()
     return gets.chomp
 end
 
+def getEditionByID(chosenBook)
+    print "Digite o ID da edicao: "
+    chosenEdition = gets.chomp
+    chosenEdition = chosenBook.editions.find_by_id(chosenEdition.to_i)
+    while(chosenEdition.nil?)
+        print "ID invalido. Digite o ID da Edicao novamente: "
+        chosenEdition = gets.chomp
+        chosenEdition = chosenBook.editions.find_by_id(chosenEdition.to_i)
+    end 
+    return chosenEdition
+end
+
+def getBookByID()
+    print "Digite o ID do Livro: "
+    chosenBook = gets.chomp    
+    chosenBook = Book.find_by_id(chosenBook.to_i)
+    while(chosenBook.nil?)
+        print "ID invalido. Digite o ID do Livro novamente: "
+        chosenBook = gets.chomp
+        chosenBook = Book.find_by_id(chosenBook.to_i)
+    end 
+    return chosenBook
+end
+
+def getStoreByID()
+    print "Digite o ID da Loja: "
+    chosenStore = gets.chomp    
+    chosenStore = Store.find_by_id(chosenStore.to_i)
+    while(chosenStore.nil?)
+        print "ID invalido. Digite o ID da Loja novamente: "
+        chosenStore = gets.chomp
+        chosenStore = Store.find_by_id(chosenStore.to_i)
+    end
+    return chosenStore
+end
+
 def addStores(book)
     addStores = true
+    if(book.stores.count != Store.count)    
     while(addStores)
-        print "Digite o ID da Loja: "
-        chosenStore = gets.chomp    
-        chosenStore = Store.find(chosenStore.to_i)
-        book.stores << chosenStore
-        puts "Loja #{chosenStore.name} adicionada no livro #{book.title}" 
-        puts "Adicionar mais lojas?"
-        puts "0 - Nao"
-        puts "1 - Sim"
-        opcAdd = gets.chomp
-        if(!opcAdd.eql? "1")
-            addStores = false
-        end
+        chosenStore = getStoreByID()
+        if(book.stores.find_by_id(chosenStore.id).nil?)
+            book.stores << chosenStore
+            puts "Loja #{chosenStore.name} adicionada no livro #{book.title}" 
+            puts "Adicionar mais lojas?"
+            puts "0 - Nao"
+            puts "1 - Sim"
+            print "Digite o numero correspondente a sua escolha: "            
+            opcAdd = gets.chomp
+            if(!opcAdd.eql? "1")
+                addStores = false
+            end
+        else
+            puts "Esta loja ja esta vinculada a este livro."
+        end    
     end          
 end 
 
 def addBooks(newStore)
     addBooks = true
-    while(addBooks)
-        print "Digite o ID do Livro: "
-        chosenBook = gets.chomp
-        chosenBook = Book.find(chosenBook.to_i) 
-        newStore.books << chosenBook
-        puts "Livro #{chosenBook.title} adicionado na loja #{newStore.name}" 
-        puts "Adicionar mais livros?"
-        puts "0 - Nao"
-        puts "1 - Sim"
-        opcAdd = gets.chomp
-        if(!opcAdd.eql? "1")
-            addBooks = false
-        end
-    end        
+    if(newStore.books.count != Book.count)
+        while(addBooks)
+            chosenBook = getBookByID()        
+            if(newStore.books.find_by_id(chosenBook.id).nil?) 
+                newStore.books << chosenBook
+                puts "Livro #{chosenBook.title} adicionado na loja #{newStore.name}" 
+                puts "Adicionar mais livros?"
+                puts "0 - Nao"
+                puts "1 - Sim"
+                print "Digite o numero correspondente a sua escolha: "
+                opcAdd = gets.chomp
+                if(!opcAdd.eql? "1")
+                    addBooks = false
+                end
+            else
+                puts "Este livro ja esta vinculado a esta loja."
+            end 
+        end 
+    end       
 end
 
-def showEditions()
+def showStores()
+    objStores = Store.all
+    puts "Escolha a loja:"
+    objStores.each do |tb|
+        puts "LOJA ID: #{tb.id}, Nome: #{tb.name}"   
+        puts "-----------------------------------------------------------------------------"         
+    end  
+end
+
+def showBooks()
     allBooks = Book.all
     allBooks.each do |a|
         puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.author}, ISBN: #{a.code.name}"                        
+        puts "============================================================================="    
     end
-    print "Digite o ID da Livro: "
-    chosenBook = gets.chomp    
-    chosenBook = Book.find(chosenBook.to_i)
+end
+
+def showEditions()
+    showBooks()
+    chosenBook = getBookByID()
     chosenBook.editions.each do |t|
         puts "EDICAO ID: #{t.id}, Titulo: #{t.title}, Paginas da edicao: #{t.edition_number}"
     end
@@ -153,27 +210,26 @@ while(!quit)
                     insert = true
                     while(insert)
                         print "\e[H\e[2J"
-                        #TODO Colocar opcao edition book
                         puts "<<<<<<<INSERCAO/LIVRO>>>>>>>"
-                        print "Informe o titulo:"
+                        print "Informe o titulo: "
                         title = gets.chomp
-                        print "Informe o autor:"
+                        print "Informe o autor: "
                         author = gets.chomp
-                        print "Informe o codigo(ISBN):"
+                        print "Informe o codigo(ISBN): "
                         bookCode = gets.chomp
                         book = Book.create(:title => title, :author => author)
-                        book.create_code(:name => bookCode)
+                        book.create_code(:name => bookCode)                 
                         num_store = Store.count
-                        puts num_store
                         if num_store != 0
-                            puts "Escolha a loja:"
-                            i = 0
-                            while i < num_store
-                                i+=1
-                                a = Store.find(i)
-                                puts "LOJA ID: #{a.id}, Name: #{a.name}"
-                            end
-                            addStores(book)                  
+                            puts "Deseja adicionar alguma loja existente ao novo livro? "
+                            puts "1 - Sim"
+                            puts "0 - Nao"
+                            print "Digite o numero correspondente a sua escolha: "
+                            opc = gets.chomp
+                            if(opc.eql? "1")                             
+                                showStores()
+                                addStores(book) 
+                            end                 
                         end
                         print "\e[H\e[2J"
                         puts "<<<<<<<INSERCAO/LIVRO>>>>>>>"
@@ -195,19 +251,20 @@ while(!quit)
                         newStore = Store.create(:name => name)
                         num_books = Book.count
                         if num_books != 0
-                            puts "Escolha um livro para ser adicionado a nova loja:"
-                            i = 0
-                            while i < num_books
-                                i+=1
-                                a = Book.find(i)
-                                puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.author}, ISBN: #{a.code.name}"
-                            end 
-                            addBooks(newStore)                                            
+                            puts "Deseja adicionar algum livro existente a nova loja? "
+                            puts "1 - Sim"
+                            puts "0 - Nao"
+                            print "Digite o numero correspondente a sua escolha: "                            
+                            opc = gets.chomp
+                            if(opc.eql? "1")
+                                puts "Escolha um livro para ser adicionado a nova loja:"
+                                showBooks()   
+                                addBooks(newStore)
+                            end                                            
                         end
                         print "\e[H\e[2J"
                         puts "<<<<<<<INSERCAO/LOJA>>>>>>>"
                         puts "1 - Inserir outra Loja"
-                        puts "2 - Adicionar livro existente a nova loja"
                         puts "0 - Menu"
                         ret = gets.chomp
                         if(!ret.eql? "1")
@@ -222,30 +279,21 @@ while(!quit)
                         num_books = Book.count
                         if num_books != 0
                             puts "Escolha o Livro:"
-                            i = 0
-                            while i < num_books
-                                i+=1
-                                a = Book.find(i)
-                                puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.author}, ISBN: #{a.code.name}"
+                            showBooks()   
+                            chosenBook = getBookByID()                     
+                            puts "Edicoes atuais"
+                            puts "============================================================================="
+                            chosenBook.editions.each do |t|
+                                puts "EDITION ID: #{t.id}, Title: #{t.title}, Edition Number: #{t.edition_number}"
                             end
-                            puts "0 - Menu"
-                            print "Digite o ID do Livro: "
-                            chosenBook = gets.chomp
-                            if chosenBook != "0"
-                                book = Book.find(chosenBook.to_i)
-                                puts "Edicoes atuais"
-                                puts "============================================================================="
-                                book.editions.each do |t|
-                                    puts "EDITION ID: #{t.id}, Title: #{t.title}, Edition Number: #{t.edition_number}"
-                                end
-                                puts "============================================================================="
-                                puts "Nova edicao"
-                                print "Digite o titulo da edicao:"
-                                title = gets.chomp
-                                print "Digite o numero de paginas da edicao:"
-                                num = gets.chomp
-                                book.editions.create(:edition_number => num, :title => title)
-                            end
+                            puts "============================================================================="
+                            puts "Nova edicao"
+                            print "Digite o titulo da edicao: "
+                            title = gets.chomp
+                            print "Digite o numero de paginas da edicao: "
+                            num = gets.chomp
+                            chosenBook.editions.create(:edition_number => num, :title => title)
+                            
                         else
                             puts "Operacao nao permitida, pois nao existem livros cadastrados."
                         end
@@ -275,16 +323,8 @@ while(!quit)
                         puts "<<<<<<<ALTERACAO/LIVRO>>>>>>>"
                         num_books = Book.count
                         if num_books != 0
-                            i = 0
-                            while i < num_books
-                                i+=1
-                                a = Book.find(i)
-                                puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.author}, ISBN: #{a.code.name}"
-                                puts "============================================================================="
-                            end
-                            print "Digite o ID do Livro: "
-                            chosenBook = gets.chomp
-                            book = Book.find(chosenBook.to_i)
+                            showBooks()
+                            book = getBookByID() 
                             puts "Escolha um campo para alterar:"
                             puts "0 - Titulo"
                             puts "1 - Autor"
@@ -300,28 +340,28 @@ while(!quit)
                                 newAuthor = gets.chomp
                                 book.author = newAuthor                                
                             elsif(optChange.eql? "2")
-                                puts "============================================================================="                                                         
-                                puts "Todas as lojas:"
-                                objStores = Store.all
-                                objStores.each do |tb|
-                                    puts "LOJA ID: #{tb.id}, Nome: #{tb.name}"
-                                end   
-                                puts "============================================================================="                         
-                                puts "Lojas que contem este livro:"
-                                book.stores.each do |t|
-                                    puts "LOJA ID: #{t.id}, Nome: #{t.name}"
-                                end
-                                puts "============================================================================="                                                         
-                                puts "0 - Adicionar nova loja ao livro"
-                                puts "1 - Remover loja existente ao livro"
-                                opcStore = gets.chomp
-                                if(opcStore.eql? "0")
-                                    addStores(book)
-                                elsif(opcStore.eql? "1")
-                                    print "Digite o ID da Loja:"
-                                    chosenStore = gets.chomp    
-                                    chosenStore = Store.find(chosenStore.to_i)                             
-                                    bs = Books_stores.delete_all("store_id = #{chosenStore.id} AND book_id = #{book.id}")                                    
+                                num_stores = Store.count
+                                if num_stores != 0
+                                    puts "============================================================================="                                                         
+                                    puts "Todas as lojas:"
+                                    showStores()  
+                                    puts "============================================================================="                         
+                                    puts "Lojas que contem este livro:"
+                                    book.stores.each do |t|
+                                        puts "LOJA ID: #{t.id}, Nome: #{t.name}"
+                                    end
+                                    puts "============================================================================="                                                         
+                                    puts "0 - Adicionar nova loja ao livro"
+                                    puts "1 - Remover loja existente ao livro"
+                                    opcStore = gets.chomp
+                                    if(opcStore.eql? "0")
+                                        addStores(book)
+                                    elsif(opcStore.eql? "1")
+                                        chosenStore = getStoreByID()                             
+                                        bs = Books_stores.delete_all("store_id = #{chosenStore.id} AND book_id = #{book.id}")                                    
+                                    end
+                                else
+                                    puts "Nao existem lojas cadastradas."
                                 end                                                                
                             elsif(optChange.eql? "3")
                                 puts "Codigo Atual: #{book.code.name}"
@@ -349,48 +389,41 @@ while(!quit)
                         puts "<<<<<<<ALTERACAO/LOJA>>>>>>>"
                         num_stores = Store.count
                         if num_stores != 0
-                            i = 0
-                            while i < num_stores
-                                i+=1
-                                a = Store.find(i)
-                                puts "LOJA ID: #{a.id}, Nome: #{a.name}"
-                                puts "============================================================================="
-                            end
-                            print "Digite o ID da loja:"
-                            chosenStore = gets.chomp
-                            chosenStore = Store.find(chosenStore.to_i)
+                            showStores()
+                            chosenStore = getStoreByID()
                             puts "Escolha um campo para alterar:"
                             puts "0 - Nome"
                             puts "1 - Livros"
                             optChange = gets.chomp
                             if(optChange.eql? "0")
-                                print "Digite o novo nome:"
+                                print "Digite o novo nome: "
                                 newName = gets.chomp
                                 chosenStore.name = newName                              
                             elsif(optChange.eql? "1")
-                                puts "============================================================================="                                                         
-                                puts "Todas os livros:"
-                                objBooks = Book.all
-                                objBooks.each do |tb|
-                                    puts "LIVRO ID: #{tb.id}, Titulo: #{tb.title}, Autor: #{tb.author}, ISBN: #{tb.code.name}"                                    
-                                end   
-                                puts "============================================================================="                         
-                                puts "Livros que estao nesta loja:"
-                                chosenStore.books.each do |tb|
-                                    puts "LIVRO ID: #{tb.id}, Titulo: #{tb.title}, Autor: #{tb.author}, ISBN: #{tb.code.name}"                
-                                end
-                                puts "============================================================================="                                                         
-                                puts "0 - Adicionar novo livro a loja"
-                                puts "1 - Remover livro existente da loja"
-                                opcStore = gets.chomp
-                                if(opcStore.eql? "0")
-                                    addBooks(chosenStore)
-                                elsif(opcStore.eql? "1")
-                                    print "Digite o ID da Livro: "
-                                    chosenBook = gets.chomp    
-                                    chosenBook = Book.find(chosenBook.to_i)                             
-                                    bs = Books_stores.delete_all("store_id = #{chosenStore.id} AND book_id = #{chosenBook.id}")                                    
-                                end                                                                             
+                                num_books = Book.count
+                                if num_books != 0
+                                    puts "============================================================================="                                                         
+                                    puts "Todos os livros:"
+                                    showBooks()   
+                                    puts "============================================================================="                         
+                                    puts "Livros que estao nesta loja:"
+                                    chosenStore.books.each do |tb|
+                                        puts "LIVRO ID: #{tb.id}, Titulo: #{tb.title}, Autor: #{tb.author}, ISBN: #{tb.code.name}"                
+                                    end
+                                    puts "============================================================================="                                                         
+                                    puts "0 - Adicionar novo livro a loja"
+                                    puts "1 - Remover livro existente da loja"
+                                    print "Digite o numero correspondente a sua escolha: "
+                                    opcStore = gets.chomp
+                                    if(opcStore.eql? "0")
+                                        addBooks(chosenStore)
+                                    elsif(opcStore.eql? "1")
+                                        chosenBook = getBookByID()                             
+                                        bs = Books_stores.delete_all("store_id = #{chosenStore.id} AND book_id = #{chosenBook.id}")                                    
+                                    end  
+                                else
+                                    puts "Nao existem livros cadastrados."
+                                end                                                                               
                             end
                             chosenStore.save
                         else
@@ -407,23 +440,26 @@ while(!quit)
                 when "3"
                     print "\e[H\e[2J"
                     puts "<<<<<<<ALTERACAO/EDICAO>>>>>>>"
-                    chosenBook = showEditions()
-                    print "Digite o ID da edicao:"
-                    chosenEdition = gets.chomp
-                    chosenEdition = chosenBook.editions.find(chosenEdition.to_i)
-                    puts "============================================================================="
-                    puts "Alterando #{chosenEdition.title}:"
-                    puts "0 - Titulo"
-                    puts "1 - Numero de Paginas"
-                    opcEdition = gets.chomp
-                    if(opcEdition.eql? "0")
-                        print "Digite o titulo da edicao:"
-                        title = gets.chomp
-                        Edition.update(chosenEdition.id,title: title)
-                    elsif(opcEdition.eql? "1")
-                        print "Digite o numero de paginas da edicao:"
-                        num = gets.chomp
-                        Edition.update(chosenEdition.id,edition_number: num.to_i)
+                    num_books = Book.count
+                    if num_books != 0
+                        chosenBook = showEditions()
+                        chosenEdition = getEditionByID(chosenBook)
+                        puts "============================================================================="
+                        puts "Alterando #{chosenEdition.title}:"
+                        puts "0 - Titulo"
+                        puts "1 - Numero de Paginas"
+                        opcEdition = gets.chomp
+                        if(opcEdition.eql? "0")
+                            print "Digite o titulo da edicao:"
+                            title = gets.chomp
+                            Edition.update(chosenEdition.id,title: title)
+                        elsif(opcEdition.eql? "1")
+                            print "Digite o numero de paginas da edicao:"
+                            num = gets.chomp
+                            Edition.update(chosenEdition.id,edition_number: num.to_i)
+                        end
+                    else
+                        puts "Nao existem livros cadastrados."
                     end
                 else
             end
@@ -435,40 +471,38 @@ while(!quit)
             case sub 
                 when "1"
                     puts "<<<<<<<EXCLUSAO/LIVRO>>>>>>>"
-                    allBooks = Book.all
-                    allBooks.each do |a|
-                        puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.author}, ISBN: #{a.code.name}"                        
+                    num_books = Book.count
+                    if num_books != 0
+                        showBooks()
+                        book = getBookByID() 
+                        book.destroy
+                    else
+                        puts "Nao existem livros cadastrados."     
                     end
-                    print "Digite o ID do Livro: "
-                    chosenBook = gets.chomp   
-                    book = Book.find(chosenBook.to_i)
-                    book.destroy
                 when "2"
                     puts "<<<<<<<EXCLUSAO/LOJA>>>>>>>"
-                    allStores = Store.all
-                    allStores.each do |tb|
-                        puts "LOJA ID: #{tb.id}, Nome: #{tb.name}"
+                    num_stores = Store.count
+                    if num_stores != 0
+                        showStores()
+                        chosenStore = getStoreByID()
+                        chosenStore.destroy
+                    else
+                        puts "Nao existem lojas cadastradas."     
                     end
-                    print "Digite o ID da Loja:"
-                    chosenStore = gets.chomp   
-                    delStore = Store.find(chosenStore.to_i)
-                    delStore.destroy
                 when "3"
                     puts "<<<<<<<EXCLUSAO/EDICAO>>>>>>>" 
-                    allBooks = Book.all
-                    allBooks.each do |a|
-                        puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.author}, ISBN: #{a.code.name}"                        
-                    end
-                    print "Digite o ID da Livro: "
-                    chosenBook = gets.chomp    
-                    chosenBook = Book.find(chosenBook.to_i)
-                    chosenBook.editions.each do |t|
-                        puts "EDICAO ID: #{t.id}, Titulo: #{t.title}, Paginas da edicao: #{t.edition_number}"
-                    end
-                    print "Digite o ID da Edicao: " 
-                    chosenEdition = gets.chomp
-                    cs = Edition.find(chosenEdition.to_i)
-                    cs.destroy               
+                    num_books = Book.count
+                    if num_books != 0
+                        showBooks()
+                        chosenBook = getBookByID()
+                        chosenBook.editions.each do |t|
+                            puts "EDICAO ID: #{t.id}, Titulo: #{t.title}, Paginas da edicao: #{t.edition_number}"
+                        end
+                        chosenEdition = getEditionByID(chosenBook)
+                        chosenEdition.destroy 
+                    else
+                        puts "Nao existem livros cadastrados."     
+                    end              
             end
 
      	when "4" 
@@ -481,10 +515,10 @@ while(!quit)
                     allBooks.each do |a|
                         puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.author}, ISBN: #{a.code.name}"
                         a.editions.each do |t|
-                            puts "EDICAO ID: #{t.id}, Titulo: #{t.title}, Paginas da edicao: #{t.edition_number}"
+                            puts "---EDICAO ID: #{t.id}, Titulo: #{t.title}, Paginas da edicao: #{t.edition_number}"
                         end
                         a.stores.each do |t|
-                            puts "LOJA ID: #{t.id}, Nome: #{t.name}"
+                            puts "------LOJA ID: #{t.id}, Nome: #{t.name}"
                         end
                         puts "============================================================================="                        
                     end
@@ -505,13 +539,8 @@ while(!quit)
                     end
 				when "3"
 					puts "<<<<<<<EDICOES>>>>>>>"
-                    allBooks = Book.all
-                    allBooks.each do |a|
-                        puts "LIVRO ID: #{a.id}, Titulo: #{a.title}, Autor: #{a.author}, ISBN: #{a.code.name}"                        
-                    end
-                    print "Digite o ID da Livro: "
-                    chosenBook = gets.chomp    
-                    chosenBook = Book.find(chosenBook.to_i)
+                    showBooks()
+                    chosenBook = getBookByID()
                     chosenBook.editions.each do |t|
                         puts "EDICAO ID: #{t.id}, Titulo: #{t.title}, Paginas da edicao: #{t.edition_number}"
                     end
