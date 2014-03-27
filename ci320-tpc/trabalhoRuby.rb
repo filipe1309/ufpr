@@ -122,23 +122,24 @@ end
 def addStores(book)
     addStores = true
     if(book.stores.count != Store.count)    
-    while(addStores)
-        chosenStore = getStoreByID()
-        if(book.stores.find_by_id(chosenStore.id).nil?)
-            book.stores << chosenStore
-            puts "Loja #{chosenStore.name} adicionada no livro #{book.title}" 
-            puts "Adicionar mais lojas?"
-            puts "0 - Nao"
-            puts "1 - Sim"
-            print "Digite o numero correspondente a sua escolha: "            
-            opcAdd = gets.chomp
-            if(!opcAdd.eql? "1")
-                addStores = false
-            end
-        else
-            puts "Esta loja ja esta vinculada a este livro."
-        end    
-    end          
+        while(addStores)
+            chosenStore = getStoreByID()
+            if(book.stores.find_by_id(chosenStore.id).nil?)
+                book.stores << chosenStore
+                puts "Loja #{chosenStore.name} adicionada no livro #{book.title}" 
+                puts "Adicionar mais lojas?"
+                puts "0 - Nao"
+                puts "1 - Sim"
+                print "Digite o numero correspondente a sua escolha: "            
+                opcAdd = gets.chomp
+                if(!opcAdd.eql? "1")
+                    addStores = false
+                end
+            else
+                puts "Esta loja ja esta vinculada a este livro."
+            end    
+        end 
+    end         
 end 
 
 def addBooks(newStore)
