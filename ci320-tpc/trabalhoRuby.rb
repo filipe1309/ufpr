@@ -27,53 +27,6 @@ end
 class Books_stores < ActiveRecord::Base
 end
 
-
-# POPULATE
-store0 = Store.create(:name => 'Store0')
-store1 = Store.create(:name => 'Store1')
-store2 = Store.create(:name => 'Store2')
-store3 = Store.create(:name => 'Store3')
-storeN = Store.create(:name => 'StoreN')
-
-book = Book.create(:title => 'Black and Blue',
-    :author => 'The Rolling Stones')
-book.editions.create(:edition_number => 1, :title => 'Hot Stuff')
-book.editions.create(:edition_number => 2, :title => 'Hand Of Fate')
-book.editions.create(:edition_number => 3, :title => 'Cherry Oh Baby ')
-book.editions.create(:edition_number => 4, :title => 'Memory Motel ')
-book.editions.create(:edition_number => 5, :title => 'Hey Negrita')
-book.editions.create(:edition_number => 6, :title => 'Fool To Cry')
-book.editions.create(:edition_number => 7, :title => 'Crazy Mama')
-book.editions.create(:edition_number => 8,
-    :title => 'Melody (Inspiration By Billy Preston)')
-book.create_code(:name => 'Name1')
-book.stores.create(:name => 'Store1.1')
-book.stores.create(:name => 'Store1.2')
-
-book = Book.create(:title => 'Sticky Fingers',
-    :author => 'The Rolling Stones')
-book.editions.create(:edition_number => 1, :title => 'Brown Sugar')
-book.editions.create(:edition_number => 2, :title => 'Sway')
-book.editions.create(:edition_number => 3, :title => 'Wild Horses')
-book.editions.create(:edition_number => 4,
-    :title => 'Can\'t You Hear Me Knocking')
-book.editions.create(:edition_number => 5, :title => 'You Gotta Move')
-book.editions.create(:edition_number => 6, :title => 'Bitch')
-book.editions.create(:edition_number => 7, :title => 'I Got The Blues')
-book.editions.create(:edition_number => 8, :title => 'Sister Morphine')
-book.editions.create(:edition_number => 9, :title => 'Dead Flowers')
-book.editions.create(:edition_number => 10, :title => 'Moonlight Mile')
-book.create_code(:name => 'Name2')
-
-book.stores << store0
-book.stores << store1
-book.stores << store2
-
-store1.name = "NewStore1"
-store1.save
-# /POPULATE
-
-
 def submenu()
     puts "1 - Livro"
     puts "2 - Loja"
