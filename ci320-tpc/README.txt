@@ -1,4 +1,4 @@
-Execução:
+Modo de execução:
 	ruby criaBdTrabalhoRuby.rb
 	ruby trabalhoRuby.rb
 
@@ -17,13 +17,14 @@ Execução inicial:
 	0 - Sair
 
 	Este é basicaente um menu geral, e depois de escohida a opção, é escolhido à que elemento aquela opção será aplicada, através do submenu abaixo:
-	<<<<<<<INSERCAO>>>>>>>
-	1 - Livro
-	2 - Loja
-	3 - Edicao
-	0 - Menu
+		<<<<<<<INSERCAO>>>>>>>
+		1 - Livro
+		2 - Loja
+		3 - Edicao
+		0 - Menu
 	
 	E então para cada submenu é definido suas opções respectivas, ex:
 	<<<<<<<INSERCAO/LIVRO>>>>>>>
 	Informe o titulo:
 
+	O mesmo procedimento pode ser aplicado para todas as outras opções iniciais(Insere,Altera,Exclui,Pesquisa).
