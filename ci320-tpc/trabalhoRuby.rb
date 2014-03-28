@@ -219,7 +219,23 @@ while(!quit)
                         print "Informe o codigo(ISBN): "
                         bookCode = gets.chomp
                         book = Book.create(:title => title, :author => author)
-                        book.create_code(:name => bookCode)                 
+                        book.create_code(:name => bookCode)
+                        addEditions = true 
+                        while(addEditions)
+                            print "Informe o titulo da edicao: "
+                            editionTitle = gets.chomp
+                            print "Informe a quantidade de paginas da edicao: "
+                            editionNumPages = gets.chomp                                 
+                            book.editions.create(:edition_number => editionNumPages, :title => editionTitle)
+                            puts "<<<<<<<INSERCAO/LIVRO/EDICAO>>>>>>>"
+                            puts "1 - Inserir outra edicao"
+                            puts "0 - Continuar cadastro do novo livro"
+                            print "Digite o numero correspondente a sua escolha: "
+                            opc = gets.chomp
+                            if(!opc.eql? "1")
+                                addEditions = false
+                            end                            
+                        end     
                         num_store = Store.count
                         if num_store != 0
                             puts "Deseja adicionar alguma loja existente ao novo livro? "
@@ -236,6 +252,7 @@ while(!quit)
                         puts "<<<<<<<INSERCAO/LIVRO>>>>>>>"
                         puts "1 - Inserir outro Livro"
                         puts "0 - Menu"
+                        print "Digite o numero correspondente a sua escolha: "
                         ret = gets.chomp
                         if(!ret.eql? "1")
                             insert = false
@@ -246,7 +263,7 @@ while(!quit)
                     while(insert)
                         print "\e[H\e[2J"
                         puts "<<<<<<<INSERCAO/LOJA>>>>>>>"
-                        print "Informe o nome:"
+                        print "Informe o nome: "
                         name = gets
                         print "\e[H\e[2J"
                         newStore = Store.create(:name => name)
@@ -267,6 +284,7 @@ while(!quit)
                         puts "<<<<<<<INSERCAO/LOJA>>>>>>>"
                         puts "1 - Inserir outra Loja"
                         puts "0 - Menu"
+                        print "Digite o numero correspondente a sua escolha: "                                                    
                         ret = gets.chomp
                         if(!ret.eql? "1")
                             insert = false
@@ -302,15 +320,14 @@ while(!quit)
                         puts "<<<<<<<INSERCAO/EDICAO>>>>>>>"
                         puts "1 - Inserir outra edicao"
                         puts "0 - Menu"
+                        print "Digite o numero correspondente a sua escolha: "     
                         ret = gets.chomp
                         if(!ret.eql? "1")
                             insert = false
                         end
                     end
                 else 
-                    print "\e[H\e[2J"
-                    quit = true 
-                    puts "Opcao invalida"
+                     puts "..."               
             end
         when "2" 
             print "\e[H\e[2J"
@@ -330,14 +347,15 @@ while(!quit)
                             puts "0 - Titulo"
                             puts "1 - Autor"
                             puts "2 - Lojas"
-                            puts "3 - Codigo(ISBN)"
+                            puts "3 - Codigo(ISBN)"                            
+                            print "Digite o numero correspondente a sua escolha: "                            
                             optChange = gets.chomp
                             if(optChange.eql? "0")
-                                print "Digite o novo titulo:"
+                                print "Digite o novo titulo: "
                                 newTitle = gets.chomp
                                 book.title = newTitle                                
                             elsif(optChange.eql? "1")
-                                print "Digite o novo autor:"
+                                print "Digite o novo autor: "
                                 newAuthor = gets.chomp
                                 book.author = newAuthor                                
                             elsif(optChange.eql? "2")
@@ -354,6 +372,7 @@ while(!quit)
                                     puts "============================================================================="                                                         
                                     puts "0 - Adicionar nova loja ao livro"
                                     puts "1 - Remover loja existente ao livro"
+                                    print "Digite o numero correspondente a sua escolha: "                                    
                                     opcStore = gets.chomp
                                     if(opcStore.eql? "0")
                                         addStores(book)
@@ -369,7 +388,7 @@ while(!quit)
                                 print "Digite o novo Codigo(ISBN):"
                                 newName = gets.chomp
                                 cd = Code.find_by_name(book.code.name)
-                                Code.update(cd.id,name: newName)                
+                                Code.update(cd.id,name: newName)           
                             end
                             book.save
                         else
@@ -378,6 +397,7 @@ while(!quit)
                         puts "<<<<<<<ALTERACAO/LIVRO>>>>>>>"
                         puts "1 - Alterar outro livro?"
                         puts "0 - Menu"
+                        print "Digite o numero correspondente a sua escolha: "                        
                         ret = gets.chomp
                         if(!ret.eql? "1")
                             change = false
@@ -395,6 +415,7 @@ while(!quit)
                             puts "Escolha um campo para alterar:"
                             puts "0 - Nome"
                             puts "1 - Livros"
+                            print "Digite o numero correspondente a sua escolha: "                            
                             optChange = gets.chomp
                             if(optChange.eql? "0")
                                 print "Digite o novo nome: "
@@ -433,6 +454,7 @@ while(!quit)
                         puts "<<<<<<<ALTERACAO/LOJA>>>>>>>"
                         puts "1 - Alterar outra loja?"
                         puts "0 - Menu"
+                        print "Digite o numero correspondente a sua escolha: "                        
                         ret = gets.chomp
                         if(!ret.eql? "1")
                             change = false
@@ -449,6 +471,7 @@ while(!quit)
                         puts "Alterando #{chosenEdition.title}:"
                         puts "0 - Titulo"
                         puts "1 - Numero de Paginas"
+                        print "Digite o numero correspondente a sua escolha: "                        
                         opcEdition = gets.chomp
                         if(opcEdition.eql? "0")
                             print "Digite o titulo da edicao:"
