@@ -34,6 +34,7 @@ function createObj() {
         mv = 0;
         mx = 0;
         my = 0;
+        get = 0;
         drawLine=  function() {
             ctx.clearRect(0,0,canvasWidth,canvasHeight);
             ctx.beginPath();
@@ -42,22 +43,68 @@ function createObj() {
             ctx.lineWidth = 3;
             ctx.stroke();
 
-            //mx = event.clientX - this.offsetLeft;
             //my = event.clientY - this.offsetTop;
             //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
-            ctx.fillText("a("+ax+","+ay+"), b("+bx+","+by+"), mv: "+mv+", m("+mx+","+my+")",20,10);
+            //mx = event.clientX - this.offsetLeft;
+
+            ctx.fillText("get: "+get+", a("+ax+","+ay+"), b("+bx+","+by+"), mv: "+mv+", m("+mx+","+my+")",20,10);
             //(ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay) = 0 --> ax+by+c
+            mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
+            if(ax > bx){
+                ma = ax;
+                me = bx;            
+            } else {
+                ma = bx;
+                me = ax;
+            }
+
+            if(!up) {
+                //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);                    
+                if( (mv > 0) && (mv < 2250) && ((mx >= me) && (mx <= ma)) && !dot) {
+                    //mx = event.clientX - this.offsetLeft;
+                    //my = event.clientY - this.offsetTop;
+                    //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
+
+                    //(ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay) = 0 --> ax+by+c
+                    //alert("Ponto na reta!!!");
+                    //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
+                    ctx.fillText("--> mv: "+mv+", m("+mx+","+my+")",30,30);      
+                }
+            }
         };
 
         setInterval(drawLine,20);
 
 
         canvas.onmousedown=function(event) {
-            mx = event.clientX - this.offsetLeft;
-            my = event.clientY - this.offsetTop;
-            mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
+            mx = event.pageX - this.offsetLeft;
+            my = event.pageY - this.offsetTop;
+            mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);            
             range = 20;
             up = false;
+            a = false;
+            b =false;
+            line = false;
+            if(ax > bx){
+                ma = ax;
+                me = bx;            
+            } else {
+                ma = bx;
+                me = ax;
+            }
+            // New
+            if((mx > (ax-range)) && (mx < (ax+range)) && (my > (ay-range)) && (my < (ay+range))) {
+                a = true;
+            } else if((mx > (bx-range)) && (mx < (bx+range)) && (my > (by-range)) && (my < (by+range))) {
+                b = true;
+            } else if( (mv > 0) && (mv < 2250) && ((mx >= me) && (mx <= ma)) /*&& !dot*/) {
+                line = true;
+                get = -1;      
+            } else {
+                get = 0;
+            }
+            // /New
+
             // Define range para o clique do mouse
             /*if((mx > (ax-range)) && (mx < (ax+range)) && (my > (ay-range)) && (my < (ay+range))) {
                 //alert("Clickou no a!!");
@@ -80,21 +127,9 @@ function createObj() {
             } else {
 
             }*/
-            if(!up) {
-                //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);                    
-                if((mv > 0) && (mv < 2250)){
-                    //mx = event.clientX - this.offsetLeft;
-                    //my = event.clientY - this.offsetTop;
-                    //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
+            
 
-                    //(ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay) = 0 --> ax+by+c
-                    //alert("Ponto na reta!!!");
-                    //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
-                    ctx.fillText("--> mv: "+mv+", m("+mx+","+my+")",30,30);      
-                }
-            }
-
-            canvas.onmousemove=function(event) {
+            /*canvas.onmousemove=function(event) {
                 mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
 
                 if((mx > (ax-range)) && (mx < (ax+range)) && (my > (ay-range)) && (my < (ay+range))) {
@@ -103,6 +138,7 @@ function createObj() {
                         my = event.clientY - this.offsetTop;
                         ax = mx;
                         ay = my;
+                        dot = true;
                     }
                 } else if((mx > (bx-range)) && (mx < (bx+range)) && (my > (by-range)) && (my < (by+range))) {
                     if(!up) {
@@ -110,7 +146,7 @@ function createObj() {
                         my = event.clientY - this.offsetTop;
                         bx = mx;
                         by = my;
-
+                        dot = true;
                     }                    
                 } else {
                     /*if(!up) {
@@ -125,16 +161,61 @@ function createObj() {
                             //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
                         }
                     }*/
+
+             /*       if(!up) {
+                        dot = false;
+                        //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);                    
+                        //if( (mv > 0) && (mv < 2250) && ((mx >= me) && (mx <= ma)) ) {
+                            //mx = event.clientX - this.offsetLeft;
+                            //my = event.clientY - this.offsetTop;
+                            //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
+
+                            //(ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay) = 0 --> ax+by+c
+                            //alert("Ponto na reta!!!");
+                            //mv = (ay-by)*mx + (bx-ax)*my+(ax*by-bx*ay);
+                            //ctx.fillText("--> mv: "+mv+", m("+mx+","+my+")",30,30);
+                        //}
+                    }
                 }
-            }    
+            }*/    
 
             canvas.onmouseup=function(event) {
                 up = true;
-                mv = -1;
+                //mv = -1;
             };
-        };
+        };  
 
-       
+        canvas.onmousemove=function(event) {
+            if(a) {
+                if(!up) {
+                    mx = event.pageX - this.offsetLeft;
+                    my = event.pageY - this.offsetTop;
+                    ax = mx;
+                    ay = my;
+                    dot = true;
+                }
+            } else if(b) {
+                if(!up) {
+                    mx = event.pageX - this.offsetLeft;
+                    my = event.pageY - this.offsetTop;
+                    bx = mx;
+                    by = my;
+                    dot = true;
+                }     
+            } else if(line) {
+                if(!up /*&& get == -1*/) {
+                    //alert("Foi");
+                    get = 2;
+                    mx = event.pageX - this.offsetLeft;
+                    my = event.pageY - this.offsetTop;
+                    pm_x = (ax + bx)/2;
+                    pm_y = (ay + by)/2;
+                    dist_pm_m = Math.sqrt(Math.pow(pm_x-mx,2)+Math.pow(pm_y-my,2));
+                    
+                }
+                
+            } 
+        }
 
     }
     return this;
