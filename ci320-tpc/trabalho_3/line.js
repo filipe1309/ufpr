@@ -10,9 +10,13 @@ function createObj() {
         }
         ctx = canvas.getContext("2d");
         canvas.oncontextmenu = function(){return false}
+
         /*
             INIT
          */
+        dots = new Array();
+        lines = new Array();
+        
         bx = canvas.width/2;
         by = canvas.height/2;
         ax = 20;
