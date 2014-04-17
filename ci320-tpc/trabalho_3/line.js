@@ -14,14 +14,13 @@ function createObj() {
         /*
             INIT
          */
-        dots = new Array();
-        lines = new Array();
-        
-        bx = canvas.width/2;
-        by = canvas.height/2;
-        ax = 20;
-        ay = by;
-        d_ab = pmy = pmx = inLine = my = mx = mv = 0;
+        points = new Array();
+        objects = new Array();
+        points[0] = [20,(canvas.height/2)];
+        points[1] = [(canvas.width/2),(canvas.height/2)];
+        objects[0] = [points[0],points[1]];
+        up = false;
+        dpa = dpb = distLine = d_ab = pmy = pmx = inLine = my = mx = mv = 0;
 
         /*
             DRAWS
@@ -32,23 +31,23 @@ function createObj() {
 
             // Draw circle
             ctx.beginPath();
-            ctx.arc(ax,ay,10,0,2*Math.PI,true); 
+            ctx.arc(objects[0][0][0],objects[0][0][1],10,0,2*Math.PI,true); 
             ctx.fillStyle = "red";
             ctx.fill();
             
             // Draw circle
             ctx.beginPath();
-            ctx.arc(bx,by,10,0,2*Math.PI,true);
+            ctx.arc(objects[0][1][0],objects[0][1][1],10,0,2*Math.PI,true);
             ctx.fillStyle = "red";             
             ctx.fill();
 
             // Draw line
             ctx.beginPath();                                   
-            ctx.moveTo(ax,ay);
-            ctx.lineTo(bx,by);
+            ctx.moveTo(objects[0][0][0],objects[0][0][1]);
+            ctx.lineTo(objects[0][1][0],objects[0][1][1]);
             ctx.lineWidth = 3;
             ctx.stroke();
-            ctx.fillText("inLine: "+inLine+", a("+ax+","+ay+"), b("+bx+","+by+"), mv: "+mv+", m("+mx+","+my+"), p("+pmx+","+pmy+"), d_ab: "+d_ab,20,10);
+            ctx.fillText("inLine: "+inLine+", a("+objects[0][0][0]+","+objects[0][0][1]+"), b("+objects[0][1][0]+","+objects[0][1][1]+"), mv: "+mv+", m("+mx+","+my+"), p("+pmx+","+pmy+"), d_ab: "+d_ab+", distLine: "+distLine+", dpa: "+dpa+", dpb: "+dpb,20,10);
         };
 
         //drawLine();
@@ -58,15 +57,18 @@ function createObj() {
             PHYSICS
          */
         clickOnLine = function() {
-            pmx = bx;
-            pmy = by;
-            d_ab = Math.sqrt( Math.pow(bx-ax,2) + Math.pow(by-ay,2) );
+            pmx = objects[0][1][0];
+            pmy = objects[0][1][1];
+            // Ditance point - point
+            d_ab = Math.sqrt( Math.pow(objects[0][1][0]-objects[0][0][0],2) + Math.pow(objects[0][1][1]-objects[0][0][1],2) );
             while(d_ab >= 100) {
-                pmx = ((ax+pmx)/2);
-                pmy = ((ay+pmy)/2);
-                d_ab = Math.sqrt( Math.pow(pmx-ax,2) + Math.pow(pmy-ay,2) );
+                pmx = ((objects[0][0][0]+pmx)/2);
+                pmy = ((objects[0][0][1]+pmy)/2);
+                d_ab = Math.sqrt( Math.pow(pmx-objects[0][0][0],2) + Math.pow(pmy-objects[0][0][1],2) );
             }
-            mv = (ay-pmy)*mx + (pmx-ax)*my+(ax*pmy-pmx*ay); 
+            // Line Equation
+            mv = (objects[0][0][1]-pmy)*mx + (pmx-objects[0][0][0])*my+(objects[0][0][0]*pmy-pmx*objects[0][0][1]); 
+            selectedObj = 0;
         }
 
         restoreParams = function() {
@@ -79,10 +81,27 @@ function createObj() {
         }
 
         defineLineRange = function() {
-            minX = Math.min(ax,bx);
-            maxX = Math.max(ax,bx);
-            minY = Math.min(ay,by);
-            maxY = Math.max(ay,by);
+            minX = Math.min(objects[0][0][0],objects[0][1][0]);
+            maxX = Math.max(objects[0][0][0],objects[0][1][0]);
+            minY = Math.min(objects[0][0][1],objects[0][1][1]);
+            maxY = Math.max(objects[0][0][1],objects[0][1][1]);
+        }
+
+        findCloserPointsOfObj = function(object) {
+            alert("ax: "+objects[object][0][0]+", ay: "+objects[object][0][1]);
+
+            dpa = Math.sqrt( Math.pow(mx-object[0][0],2) + Math.pow(my-object[0][1],2) );
+            //for (var i = 1; i < object.length; i++) {
+                // d_ab = sqrt( pow(bx-ax,2) + pow(by-ay,2) )
+                dpb = Math.sqrt( Math.pow(mx-object[0][0],2) + Math.pow(my-object[0][1],2) );
+                distLine = dpa + dpb;
+            //};
+        }
+        
+        brokeLine = function(object) {
+            //alert("Bd");
+            //points[] = [mx,my];
+            findCloserPointsOfObj(object);
         }
 
         /*
@@ -95,13 +114,13 @@ function createObj() {
             restoreParams();
             defineLineRange();
 
-            if((mx > (ax-range)) && (mx < (ax+range)) && (my > (ay-range)) && (my < (ay+range))) {
+            if((mx > (objects[0][0][0]-range)) && (mx < (objects[0][0][0]+range)) && (my > (objects[0][0][1]-range)) && (my < (objects[0][0][1]+range))) {
                 a = true; 
-            } else if((mx > (bx-range)) && (mx < (bx+range)) && (my > (by-range)) && (my < (by+range))) {
+            } else if((mx > (objects[0][1][0]-range)) && (mx < (objects[0][1][0]+range)) && (my > (objects[0][1][1]-range)) && (my < (objects[0][1][1]+range))) {
                 b = true;
             } else if( (mv > -lineRange) && (mv < lineRange) && ((mx >= minX - range)  && (mx <= maxX + range) && (my >= minY - range) && (my <= maxY + range))/*&& ((mx >= me) && (mx <= ma)) /*&& !dot*/) {
-                if(event.button) {
-                    alert("Bd");
+                if(event.button) {                    
+                    brokeLine(selectedObj);
                 } else {
                     line = true;
                     inLine = -1; 
@@ -122,13 +141,13 @@ function createObj() {
                 mx = event.pageX - this.offsetLeft;
                 my = event.pageY - this.offsetTop;
                 if(a) {                             
-                    ax = mx;
-                    ay = my;
+                    objects[0][0][0] = mx;
+                    objects[0][0][1] = my;
                     dot = true;
                     canvas.style.cursor = 'move';
                 } else if(b) {
-                    bx = mx;
-                    by = my;
+                    objects[0][1][0] = mx;
+                    objects[0][1][1] = my;
                     dot = true;
                     canvas.style.cursor = 'move';
                 } else if(line) {
@@ -137,10 +156,10 @@ function createObj() {
                     diffY = event.pageY - canvas.offsetTop - oldY;
                     oldY = my;
                     document.getElementById('lineM').innerHTML = "diffX: " + diffX + " diffY: " + diffY;
-                    bx += diffX;
-                    by += diffY;
-                    ax += diffX;
-                    ay += diffY;
+                    objects[0][1][0] += diffX;
+                    objects[0][1][1] += diffY;
+                    objects[0][0][0] += diffX;
+                    objects[0][0][1] += diffY;
                     canvas.style.cursor = 'move';                  
                 } 
             }
