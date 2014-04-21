@@ -1,10 +1,15 @@
 function createObj() {
     canvas = document.getElementById("canvasBox");
+    btAddPolygon = document.getElementById("add"); 
+    inNumSides = document.getElementById("sides");
+    btClear = document.getElementById("clear");    
+
     if(canvas &&  canvas.getContext) { 
         canvasWidth = 600;
         canvasHeight = 400;
+        
         with(canvas) {
-            style.border = "5px solid black";
+            style.border = "5px dashed #34302D";
             width = canvasWidth;
             height = canvasHeight;
         }
@@ -14,32 +19,28 @@ function createObj() {
         /*
             INIT
          */
-        points = new Array();
-        objects = new Array();
-        points[0] = [20,(canvas.height/2)];
-        points[1] = [(canvas.width/2),(canvas.height/2)];
-        objects[0] = [points[0],points[1]];
-        pointSelected = line = up = false;
-        object = position = firstPoint = lastPoint = d_ab = endPointy = endPointx = my = mx = lineDist = 0;
+        initCanvas = function(clear){
+            objects = new Array();
+            if(!clear)
+                objects[0] = [[20,(canvas.height/2)],[(canvas.width/4),(canvas.height/2)]];
+            pointSelected = line = up = false;
+            object = position = firstPoint = lastPoint = d_ab = endPointy = endPointx = my = mx = lineDist = 0;
+        }
 
         /*
             DRAWS
          */
-        drawObjects=  function() {
+        drawObjects = function() {
             // Clear canvas area
             ctx.clearRect(0,0,canvasWidth,canvasHeight);
-
             // Through all Objects (Poligons, lines)
             for (var i = 0; i < objects.length ; i++) {
-                //objects[i]
-                
                 // Through all points
                 for (var j = 0; j < objects[i].length; j++) {
-                    //objects[j][k]
                     // Draw circle                
                     ctx.beginPath();
                     ctx.arc(objects[i][j][0],objects[i][j][1],10,0,2*Math.PI,true); 
-                    ctx.fillStyle = "red";
+                    ctx.fillStyle = "#98E765";
                     ctx.fill();
                     if(j) {
                         // Draw line
@@ -51,19 +52,21 @@ function createObj() {
                     }
                 };
             };
-            ctx.fillText("a("+objects[0][0][0]+","+objects[0][0][1]+"), b("+objects[0][1][0]+","+objects[0][1][1]+"), lineDist: "+lineDist+", m("+mx+","+my+"), p("+endPointx+","+endPointy+")",20,10);
-            ctx.fillText("object: "+object+", firstPoint("+firstPoint+"), selected/lastPoint("+lastPoint+"), ->"+JSON.stringify(objects),20,20);               
-            ctx.fillText("pointSelected: "+pointSelected+", line: "+line,20,30);                           
+            /*ctx.fillText("mouse position("+mx+","+my+")",20,10);
+            ctx.fillText("object selected: "+object+", firstPoint("+firstPoint+"), selected/lastPoint("+lastPoint+")",20,20);               
+            ctx.fillText("point selected: "+pointSelected+", line selected: "+line,20,30); 
+            //ctx.fillText("List of objects: "+JSON.stringify(objects),20,40);             
+            */                                              
         };  
 
-        //drawObjects();
+        initCanvas(0);
         setInterval(drawObjects,20);
 
         /*
             PHYSICS
          */        
         restoreParams = function() {
-            range = 20;
+            range = 12;
             lineRange = 1200;
             up = pointSelected = line = false; 
         }
@@ -76,12 +79,8 @@ function createObj() {
         }
 
         selectClickedObject = function(event) {
-            // Define the first line of first object as selected for init
-            // Dist a(x,y) m(x,y) + Dist b(x,y) m(x,y) 
-            //minDistLine = Math.sqrt( Math.pow(mx-objects[0][0][0],2) + Math.pow(my-objects[0][0][1],2) ) + Math.sqrt( Math.pow(mx-objects[0][1][0],2) + Math.pow(my-objects[0][0][1],2) );
             lastPoint = 1;
             firstPoint = out = object = 0;
-
             for (var i = 0; i < objects.length && !out; i++) {
                 for (var j = 0; j < objects[i].length && !out; j++) {
                     endPointx = objects[i][j][0];
@@ -150,13 +149,10 @@ function createObj() {
                     objects[object][lastPoint][1] = my;
                     canvas.style.cursor = 'move';
                 } else if(line) {
-                    document.getElementById('lineM').innerHTML = "Foi<br>";
-                    diffX = event.pageX - canvas.offsetLeft - linex;
+                    var diffX = event.pageX - canvas.offsetLeft - linex;
                     linex = mx;
-                    document.getElementById('lineM').innerHTML = "Foi2<br>";                    
-                    diffY = event.pageY - canvas.offsetTop - liney;
+                    var diffY = event.pageY - canvas.offsetTop - liney;
                     liney = my;
-                    document.getElementById('lineM').innerHTML = "diffX: " + diffX + " diffY: " + diffY;
                     objects[object][firstPoint][0] += diffX;
                     objects[object][firstPoint][1] += diffY;
                     objects[object][lastPoint][0] += diffX;
@@ -164,7 +160,36 @@ function createObj() {
                     canvas.style.cursor = 'move';                  
                 } 
             }
-        }
+        };
+
+        inNumSides.onclick=function(event) { 
+            inNumSides.value = "";
+        }; 
+
+        btAddPolygon.onclick=function(event) {  
+                numSides = parseInt(inNumSides.value);
+
+                if(numSides < 3 || numSides > 8 || isNaN(numSides)) {
+                    alert("Valor incorreto!!!\nDigite um valor entre 3 e 8");
+                } else { 
+                    var points = new Array();
+                    var angle = 0.0;
+                    var step = 2 * Math.PI / numSides;
+                    var radius = numSides * 10;
+                    for (var i = 0; i < numSides; i++) {
+                        var x = radius * Math.cos(angle) + canvas.width/2;
+                        var y = radius * Math.sin(angle) + canvas.height/2;
+                        angle += step;
+                        points.push([x,y]);
+                    };
+                    points.push(points[0]);
+                    objects.push(points);
+                }
+        };
+
+        btClear.onclick=function(event) {                
+            initCanvas(1);
+        };
     }
     return this;
 }

@@ -1,0 +1,64 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+body {
+    background-color: #56524F;
+}
+
+#canvasElement {
+    width: 50%;
+    margin: 20px auto; 
+}
+
+#canvasElement #myname {
+    font: 50px bold Arial;
+    font-variant:small-caps;
+    color: white;
+    display: block;
+    width: 600px;
+    text-align: center;  
+    margin-bottom: 10px;   
+}
+
+#canvasElement #grr {
+    display: block;
+    font: 15px bold Arial;       
+}
+
+#canvasInput {
+    background-color: #86C543;
+    border:5px dashed #34302D;
+    border-top: none;
+    border-radius: 10px;
+    width:600px;
+}
+
+#canvasBox {
+    background-color: white; 
+}
+
+#sides {
+    color:#C0C0C0;
+    text-align: center;  
+    border-radius: 10px; 
+}
+
+#sides:focus {
+    color:black;
+}
+
+#add, #clear {
+    border: 2px solid white;
+    border-radius: 10px; 
+    background-color: #34302D;
+    color: white;
+}
+
+#add:hover, #clear:hover {
+    background-color: #56524F;
+}
+
+

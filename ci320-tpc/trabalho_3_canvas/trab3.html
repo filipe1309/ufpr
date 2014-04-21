@@ -1,16 +1,32 @@
 <html>
 <head>
     <title>Trabalho 3 - Parte 1</title>
-    <script type="text/javascript" src="canvasFunctions.js"></script>
+    <meta name="description" content="a polygon generator develop with canvas">
+    <meta name="keywords" content="canvas">
+    <meta name="author" content="Filipe Leuch Bonfim">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="js/canvasFunctions.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-    <canvas id="canvasBox">   
-        Este navegador não suporta HTML5!     
-    </canvas>
-    <script type="text/javascript">
+
+    <div id="canvasElement">
+        <span id="myname">Filipe Leuch Bonfim
+            <span id="grr">GRR20092368</span>
+        </span>
+        <canvas id="canvasBox">   
+            Este navegador não suporta HTML5!     
+        </canvas>
+       
+        <div id="canvasInput">
+            <input id="sides" type="text" value="Digite o número de lados aqui">
+            <input id="add" type="button" value="Adicionar Polígono">
+            <!-- onclick="alert('ItWorks')" -->
+            <input id="clear" type="button" value="Limpar">
+        </div>
+    </div>
+     <script type="text/javascript">
         var line = createObj();
-        //line.drawLine();
     </script>
-    <p id="lineM">Diffs:</p>
 </body>
 </html>
