@@ -6,10 +6,11 @@
 
 body {
     background-color: #56524F;
+    width: 100%;
 }
 
 #canvasElement {
-    width: 50%;
+    width: 600px;
     margin: 20px auto; 
 }
 
