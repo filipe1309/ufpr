@@ -10,19 +10,22 @@ $( document ).ready(function() {
     xmlhttp.send();
     xmlDoc=xmlhttp.responseXML;
 
+    $(".table").on('contextmenu', function(e){return false;});
     var aluno = xmlDoc.getElementsByTagName("ALUNO");
     var btGrr = document.getElementById('btngrr').value;
     var opt = 0;
+    var grr;
+    
 
-    getDisciplineCode = function(alunoTag) {  
-      var desc_est = aluno[alunoTag].getElementsByTagName("DESCR_ESTRUTURA")[0].childNodes[0].nodeValue;   
-      var cod = aluno[alunoTag].getElementsByTagName("COD_ATIV_CURRIC")[0].childNodes[0].nodeValue;
-      
+    getDisciplineId = function(alunoTag) {  
+      //var desc_est = aluno[alunoTag].getElementsByTagName("DESCR_ESTRUTURA")[0].childNodes[0].nodeValue;   
+      var desc_est = $(alunoTag).find("DESCR_ESTRUTURA").text();
+      var cod = $(alunoTag).find("COD_ATIV_CURRIC").text();
       if(document.getElementById(cod)) {
         return '#'+cod;
       } else if(desc_est == 'Obrigatórias') {
           // Disciplina é obrigatória no 
-          // xm, mas não está na grade atual, EX: CI066
+          // xml, mas não está na grade atual, EX: CI066
           // o contrário acontece com CI209
         } else if(desc_est == 'Optativas') {
           if(opt) {
@@ -35,7 +38,6 @@ $( document ).ready(function() {
               }
             }
           }
-          
           if(opt < 6){ // Nova optativa - Se não acabou os slots para optativas
               opt++;
               $('#OPT'+opt).html(cod);            
@@ -68,30 +70,85 @@ $( document ).ready(function() {
       }
     }
 
+
     customizeDisciplines = function() { 
       opt = 0;
       $('.cod_disc').css('background-color','white');
-      var grr = document.getElementById('grr').value; 
-      for (var i=0;i<aluno.length;i++) {    
-        if(aluno[i].getElementsByTagName("MATR_ALUNO")[0].childNodes[0].nodeValue == grr) {
-          var sig = aluno[i].getElementsByTagName("SIGLA")[0].childNodes[0].nodeValue;
-          var cod = getDisciplineCode(i);
+      grr = document.getElementById('grr').value; 
+      $(aluno).each(function(){
+        tmpGrr = $(this).find("MATR_ALUNO").text();
+        if(tmpGrr == grr) {
+          var sig = $(this).find("SIGLA").text();
+          var cod = getDisciplineId(this);
           setColor(cod,sig);
         }
+      });
+    }
+
+    getLastTime = function(discSelected) {
+      var dc, tmpGrr, disc, semester, year, grade, freq, cod;
+      dc = tmpGrr = disc = semester = year = grade = freq = cod = ''; 
+      $(aluno).each(function(){
+        tmpGrr = $(this).find("MATR_ALUNO").text();
+        dc = $(this).find ("COD_ATIV_CURRIC").text();
+        if(tmpGrr == grr && dc == discSelected) { 
+          disc = $(this).find("NOME_ATIV_CURRIC").text(); 
+          semester = $(this).find("PERIODO").text();                 
+          year = $(this).find("ANO").text();         
+          grade = $(this).find("MEDIA_FINAL").text();                                                         
+          freq = $(this).find("FREQUENCIA").text(); 
+        }
+      });
+      if(disc != '')
+        alert("Disciplina: "+disc+"\nCódigo: "+discSelected+"\nCursado em: "+semester+" / "+year+"\nNota: "+grade+"\nFrequencia: "+freq);
+    } 
+
+    getHistory = function(discSelected) {
+      var dc, tmpGrr, disc, semester, year, grade, freq, cod, hist;
+      dc = tmpGrr = disc = semester = year = grade = freq = cod = hist = ''; 
+      $(aluno).each(function(){
+        tmpGrr = $(this).find("MATR_ALUNO").text();
+        dc = $(this).find ("COD_ATIV_CURRIC").text();
+        if(tmpGrr == grr && dc == discSelected) {
+          disc = $(this).find("NOME_ATIV_CURRIC").text(); 
+          semester = $(this).find("PERIODO").text();                 
+          year = $(this).find("ANO").text();         
+          grade = $(this).find("MEDIA_FINAL").text();                                                         
+          freq = $(this).find("FREQUENCIA").text(); 
+          hist += "Disciplina: "+disc+"\nCódigo: "+discSelected+"\nCursado em: "+semester+" / "+year+"\nNota: "+grade+"\nFrequencia: "+freq;
+          hist += "\n-------------\n";
+        }
+      });
+      if(disc != '')
+        alert(hist);
+    } 
+
+    /*
+      EVENTS   
+    */
+    document.onkeydown = function(event) {
+      if (event.keyCode == 13) {
+        customizeDisciplines();
       }
     }
 
-     /*
-        EVENTS   
-     */
-      document.onkeydown = function(event) {
-         if (event.keyCode == 13) {
-            customizeDisciplines();
-         }
+    $("#btngrr").click(function(){
+      customizeDisciplines();
+    });
+  
+    $('.cod_disc').mousedown(function(event) {
+      var disc = $(this).text();
+      switch (event.which) {
+          case 1: // topleft              
+              getLastTime(disc);
+              break;
+          case 2: // topmiddle
+              alert('middle');
+              break;
+          case 3: // topright
+              getHistory(disc);
+              break;
       }
-
-      $("#btngrr").click(function(){
-        customizeDisciplines();
-      });
+    });
 });
 //GRR00000007
