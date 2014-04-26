@@ -101,7 +101,7 @@ $( document ).ready(function() {
       customizeDisciplines = function() { 
         opt = 0;
         $('.cod_disc').css('background-color','white');
-        grr = document.getElementById('grr').value; 
+        grr = document.getElementById('grr').value.toUpperCase(); 
         $(student).find("ALUNO").each(function(){
           tmpGrr = $(this).find("MATR_ALUNO").text();
           if(tmpGrr == grr) {
