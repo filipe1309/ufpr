@@ -23,12 +23,14 @@ $( document ).ready(function() {
       var opt = 0;
       var grr;
       var statusColor = {
-        'Aprovado': '#86C543', 
-        'Matricula': '#595DF6', 
-        'Equivale': '#E8E340', 
-        'Reprovado': '#FF372E', 
-        'Repr. Freq': '#FF372E',
-        'hover': '0.8'
+        'Aprovado'  :  '#86C543', // Green
+        'Matricula' :  '#595DF6', // Blue
+        'Equivale'  :  '#E8E340', // Yellow
+        'Reprovado' :  '#FF372E', // Red
+        'Repr. Freq':  '#FF372E', // Red
+        'hover'     :  '0.8',
+        'default'   :  '#333',    // LIGHT GREY
+        'taken'     :  'white'     
       };
       //#f39c12
       getDisciplineId = function(studentTag) {  
@@ -61,53 +63,34 @@ $( document ).ready(function() {
         return false;
       }
 
-      setStyle = function(cod,color) {
-          $(cod).css('background-color',color); 
-          //if(color != 'yellow')
-            //$(cod).css('color','white');                                                 
-          $(cod).css('cursor','pointer'); 
-          $(cod).hover(
-            function() { // #96B6B7
-              $(cod).css('opacity',statusColor['hover']);
-            },
-            function() {
-              $(cod).css('opacity','1');
-            }
-          );        
-      }
-
-      setColor = function(cod,sig) { 
-        if(cod) {
-          switch(sig) {
-            case "Aprovado": // Green
-              setStyle(cod,statusColor[sig]);
-              break;
-            case "Reprovado": // Red 
-            case "Repr. Freq":
-              setStyle(cod,statusColor[sig]);
-              break;
-            case "Equivale": // Yellow
-              setStyle(cod,statusColor[sig]);
-              break;
-            case "Matricula": // Blue
-              setStyle(cod,statusColor[sig]);
-              break;
-            default: // White
-              break;
+      setStyle = function(cod,sig) {
+          if(cod && (statusColor[sig] !== undefined)){
+            $(cod).css('background-color',statusColor[sig]); 
+            if(sig != 'Equivale')
+              $(cod).css('color',statusColor['taken']);                                                 
+            $(cod).css('cursor','pointer'); 
+            $(cod).hover(
+              function() { // #96B6B7
+                $(cod).css('opacity',statusColor['hover']);
+              },
+              function() {
+                $(cod).css('opacity','1');
+              }
+            );        
           }
-        }
       }
 
       customizeDisciplines = function() { 
         opt = 0;
         $('.cod_disc').css('background-color','white');
+        $('.cod_disc').css('color',statusColor['default']);        
         grr = document.getElementById('grr').value.toUpperCase(); 
         $(student).find("ALUNO").each(function(){
           tmpGrr = $(this).find("MATR_ALUNO").text();
           if(tmpGrr == grr) {
             var sig = $(this).find("SIGLA").text();
             var cod = getDisciplineId(this);
-            setColor(cod,sig);
+            setStyle(cod,sig);
           }
         });
 
