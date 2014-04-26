@@ -67,14 +67,15 @@ $( document ).ready(function() {
           if(cod && (statusColor[sig] !== undefined)){
             $(cod).css('background-color',statusColor[sig]); 
             if(sig != 'Equivale')
-              $(cod).css('color',statusColor['taken']);                                                 
-            $(cod).css('cursor','pointer'); 
+              $(cod).css('color',statusColor['taken']);      
             $(cod).hover(
               function() { // #96B6B7
                 $(cod).css('opacity',statusColor['hover']);
+                $(cod).css('cursor','pointer');
               },
               function() {
                 $(cod).css('opacity','1');
+                $(cod).css('cursor','default');                
               }
             );        
           }
@@ -82,8 +83,15 @@ $( document ).ready(function() {
 
       customizeDisciplines = function() { 
         opt = 0;
+        //$('.cod_disc').unbind();
         $('.cod_disc').css('background-color','white');
-        $('.cod_disc').css('color',statusColor['default']);        
+        $('.cod_disc').css('color',statusColor['default']); 
+        $('.cod_disc').hover(
+          function() {                       
+            $('.cod_disc').css("cursor", 'default'); 
+            $('.cod_disc').css('opacity','1');
+          }
+        );             
         grr = document.getElementById('grr').value.toUpperCase(); 
         $(student).find("ALUNO").each(function(){
           tmpGrr = $(this).find("MATR_ALUNO").text();
@@ -93,7 +101,6 @@ $( document ).ready(function() {
             setStyle(cod,sig);
           }
         });
-
         /*
         JQuery v1 - with JS-only parse
           $(aluno).each(function(){...}
@@ -105,7 +112,8 @@ $( document ).ready(function() {
               var cod = getDisciplineCode(i);
               setColor(cod,sig);
             }
-         */
+          }
+        */
       }
 
       getLastTime = function(discSelected) {
@@ -168,7 +176,7 @@ $( document ).ready(function() {
       $('.cod_disc').mousedown(function(event) {
         var disc = $(this).text();
         switch (event.which) {
-            case 1: // topleft              
+            case 1: // topleft            
                 getLastTime(disc);
                 break;
             case 2: // topmiddle
