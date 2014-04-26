@@ -135,7 +135,10 @@ $( document ).ready(function() {
             msg = getDataInfo(this,discSelected);            
           }
         });
-        $("<div title='"+discSelected+"'>"+msg+"</div>").dialog();
+        if(msg)
+          $("<div title='"+discSelected+"'>"+msg+"</div>")
+            .dialog({maxHeight:600})
+            .on('contextmenu', function(e){return false;});
       } 
 
       getDataInfo = function(studentTag,discSelected) {
@@ -160,8 +163,11 @@ $( document ).ready(function() {
             msg += getDataInfo(this,discSelected);
           }
         });
-        $("<div title='"+discSelected+"'>"+msg+"</div>").dialog();
-      }
+        if(msg)
+          $("<div title='"+discSelected+"'>"+msg+"</div>")
+            .dialog({maxHeight:600})
+            .on('contextmenu', function(e){return false;});
+       }
 
       /*
         EVENTS   
