@@ -19,7 +19,7 @@ $( document ).ready(function() {
        */
 
       $(".table").on('contextmenu', function(e){return false;});      
-      var btGrr = document.getElementById('btngrr').value;
+      var btGrr = $('#btngrr').val();
       var opt = 0;
       var grr;
       var statusColor = {
@@ -28,6 +28,8 @@ $( document ).ready(function() {
         'Equivale'  :  '#E8E340', // Yellow
         'Reprovado' :  '#FF372E', // Red
         'Repr. Freq':  '#FF372E', // Red
+        'Cancelado' :  '#FF372E', // Red
+        'Tr. Total' :  '#FF372E', // Red        
         'hover'     :  '0.8',
         'default'   :  '#333',    // LIGHT GREY
         'taken'     :  'white'     
@@ -37,7 +39,7 @@ $( document ).ready(function() {
         //var desc_est = aluno[studentTag].getElementsByTagName("DESCR_ESTRUTURA")[0].childNodes[0].nodeValue;   
         var desc_est = $(studentTag).find("DESCR_ESTRUTURA").text();
         var cod = $(studentTag).find("COD_ATIV_CURRIC").text();
-        if(document.getElementById(cod)) {
+        if($('#'+cod).length) {
           return '#'+cod;
         } else if(desc_est == 'Obrigatórias') {
             // Disciplina é obrigatória no 
@@ -47,8 +49,8 @@ $( document ).ready(function() {
             if(opt) {
               var valueDisc;
               for (var j = 1; j <= opt; j++) {
-                valueDisc = $('#OPT'+j).textContent;
-                // Se a disciplica ja está na lista de optativas    
+                valueDisc = $('#OPT'+j).text();
+                // Se a disciplina ja está na lista de optativas    
                 if(valueDisc == cod) {
                   return '#OPT'+opt;  
                 }
@@ -56,7 +58,7 @@ $( document ).ready(function() {
             }
             if(opt < 6){ // Nova optativa - Se não acabou os slots para optativas
                 opt++;
-                $('#OPT'+opt).html(cod);            
+                $('#OPT'+opt).html(cod);
                 return '#OPT'+opt;
             }        
         }
@@ -64,6 +66,7 @@ $( document ).ready(function() {
       }
 
       setStyle = function(cod,sig) {
+          //if(cod == '#OPT2') alert("SS: cod:"+cod+", sig:"+sig);
           if(cod && (statusColor[sig] !== undefined)){
             $(cod).css('background-color',statusColor[sig]); 
             if(sig != 'Equivale')
@@ -92,7 +95,7 @@ $( document ).ready(function() {
             $('.cod_disc').css('opacity','1');
           }
         );             
-        grr = document.getElementById('grr').value.toUpperCase(); 
+        grr = $('#grr').val().toUpperCase(); 
         $(student).find("ALUNO").each(function(){
           tmpGrr = $(this).find("MATR_ALUNO").text();
           if(tmpGrr == grr) {
