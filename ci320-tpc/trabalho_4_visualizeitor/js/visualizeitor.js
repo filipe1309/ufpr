@@ -17,24 +17,30 @@ $( document ).ready(function() {
       xmlDoc=xmlhttp.responseXML;
       var aluno = xmlDoc.getElementsByTagName("ALUNO");
        */
-
-      $(".table").on('contextmenu', function(e){return false;});      
+      $(document).bind("contextmenu",function(e){return false;}); 
       var btGrr = $('#btngrr').val();
       var opt = 0;
-      var grr;
+      var grr, aux = 0;
       var statusColor = {
         'Aprovado'  :  '#86C543', // Green
         'Matricula' :  '#595DF6', // Blue
         'Equivale'  :  '#E8E340', // Yellow
         'Reprovado' :  '#FF372E', // Red
         'Repr. Freq':  '#FF372E', // Red
-        'Cancelado' :  '#FF372E', // Red
-        'Tr. Total' :  '#FF372E', // Red        
+        'Cancelado' :  '#DEDEDE', // SILVER
+        'Tr. Total' :  '#222',    // LIGHT BLACK BDC3C7        
         'hover'     :  '0.8',
-        'default'   :  '#333',    // LIGHT GREY
+        'default'   :  '#333',    // LIGHT SILVER
         'taken'     :  'white'     
       };
-      //#f39c12
+
+      var legendSpans = $('.label');      
+      for(var i in statusColor){
+        legendSpans.eq(aux).html(i);
+        legendSpans.eq(aux).css('color',statusColor[i]);
+        aux++;
+      }
+  
       getDisciplineId = function(studentTag) {  
         //var desc_est = aluno[studentTag].getElementsByTagName("DESCR_ESTRUTURA")[0].childNodes[0].nodeValue;   
         var desc_est = $(studentTag).find("DESCR_ESTRUTURA").text();
@@ -61,7 +67,7 @@ $( document ).ready(function() {
                 $('#OPT'+opt).html(cod);
                 return '#OPT'+opt;
             }        
-        }
+        } // Discipl. de outros currículos do curso
         return false;
       }
 
@@ -69,7 +75,7 @@ $( document ).ready(function() {
           //if(cod == '#OPT2') alert("SS: cod:"+cod+", sig:"+sig);
           if(cod && (statusColor[sig] !== undefined)){
             $(cod).css('background-color',statusColor[sig]); 
-            if(sig != 'Equivale')
+            if(sig != 'Equivale' && sig != 'Cancelado')
               $(cod).css('color',statusColor['taken']);      
             $(cod).hover(
               function() { // #96B6B7
@@ -130,9 +136,9 @@ $( document ).ready(function() {
           }
         });
         if(msg)
-          $("<div title='"+discSelected+"'>"+msg+"</div>")
-            .dialog({maxHeight:600})
-            .on('contextmenu', function(e){return false;});
+          $("<div title='"+discSelected+"'>"+msg+"</div>")            
+            .on('contextmenu', function(e){return false;})
+            .dialog({maxHeight:600});
       } 
 
       getDataInfo = function(studentTag,discSelected) {
@@ -159,8 +165,8 @@ $( document ).ready(function() {
         });
         if(msg)
           $("<div title='"+discSelected+"'>"+msg+"</div>")
-            .dialog({maxHeight:600})
-            .on('contextmenu', function(e){return false;});
+            .on('contextmenu', function(e){return false;})
+            .dialog({maxHeight:600});
        }
 
       /*
