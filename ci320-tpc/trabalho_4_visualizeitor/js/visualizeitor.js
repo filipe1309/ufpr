@@ -154,13 +154,15 @@ $( document ).ready(function() {
       getHistory = function(discSelected) {
         var dc, tmpGrr, disc, semester, year, grade, freq, cod, msg;
         dc = tmpGrr = msg = ''; 
+        aux = '';
         $(student).find("ALUNO").each(function(){
           tmpGrr = $(this).find("MATR_ALUNO").text();
           dc = $(this).find ("COD_ATIV_CURRIC").text();
           if(tmpGrr == grr && dc == discSelected) {         
             if(msg)
               msg += "<br><br>";
-            msg += getDataInfo(this,discSelected);
+            msg += '<div '+aux+'">'+getDataInfo(this,discSelected)+'</div>';            
+            aux = aux ? '' : 'class="histcolor"';
           }
         });
         if(msg)
