@@ -34,7 +34,8 @@ $( document ).ready(function() {
         'Cancelado' :  '#BCBCBC', // SILVER
         'Tr. Total' :  '#222',    // LIGHT BLACK 
         'TrancAdm'  :  '#466',    // LIGHT BLACK         
-        'Disp. c/nt':  '#E67E22'  // CARROT                        
+        'Disp. c/nt':  '#E67E22',  // CARROT   
+        'Não cursado':  '#EEE'  // WHITE                                                     
       };
 
       var statusChange = {
@@ -55,6 +56,7 @@ $( document ).ready(function() {
         $("#cation").append('<span class="label" id="status'+aux+'">' + i + '</span>');
         $('#status'+aux).css('color',statusColor[i]);
         aux++;
+        if(aux == 5) $("#cation").append('<br>');
       }
       
       setStyle = function(cod,sig) {

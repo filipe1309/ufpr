@@ -30,4 +30,11 @@ h1, h4 {
 
 #cation {
     text-align: center;
+    margin: 0 auto;
+    height: 50px;
+}
+
+#cation span {
+    text-shadow: 0 0 1px #555;
+    font-size: 13px;
 }
