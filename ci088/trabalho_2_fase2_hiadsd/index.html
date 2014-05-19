@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<title>Mozart Homepage</title>
+		<link href="/mpt06/ci088/includes/css/style.css" type="text/css" rel="stylesheet"/>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body class="no-js">
+		<script>
+			var el = document.getElementsByTagName("body")[0];
+			el.className = "";
+		</script>
+		<header>
+			<h1>Trabalho de Sistemas Disdribuidos</h1>
+			<!--<h2>Filipe Leuch Bonfim - GRR 20092368<br>
+			Mozart Pistori Tomazetti - GRR 20062862</h2>-->
+		</header>
+		<nav id="topNav">
+			<ul>
+				<li><a href="/mpt06/ci088/index.html">Fase 2</a>
+					<ul>
+						<li><a href="/mpt06/ci088/fase1.html">Fase 1</a></li>
+					</ul>
+				</li>
+				<li><a href="javascript:void(0)">Códigos</a>
+					<ul id="Menu">
+						<li><a href="/mpt06/ci088/srcs/fase2/diagnostico.c">diagnostico.c</a></li>
+						<li><a href="/mpt06/ci088/srcs/fase2/cisj.c.txt">cisj.c</a></li>
+						<li><a href="/mpt06/ci088/srcs/fase2/cisj.h.txt">cisj.h</a></li>
+						<li><a href="/mpt06/ci088/srcs/fase2/smpl.c.txt">smpl.c</a></li>
+						<li><a href="/mpt06/ci088/srcs/fase2/smpl.h.txt">smpl.h</a></li>
+						<li><a href="/mpt06/ci088/srcs/fase2/rand.c.txt">rand.c</a></li>
+						<li class="last"><a href="/mpt06/ci088/srcs/fase2/makefile.txt">Makefile</a></li>
+					</ul>
+				</li>
+				<li><a href="javascript:void(0)" >Logs</a>
+					<!--<ul id="Menu">
+						<li><a href="/mpt06/ci088/logs/fase2/noevents.txt">nenhum evento</a></li>
+						<li><a href="/mpt06/ci088/logs/fase2/3nodes2events.txt">3nodos 2eventos</a></li>
+						<li><a href="/mpt06/ci088/logs/fase2/7nodes3faults.txt">7nodos 3faultas</a></li>
+						<li><a href="/mpt06/ci088/logs/fase2/8nodes2faults.txt">8nodos 2faultas</a></li>
+						<li><a href="/mpt06/ci088/logs/fase2/16nodes.txt">16nodos</a></li>
+						<li><a href="/mpt06/ci088/logs/fase2/interval15.txt">intervalo de 15</a></li>
+						<li><a href="/mpt06/ci088/logs/fase2/6events1node.txt">6eventos 1nodo</a></li>
+						<li><a href="/mpt06/ci088/logs/fase2/left1.txt">resta 1</a></li>
+						<li class="last"><a href="/mpt06/ci088/logs/fase2/1event2round.txt">1evento 2rodadas</a></li>
+					</ul>-->
+				</li>
+				<li id="Menu"><a href="/mpt06/ci088/relatorio2.txt">Relatório</a></li>
+				<li class="last"><a href="mailto:mpt06@inf.ufpr.br">Contato</a></li>
+			</ul>
+		</nav>
+		<div class="content">
+		<h2>Alunos:</h2>
+<h3>Filipe Leuch Bonfim - GRR 20092368
+Mozart Pistori Tomazetti - GRR 20062862</h3>
+<hr>
+<h3>Introdução</h3>
+Este trabalho tem por objetivo a implementação de uma versão modificada do algoritmo de diagnóstico de sistemas distribuídos Hi-ADSD(<i>Hierarchical Adaptive Distributed System-Level Diagnosis</i>), que surgiu para diminuir a alta latência de diagnóstico que o algoritmo Adaptive-DSD possui, além da grande quantidade de testes, possivelmente, realizados pelo Hi-ADSD.
+
+<h3>Especificação do Trabalho</h3>
+Implemente a nova estratégia de testes para o algoritmo Hi-ADSD. <font color=blue>Na sua implementação faça cada nodo testar os logN clusters a cada rodada de testes, ao invés de testar um único cluster por rodada. Esta é a única diferença da especificação que foi vista em aula</font>. Adapte a função <a href="http://www.inf.ufpr.br/elias/sisdis/cisj.c.txt">c(i,s,j)</a> para a expressão vista em sala de aula. Utilize o vetor Timestamps[0..N-1] para armazenar informações de diagnóstico: uma entrada Timestamp[i] deste vetor é -1 se o estado do nodo i é <em>desconhecido</em>; 0 se o nodo i é inicialmente detectado como sem-falha; 1 se o nodo i se falho, a cada novo estado diagnosticado o timestamp é incrementado. Um nodo que inicializa desconhece o estado de todos os outros, menos o seu próprio estado. Na medida em que testes são executados todos os nodos descobrem o estado dos demais. Estruture seu log de forma a mostrar quais testes vão sendo executados e qual informação é obtida dos nodos testados.
+
+Simule a execução de um evento: <b>um</b> nodo sem-falha fica falho, ou vice-versa. Repita para diversos tamanhos de sistema e eventos diferentes. Em cada caso mostre: <em>(a)</em> a latência, isto é tempo desde a ocorrência do evento até todos os nodos completarem seu diagnóstico; <em>(b)</em> o número de testes executados por todos os nodos durante o intervalo da latência. Force o caso que resulta no maior número de testes no Hi-ADSD e mostre sua execução para a versão da Fase 1 e a versão da Fase 2.
+
+Deve ser feita uma página Web, que contém:
+<ol>
+<li>Relatório HTML explicando como o trabalho foi feito (use desenhos, palavras, o que você quiser): o objetivo é detalhar as suas decisões para implementar seu trabalho.
+</li>
+<li>Código fonte dos programas, comentados.
+<font color=red>ATENÇÃO:</font> acrescente a todo programa a terminação ".txt" para que possa ser diretamente aberto em um browser. Exemplos: cliente.py.txt ou servidor.c.txt
+</li>
+<li><em>Log</em> dos testes executados: mostre explicitamente diversos casos testados, lembre-se é a partir desta listagem de testes que o professor vai medir até que ponto o trabalho está funcionando.
+</li>
+</ol>
+		</div>
+		<footer id="page_footer"> 
+			<hr>
+			<!--<p><a href="mailto:mpt06@inf.ufpr.br">Contato</a></p>-->
+		</footer>
+		
+		<script type="text/javascript" src="/mpt06/ci088/includes/js/jquery.js">
+<!--            src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"> -->
+		</script>
+		<script type="text/javascript" src="http://modernizr.com/downloads/modernizr.js"></script>
+		<script>
+			$(document).ready(function(){
+				$("#trab1").click(function(){
+					$("#TP1").hide();
+				});
+				$("#Menu a").click(function(){
+					$(".content").load($(this).attr('href'));
+					return false;
+				});
+			});
+			(function($){
+				
+				//cache nav
+				var nav = $("#topNav");
+				
+				//add indicator and hovers to submenu parents
+				nav.find("li").each(function() {
+					if ($(this).find("ul").length > 0) {
+						$("<span>").text("^").appendTo($(this).children(":first"));
+						
+						//show subnav on hover
+						$(this).mouseenter(function() {
+							$(this).find("ul").stop(true, true).slideDown();
+						});
+	
+						//hide submenus on exit
+						$(this).mouseleave(function() {
+							$(this).find("ul").stop(true, true).slideUp();
+						});
+					}
+				});
+			})(jQuery);
+		</script>
+	</body>
+</html>
