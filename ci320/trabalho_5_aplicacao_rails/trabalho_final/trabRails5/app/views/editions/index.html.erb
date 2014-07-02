@@ -1,0 +1,35 @@
+<h1>Edições</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Titulo</th>
+      <th>Livro(ID)</th>
+      <th>Número</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @editions.each do |edition| %>
+      <tr>
+        <td><%= edition.id %></td>
+        <td><%= edition.title %></td>
+        <td><%= edition.book_id %></td>
+        <td><%= edition.number %></td>
+        <td><%= link_to 'Mostrar', edition %></td>
+        <td><%= link_to_if(current_user.admin, 'Editar', edit_edition_path(edition)) %></td>
+        <td><%= link_to_if(current_user.admin, 'Remover', edition, method: :delete, data: { confirm: 'Você está certo disto?' }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% if current_user.admin %>
+<%= link_to 'Adicionar nova edição', new_edition_path %>
+<% end %>

@@ -1,0 +1,10 @@
+<% if current_user.admin %>
+<h1>Alterando o Livro</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Mostrar', @book %> |
+<%= link_to 'Voltar', books_path %>
+<% else %>
+        <p>Área Restrita!!!</p>
+<% end %>

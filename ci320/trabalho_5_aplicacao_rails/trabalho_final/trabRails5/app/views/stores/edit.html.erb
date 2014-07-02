@@ -1,0 +1,10 @@
+<% if current_user.admin %>
+<h1>Alterando Loja</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Mostrar', @store %> |
+<%= link_to 'Voltar', stores_path %>
+<% else %>
+       <p>Área Restrita!!!</p>
+<% end %>

@@ -1,0 +1,32 @@
+<h1>Livros</h1>
+
+<table>
+  <thead>
+    <tr>
+     <th>ID</th>
+      <th>Titulo</th>
+      <th>Autor</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @books.each do |book| %>
+      <tr>
+        <td><%= book.id %></td>
+        <td><%= book.title %></td>
+        <td><%= book.author %></td>
+        <td><%= link_to 'Mostrar', book %></td>
+        <td><%= link_to_if(current_user.admin, 'Editar', edit_book_path(book)) %></td>
+        <td><%= link_to_if(current_user.admin, 'Remover', book, method: :delete, data: { confirm: 'Você está certo disto?' }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<% if current_user.admin %>
+<%= link_to 'Adicionar novo Livro', new_book_path %>
+<% end %>

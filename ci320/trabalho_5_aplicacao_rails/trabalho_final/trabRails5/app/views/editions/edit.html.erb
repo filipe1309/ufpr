@@ -1,0 +1,10 @@
+<% if current_user.admin %>
+<h1>Alterando a Edição</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Mostrar', @edition %> |
+<%= link_to 'Voltar', editions_path %>
+<% else %>
+	<p>Área Restrita!!!</p>
+<% end %>

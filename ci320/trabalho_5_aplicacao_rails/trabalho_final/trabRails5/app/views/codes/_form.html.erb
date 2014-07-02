@@ -1,0 +1,28 @@
+<%= form_for(@code) do |f| %>
+  <% if @code.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@code.errors.count, "error") %> prohibited this code from being saved:</h2>
+
+      <ul>
+      <% @code.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <!-- <%= f.label :name %><br> -->
+    <label>Nome</label><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <!-- <%= f.label :book_id %><br> -->
+    <label>Livro(ID)</label><br>
+    <!-- <%= f.number_field :book_id %> -->
+	<%= f.select :book_id, @books.collect { |b| [b.title, b.id]} %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

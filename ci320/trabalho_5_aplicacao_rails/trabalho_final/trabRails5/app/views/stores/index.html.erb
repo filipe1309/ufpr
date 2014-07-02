@@ -1,0 +1,33 @@
+<h1>Lojas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Endereço</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @stores.each do |store| %>
+      <tr>
+        <td><%= store.id %></td>
+        <td><%= store.name %></td>
+        <td><%= store.adress %></td>
+        <td><%= link_to 'Mostrar', store %></td>
+        <td><%= link_to_if(current_user.admin, 'Editar', edit_store_path(store)) %></td>
+        <td><%= link_to_if(current_user.admin, 'Remover', store, method: :delete, data: { confirm: 'Você está certo disto?' }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% if current_user.admin %>
+<%= link_to  'Adicionar nova loja', new_store_path %>
+<% end %>

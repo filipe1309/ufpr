@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trabalho 5 - Ruby On Rails</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<h1>Trabalho 5 - Ruby On Rails - Filipe Leuch Bonfim - GRR20092368</h1>
+<div id="user_nav">
+  <% if current_user %>
+    Acessado como <%= current_user.login %>.
+    <%= link_to "Sair", log_out_path %></br></br>
+    <div id="custom_menu">
+	<ul>
+		<li><%= link_to "Lojas", stores_path %></li>
+		<li><%= link_to "Livros", books_path %></li>
+		<li><%= link_to "Códigos", codes_path %></li>
+		<li><%= link_to "Edições", editions_path %></li>		
+    	</ul>
+    </div>
+  <% else %>
+    <%= link_to "Inscrever-se", sign_up_path %> ou
+    <%= link_to "Acessar", log_in_path %>
+  <% end %>
+</div>
+
+<% flash.each do |name, msg| %>
+  <%= content_tag :div, msg, :id => "flash_#{name}" %>
+<% end %>
+
+<%= yield %>
+
+</body>
+</html>

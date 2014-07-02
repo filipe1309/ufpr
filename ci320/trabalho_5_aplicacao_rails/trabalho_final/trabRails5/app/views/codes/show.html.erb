@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nome:</strong>
+  <%= @code.name %>
+</p>
+
+<p>
+  <strong>Livro(ID):</strong>
+  <%= @code.book_id %>
+</p>
+
+<%= link_to 'Editar', edit_code_path(@code) %> |
+<%= link_to 'Voltar', codes_path %>

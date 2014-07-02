@@ -1,0 +1,33 @@
+<h1>Códigos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Livro(ID)</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @codes.each do |code| %>
+      <tr>
+        <td><%= code.id %></td>
+        <td><%= code.name %></td>
+        <td><%= code.book_id %></td>
+        <td><%= link_to 'Mostrar', code %></td>
+        <td><%= link_to_if(current_user.admin,  'Editar', edit_code_path(code)) %></td>
+        <td><%= link_to_if(current_user.admin,  'Remover', code, method: :delete, data: { confirm: 'Você está certo disto?' }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% if current_user.admin %>
+<%= link_to 'Adicionar novo código', new_code_path %>
+<% end %>
