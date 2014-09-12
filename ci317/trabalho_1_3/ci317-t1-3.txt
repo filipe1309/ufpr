@@ -1,0 +1,28 @@
+Topicos em Sistemas Operacionais
+Android
+2014/2
+Prof. Eduardo Todt
+
+
+
+Subtrabalho T1-3
+
+A partir da app simples derivada da Hello World com troca de activity
+
+Modificar tamanho e cores dos strings mostrados a partir da edição de resources
+
+Modificar orientacao na tela
+
+Mostre strings que sejam afetados por alteracao da configuracao do usuario (small, normal, large, huge) e strings que nao sejam afetados por isto, na mesma tela. 
+
+Experimente variar o maximo possivel, podendo trocar de tema e/ou usar definicoes nativas
+
+Enviar print screens e xml de recursos definidos por email para todt@inf.ufpr.br
+
+subject: top so t1-3
+
+
+
+
+
+

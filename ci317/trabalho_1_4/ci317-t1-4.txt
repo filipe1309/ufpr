@@ -1,0 +1,24 @@
+Topicos em Sistemas Operacionais
+Android
+2014/2
+Prof. Eduardo Todt
+
+
+
+Subtrabalho T1-4
+
+A partir da app simples derivada da Hello World com troca de activity
+
+A cada troca entre duas atividades modificar uma variavel de estado que deve ser mostrada, contendo sucessivos termos da serie de Lucas (Edouard Lucas, 1842-1891).
+
+Enviar print screens, xml e recursos definidos por email para todt@inf.ufpr.br
+
+
+Atencao: 
+	subject: top so t1-4
+
+
+
+
+
+

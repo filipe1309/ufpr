@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="br.ufpr.inf.bcc.tabsapp.MainActivity$PlaceholderFragment" >
+
+    
+    <TextView
+        android:id="@+id/tv_frag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+    
+     <TextView
+        android:id="@+id/tv_frag1"
+        android:paddingTop="20dp"
+        style="@style/CustomText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_fragT0S3" />
+  
+    <TextView
+        android:id="@+id/tv_frag2"
+        android:paddingTop="40dp"
+        style="@style/CustomText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_fragT1S4" />
+    
+    <TextView
+        android:id="@+id/tv_frag3"
+        android:paddingTop="60dp"
+        style="@style/CustomText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_fragT2S5" />
+    
+    <TextView
+        android:id="@+id/tv_frag4"
+        android:paddingTop="80dp"
+        android:textSize="@dimen/fix_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_fragNafetada" />
+    <!-- 
+    <EditText
+    style="@style/CustomText"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Hello, World!" />
+     --> 
+
+</RelativeLayout>

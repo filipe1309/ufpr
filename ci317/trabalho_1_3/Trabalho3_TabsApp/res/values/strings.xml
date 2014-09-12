@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TabsApp</string>
+    <string name="hello_world">Olá Mundo!</string>
+    <string name="activity1">Página 1 ativar!!</string>
+    <string name="activity2">Página 2 ativar!!</string>
+    <string name="activity3">Página 3 ativar!!</string>
+    <string name="action_settings">Configurações</string>
+    <string name="title_activity_activity1">Activity1</string>
+    <string name="title_activity_activity2">Activity2</string>
+    <string name="title_activity_frag1">Frag1</string>
+    <string name="tv_frag0">Mudou para 0</string>
+    <string name="tv_frag1">Mudou para 1</string>
+    <string name="tv_frag2">Mudou para 2</string>	
+    <string name="tv_fragT0S3">String não muda 1</string>
+    <string name="tv_fragT1S4">String não muda 2</string>
+    <string name="tv_fragT2S5">String não muda 3</string>
+    <string name="tv_fragNafetada">String não AFETADA	</string>		
+	<string name="tab_frag">Aba</string>
+
+</resources>

@@ -1,0 +1,17 @@
+Topicos em Sistemas Operacionais
+Android
+2014/2
+Prof. Eduardo Todt
+
+
+
+Subtrabalho T1-2
+
+Desenvolver app simples derivada da Hello World com troca de activity
+
+Alternativamente oferecer servico de visualizacao de arquivos pdf, que deve aparecer como opcao de app ao clicar em arquivo pdf no dispositivo ao
+
+Enviar print screens por email para todt@inf.ufpr.br
+
+
+

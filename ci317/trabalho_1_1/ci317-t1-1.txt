@@ -1,0 +1,18 @@
+Topicos em Sistemas Operacionais
+Android
+2014/2
+Prof. Eduardo Todt
+
+
+
+Subtrabalho T1-1
+
+
+Comentar manifest da app Hello World
+
+
+Enviar print screen por email para todt@inf.ufpr.br
+
+
+
+

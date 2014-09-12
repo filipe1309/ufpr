@@ -1,0 +1,22 @@
+Topicos em Sistemas Operacionais
+Android
+2014/2
+Prof. Eduardo Todt
+
+
+
+Subtrabalho T1-0
+
+
+Instalar ambiente de desenvolvimento conforme explicacoes na pagina da disciplina
+
+Desenvolver e testar Hello World
+
+
+Este subtrabalho nao sera avaliado
+
+
+
+
+
+
