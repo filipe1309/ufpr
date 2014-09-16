@@ -15,16 +15,18 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		TextView texto=(TextView) findViewById(R.id.tv_texto);
-		Button bt1=(Button) findViewById(R.id.btActivityA);
+		TextView tv_lucas_number = (TextView) findViewById(R.id.tv_lucas_number_main);
+		Button bt_next_lucas_number = (Button) findViewById(R.id.bt_activity_a);
 		
-		texto.setText(Singleton.getInstance().getNextLucasNumber());
-		bt1.setOnClickListener(new View.OnClickListener() {
+		tv_lucas_number.setText(Singleton.getInstance().getNextLucasNumber());
+		bt_next_lucas_number.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getBaseContext(),ActivityA.class);
+				//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivity(intent);
 			}
 		});

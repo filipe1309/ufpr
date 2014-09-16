@@ -8,22 +8,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.multiscreen.ActivityA" >
 
-    <Button
-        android:id="@+id/btMainActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_texto"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/bt_string2" />
-
     <TextView
-        android:id="@+id/tv_texto"
+        android:id="@+id/tv_lucas_number_activity_a"
+        style="@style/CustomLucasNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp"
         android:text="@string/hello_world" />
+    
+    <Button
+        android:id="@+id/bt_main_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="98dp"
+        android:layout_below="@+id/tv_lucas_number_activity_a"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/buttonstate"
+		android:shadowColor="#47390D"
+		android:shadowDx="0"
+		android:shadowDy="0"
+		android:shadowRadius="5"
+		android:textColor="#292929"
+		android:textSize="15sp"
+	    android:text="@string/bt_activity_a" />
+
 
 </RelativeLayout>

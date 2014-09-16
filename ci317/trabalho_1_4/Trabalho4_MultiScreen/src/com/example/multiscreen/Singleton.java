@@ -6,7 +6,7 @@ public class Singleton {
 	 
 	 private Integer value;
 	 private Integer value2;
-	 private Integer contador;
+	 private Integer counter;
 	 private Integer aux;
 	  
 	 private Singleton()
@@ -14,7 +14,7 @@ public class Singleton {
 		 
 		 value = 2;
 		 value2 = 1;
-		 contador = 1;
+		 counter = 1;
 		 aux = 0;
 	 }
 	  
@@ -29,19 +29,19 @@ public class Singleton {
 	  
 	 public String getNextLucasNumber()
 	 {
-		 if (contador == 1){
-			 contador++;
+		 if (counter == 1){
+			 counter++;
 			 return this.value.toString();
 		 }
-		 else if (contador == 2){
-			 contador++;
+		 else if (counter == 2){
+			 counter++;
 			 return this.value2.toString();
 		 }
 		 else{
 			 aux = value2;
 			 value2 = value +value2;
 			 value = aux;
-			 contador++;
+			 counter++;
 			 return this.value2.toString();
 		 }
 	 }

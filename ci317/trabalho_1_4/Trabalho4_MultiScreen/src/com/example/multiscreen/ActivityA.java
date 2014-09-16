@@ -15,8 +15,8 @@ public class ActivityA extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_activity);
-		TextView texto=(TextView) findViewById(R.id.tv_texto);
-		Button bt2=(Button) findViewById(R.id.btMainActivity);
+		TextView texto=(TextView) findViewById(R.id.tv_lucas_number_activity_a);
+		Button bt2=(Button) findViewById(R.id.bt_main_activity);
 		
 		texto.setText(Singleton.getInstance().getNextLucasNumber());
 		bt2.setOnClickListener(new View.OnClickListener() {
@@ -25,6 +25,8 @@ public class ActivityA extends ActionBarActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getBaseContext(),MainActivity.class);
+				//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				startActivity(intent);
 			}
 		});

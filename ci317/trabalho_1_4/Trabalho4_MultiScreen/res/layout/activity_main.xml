@@ -9,7 +9,8 @@
     tools:context="com.example.multiscreen.MainActivity" >
 
     <TextView
-        android:id="@+id/tv_texto"
+        android:id="@+id/tv_lucas_number_main"
+        style="@style/CustomLucasNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -18,12 +19,20 @@
         android:text="@string/hello_world" />
 
     <Button
-        android:id="@+id/btActivityA"
+        android:id="@+id/bt_activity_a"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_texto"
+        android:layout_height="98dp"
+        android:layout_below="@+id/tv_lucas_number_main"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/bt_string1" />
+        android:textColor="#292929"
+		android:textSize="15sp"
+		android:background="@drawable/buttonstate"
+		android:shadowColor="#47390D"
+		android:shadowDx="0"
+		android:shadowDy="0"
+		android:shadowRadius="5"
+		android:text="@string/bt_main" 
+        />
     
 </RelativeLayout>
