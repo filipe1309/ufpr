@@ -147,6 +147,8 @@ int dimen dialog_fixed_height_major 0x7f080013
 int dimen dialog_fixed_height_minor 0x7f080014
 int dimen dialog_fixed_width_major 0x7f080011
 int dimen dialog_fixed_width_minor 0x7f080012
+int dimen grid_heigth 0x7f080018
+int dimen grid_width 0x7f080017
 int drawable abc_ab_bottom_solid_dark_holo 0x7f020000
 int drawable abc_ab_bottom_solid_light_holo 0x7f020001
 int drawable abc_ab_bottom_transparent_dark_holo 0x7f020002
