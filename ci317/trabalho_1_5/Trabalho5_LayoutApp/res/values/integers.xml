@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="int_col">4</integer>
+    <integer name="int_row">4</integer>
+    <integer name="int_colspan">4</integer>
+    <integer name="int_colspan_2">2</integer>
+</resources>

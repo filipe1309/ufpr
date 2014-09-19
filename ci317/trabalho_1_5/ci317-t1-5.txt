@@ -1,0 +1,43 @@
+Topicos em Sistemas Operacionais
+Android
+2014/2
+Prof. Eduardo Todt
+
+
+
+Subtrabalho T1-5
+
+
+
+Implementar atividade com o formato básico a seguir, com layout linear, relativo e grid.
+
+
+
+        +-----+-----+-----+-----+
+        | E N T E R | +/- |  /  |
+        +-----+-----+-----+-----+
+        |  7  |  8  |  9  |  *  |
+        +-----+-----+-----+-----+
+        |  4  |  5  |  6  |  -  |
+        +-----+-----+-----+-----+
+        |  1  |  2  |  3  |  +  |
+        +-----+-----+-----+-----+
+        |  0  |  .  | clx | <-- |
+        +-----+-----+-----+-----+
+
+
+Ao passar de portrait para landscape as teclas devem ocupar toda largura da tela, com alguma margem arbitraria.
+  
+  
+
+Enviar print screens, xml e recursos definidos por email para todt@inf.ufpr.br
+
+
+Atencao: 
+	subject: top so t1-4
+
+
+
+
+
+
