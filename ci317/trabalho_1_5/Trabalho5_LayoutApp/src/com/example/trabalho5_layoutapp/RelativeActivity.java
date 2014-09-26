@@ -2,8 +2,6 @@ package com.example.trabalho5_layoutapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class RelativeActivity extends Activity {
 

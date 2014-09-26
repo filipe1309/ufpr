@@ -36,6 +36,17 @@ public class MainActivity extends ActionBarActivity {
 				
 			}
 		});
+		
+		Button bt_relative = (Button) findViewById(R.id.bt_relative);
+		bt_relative.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getBaseContext(), RelativeActivity.class);
+				startActivity(intent);
+				
+			}
+		});
 	}
 
 	@Override

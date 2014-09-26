@@ -2,11 +2,6 @@ package com.example.trabalho5_layoutapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.GridView;
 
 public class GridActivity extends Activity {
 
@@ -14,5 +9,17 @@ public class GridActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_grid);
+		/*
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		
+		int width = metrics.widthPixels;
+		int height = metrics.heightPixels;
+		
+		GridLayout grid = (GridLayout) findViewById(R.id.GridLayout1);
+		
+		//grid.set(width/4);
+		* */
+		 
 	}
 }

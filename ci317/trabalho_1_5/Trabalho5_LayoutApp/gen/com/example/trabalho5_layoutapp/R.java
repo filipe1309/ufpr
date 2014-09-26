@@ -956,6 +956,9 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f080015;
         public static final int activity_vertical_margin=0x7f080016;
+        public static final int bt_relative_margin_sides=0x7f08001a;
+        public static final int bt_relative_margin_top_bottom=0x7f080019;
+        public static final int bt_relative_margin_top_bottom_land=0x7f08001b;
         /**  The platform's desired fixed height for a dialog along the major axis
          (the screen is in portrait). This may be either a fraction or a dimension.
  The platform's desired fixed height for a dialog along the major axis
@@ -1277,35 +1280,36 @@ containing a value of this type.
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
         public static final int action_settings=0x7f0a000f;
         public static final int app_name=0x7f0a000d;
-        public static final int bt_bksp=0x7f0a0025;
-        public static final int bt_clx=0x7f0a0024;
-        public static final int bt_div=0x7f0a0015;
-        public static final int bt_dot=0x7f0a0023;
-        public static final int bt_eight=0x7f0a0017;
-        public static final int bt_enter=0x7f0a0013;
-        public static final int bt_five=0x7f0a001b;
-        public static final int bt_four=0x7f0a001c;
-        public static final int bt_minus=0x7f0a001d;
-        public static final int bt_mult=0x7f0a0019;
-        public static final int bt_nine=0x7f0a0018;
-        public static final int bt_one=0x7f0a001e;
-        public static final int bt_plus=0x7f0a0021;
-        public static final int bt_plus_minus=0x7f0a0014;
-        public static final int bt_seven=0x7f0a0016;
-        public static final int bt_six=0x7f0a001a;
-        public static final int bt_text_grid=0x7f0a002a;
-        public static final int bt_text_linear=0x7f0a0029;
-        public static final int bt_text_relative=0x7f0a002b;
-        public static final int bt_three=0x7f0a0020;
-        public static final int bt_two=0x7f0a001f;
-        public static final int bt_zero=0x7f0a0022;
+        public static final int bt_bksp=0x7f0a0026;
+        public static final int bt_clx=0x7f0a0025;
+        public static final int bt_div=0x7f0a0016;
+        public static final int bt_dot=0x7f0a0024;
+        public static final int bt_eight=0x7f0a0018;
+        public static final int bt_enter=0x7f0a0014;
+        public static final int bt_five=0x7f0a001c;
+        public static final int bt_four=0x7f0a001d;
+        public static final int bt_minus=0x7f0a001e;
+        public static final int bt_mult=0x7f0a001a;
+        public static final int bt_nine=0x7f0a0019;
+        public static final int bt_one=0x7f0a001f;
+        public static final int bt_plus=0x7f0a0022;
+        public static final int bt_plus_minus=0x7f0a0015;
+        public static final int bt_seven=0x7f0a0017;
+        public static final int bt_six=0x7f0a001b;
+        public static final int bt_text_grid=0x7f0a002b;
+        public static final int bt_text_linear=0x7f0a002a;
+        public static final int bt_text_relative=0x7f0a002c;
+        public static final int bt_three=0x7f0a0021;
+        public static final int bt_two=0x7f0a0020;
+        public static final int bt_zero=0x7f0a0023;
         public static final int hello_world=0x7f0a000e;
+        public static final int layout_option=0x7f0a0012;
         public static final int title_activity_grid=0x7f0a0011;
         public static final int title_activity_linear=0x7f0a0010;
-        public static final int title_activity_relative=0x7f0a0028;
-        public static final int tv_dev_by=0x7f0a0026;
-        public static final int tv_input=0x7f0a0027;
-        public static final int um=0x7f0a0012;
+        public static final int title_activity_relative=0x7f0a0029;
+        public static final int tv_dev_by=0x7f0a0027;
+        public static final int tv_input=0x7f0a0028;
+        public static final int um=0x7f0a0013;
     }
     public static final class style {
         /** 

@@ -5,5 +5,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="grid_width">100dp</dimen>
     <dimen name="grid_heigth">100dp</dimen>
+    <dimen name="bt_relative_margin_top_bottom">12dp</dimen>
+    <dimen name="bt_relative_margin_sides">5dp</dimen>
+    <dimen name="bt_relative_margin_top_bottom_land">5dp</dimen>
+    
     
 </resources>

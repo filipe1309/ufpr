@@ -20,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_main"
-        style="@style/btFuncStyle"            
-        android:layout_marginTop="@dimen/bt_relative_margin_top_bottom_land"                                       
+        style="@style/btNumberStyle"     
+        android:layout_marginTop="@dimen/bt_relative_margin_top_bottom_land"   
         android:text="@string/bt_text_linear" />
     
     <Button
@@ -29,8 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bt_linear"
-        style="@style/btFuncStyle"             
-        android:layout_marginTop="@dimen/bt_relative_margin_top_bottom_land"   
+        style="@style/btNumberStyle"       
+        android:layout_marginTop="@dimen/bt_relative_margin_top_bottom_land"         
         android:text="@string/bt_text_grid" />
     
     <Button
@@ -38,8 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bt_grid"
-        style="@style/btFuncStyle"             
-        android:layout_marginTop="@dimen/bt_relative_margin_top_bottom_land"   
+        style="@style/btNumberStyle"     
+        android:layout_marginTop="@dimen/bt_relative_margin_top_bottom_land"           
         android:text="@string/bt_text_relative" />
 
 </RelativeLayout>
