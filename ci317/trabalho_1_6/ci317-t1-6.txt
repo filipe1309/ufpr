@@ -1,0 +1,28 @@
+Topicos em Sistemas Operacionais
+Android
+2014/2
+Prof. Eduardo Todt
+
+
+
+Subtrabalho T1-6
+
+
+
+Implementar aplicacao com dois fragmentos F1 e F2, que são mostrados lado a lado em uma mesma atividade caso a tela esteja em modo landscape e mostrados em duas atividades distintas se o modo for landscape.
+
+O F1 deve conter entrada de texto e o F2 deve conter um conjunto de 6 botões
+
+
+
+Enviar print screens, xml e recursos definidos por email para todt@inf.ufpr.br
+
+
+Atencao: 
+	subject: top so t1-6
+
+
+
+
+
+
