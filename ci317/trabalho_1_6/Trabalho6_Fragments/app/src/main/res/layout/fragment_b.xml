@@ -5,48 +5,64 @@
     android:background="#7bae16"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/bt_func_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:shadowDx="@android:integer/config_mediumAnimTime"
+        android:shadowRadius="@android:integer/config_mediumAnimTime"
+        android:textColor="@android:color/primary_text_dark"
+        android:text="@string/bt_func_0"/>
+
+    <Button
+        android:id="@+id/bt_func_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/primary_text_dark"
+        android:text="@string/bt_func_1"/>
+
+    <Button
+        android:id="@+id/bt_func_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/primary_text_dark"
+        android:text="@string/bt_func_2"/>
+
+    <Button
+        android:id="@+id/bt_func_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/primary_text_dark"
+        android:text="@string/bt_func_3"/>
+
+    <Button
+        android:id="@+id/bt_func_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/primary_text_dark"
+        android:text="@string/bt_func_4"/>
+
+    <Button
+        android:id="@+id/bt_func_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/primary_text_dark"
+        android:text="@string/bt_func_5"/>
+
     <TextView
-        android:layout_width="fill_parent"
+        android:id="@+id/tv_fragment"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fragment_b"
+        android:layout_gravity="bottom|right"
         android:textColor="#fff"
         android:textSize="15sp"/>
-
-    <Button
-        android:id="@+id/bt_insert_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bt_insert_text"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/hello_world"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/hello_world"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/hello_world"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/hello_world"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/hello_world"/>
 
 
 </LinearLayout>

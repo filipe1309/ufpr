@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -18,6 +20,14 @@ public class MyActivity2 extends Activity {
         Configuration config = getResources().getConfiguration();
         if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
             setContentView(R.layout.activity_my_activity2);
+
+            EditText et_input = (EditText) findViewById(R.id.et_input);
+            Bundle extras = getIntent().getExtras();
+            if(extras != null){
+                et_input.setText(extras.getString("chosen_function"));
+            } else {
+                et_input.setText("----");
+            }
         } else {
             //Toast.makeText(this, "MyActivity2 - landscape -> Open MyActivity", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getBaseContext(), MyActivity.class);
