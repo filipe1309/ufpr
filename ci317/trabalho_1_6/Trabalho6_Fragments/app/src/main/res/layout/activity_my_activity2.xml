@@ -3,14 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    tools:context=".MyActivity">
+    tools:context="com.example.filipe1309.trabalho6_fragments.MyActivity2">
 
     <fragment
-        android:name="com.example.filipe1309.trabalho6_fragments.Fragment_B"
-        android:id="@+id/fragment_b"
+        android:name="com.example.filipe1309.trabalho6_fragments.Fragment_A"
+        android:id="@+id/fragment_a"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
-        tools:layout="@layout/fragment_b" />
+        android:layout_weight="2"
+        tools:layout="@layout/fragment_a" />
 
 </LinearLayout>
