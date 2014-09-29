@@ -13,9 +13,10 @@ Todas as matérias estão organizadas em branchs, sendo cada branch respectivo a
 		|/__\|/__\|/__\|/__\|
 
 
-                                                _       
-//    \-^-/          ###        `  ___  '        ((_      
-//    (o o)         (o o)      -  (O o)  -      (o o)     
-//ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+```ruby                                                _       
+    \-^-/          ###        `  ___  '        ((_      
+    (o o)         (o o)      -  (O o)  -      (o o)     
+ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
+```
 	01010101 01000110 01010000 01010010 
 ====
