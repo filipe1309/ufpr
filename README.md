@@ -7,12 +7,6 @@ Todas as matérias estão organizadas em branchs, sendo cada branch respectivo a
 
 =)
 ----
-				 ____ ____ ____ ____ 
-				||U |||F |||P |||R ||
-				||__|||__|||__|||__||
-				|/__\|/__\|/__\|/__\|
-
-
 
 01010101 01000110 01010000 01010010
 ====
