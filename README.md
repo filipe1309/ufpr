@@ -7,10 +7,10 @@ Todas as matérias estão organizadas em branchs, sendo cada branch respectivo a
 
 =)
 ----
-		 ____ ____ ____ ____ 
-		||U |||F |||P |||R ||
-		||__|||__|||__|||__||
-		|/__\|/__\|/__\|/__\|
+				 ____ ____ ____ ____ 
+				||U |||F |||P |||R ||
+				||__|||__|||__|||__||
+				|/__\|/__\|/__\|/__\|
 
 
 ```
@@ -19,5 +19,5 @@ Todas as matérias estão organizadas em branchs, sendo cada branch respectivo a
     (o o)         (o o)      -  (O o)  -      (o o)     
 ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-ooO--(_)--Ooo-
 ```
-	01010101 01000110 01010000 01010010 
+			01010101 01000110 01010000 01010010 
 ====
