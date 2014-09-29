@@ -14,7 +14,7 @@ Todas as matérias estão organizadas em branchs, sendo cada branch respectivo a
 
 
 
-                       01010101 01000110 01010000 01010010
+01010101 01000110 01010000 01010010
 ====
 
 ```
