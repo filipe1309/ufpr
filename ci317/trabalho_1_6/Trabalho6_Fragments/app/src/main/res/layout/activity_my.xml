@@ -13,4 +13,13 @@
         android:layout_weight="1"
         tools:layout="@layout/fragment_b" />
 
+    <fragment
+        android:name="com.example.filipe1309.trabalho6_fragments.Fragment_A"
+        android:id="@+id/fragment_a"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:visibility="gone"
+        tools:layout="@layout/fragment_a" />
+
 </LinearLayout>
