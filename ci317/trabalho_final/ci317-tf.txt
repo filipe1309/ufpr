@@ -1,0 +1,28 @@
+Topicos em Sistemas Operacionais
+Android
+2014/2
+Prof. Eduardo Todt
+
+
+
+Trabalho final
+
+
+Você deve especificar (use seus conhecimentos de eng de sw!) um aplicativo de média complexidade, que será implementado por seu grupo.
+
+Comece definindo o grupo (até 3 alunos) e enviando para o professor uma especificação inicial, descrevendo a ideia do que é proposto algumas telas, as principais.
+
+Não esqueça de indicar componentes do grupo e colocar todos em cópia no email.
+
+Ainda não foi visto em aula, mas o uso de recursos como chamadas, mensagens wifi, web, gps, dados de outras apps padrão, é valorizado.
+
+Ao final os arquivos de projeto devem ser entregues, bem como documentação sucinta em forma de artigo. Nad apode ser entregue em papel.
+
+Também os projetos serão apresentados aos colegas da turma.
+
+Pense em fazer algo útil. 
+
+
+
+
+
