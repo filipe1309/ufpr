@@ -2,6 +2,7 @@ package br.ufpr.filipe1309_ml09.trabalho_final_btst;
 
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,18 +10,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MyActivity extends Activity {
 
     Button bt_new_game;
     Button bt_connection;
+    BluetoothAdapter mBluetoothAdapter = null;
+    private static final int REQUEST_ENABLE_BT = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        configButtons();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter == null) {
+            Toast.makeText(getBaseContext(), "Este dispositivo não possui Bluetooth", Toast.LENGTH_LONG).show();
+        } else {
+            if(!mBluetoothAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+            configButtons();
+        }
     }
 
     private void configButtons() {
@@ -43,6 +57,17 @@ public class MyActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_ENABLE_BT) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(getBaseContext(), "Bluetooth enabled: " + resultCode, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getBaseContext(), "Bluetooth NOT enabled: " + resultCode, Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
