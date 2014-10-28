@@ -40,6 +40,7 @@ public class Bluetooth extends Activity {
     Button bt_off;
     Button bt_data;
     TextView tv_text;
+    TextView tv_pared;
     int DISCOVERABLE_DURATION = 15;
     ArrayAdapter<String> mArrayAdapter;
     Set<BluetoothDevice> pairedDevices;
@@ -73,9 +74,6 @@ public class Bluetooth extends Activity {
         // Verifica se o aparelho possui Bluetooth
         if(mBluetoothAdapter == null) {
             bt_find_stop.setEnabled(false);
-            bt_list.setEnabled(false);
-            bt_on.setEnabled(false);
-            bt_off.setEnabled(false);
             bt_disc.setEnabled(false);
             tv_text.setText("Status: not supported");
             Toast.makeText(this, "Device does not support Bluetooth", Toast.LENGTH_LONG).show();
@@ -155,27 +153,9 @@ public class Bluetooth extends Activity {
     }
 
     private void configButtons() {
-        if(mBluetoothAdapter.isEnabled()) {
-            bt_on.setEnabled(false);
-        } else {
-            disableButtons();
+        if(!mBluetoothAdapter.isEnabled()) {
             bluetooth_on();
         }
-        // Ativar Bluetooth
-        bt_on.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bluetooth_on();
-            }
-        });
-
-        // Desativar Bluetooth
-        bt_off.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bluetooth_off(view);
-            }
-        });
 
         bt_disc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,30 +163,19 @@ public class Bluetooth extends Activity {
                 setDeviceVisible();
             }
         });
-
-        // Listar dispositivos pareados
-        bt_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bluetooth_list_pared(view);
-            }
-        });
-
         // Descobrindo dispositivos
         bt_find_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                find(view);
+                find();
             }
         });
     }
 
     private void setConfigs() {
         tv_text = (TextView) findViewById(R.id.tv_text);
-        bt_on = (Button) findViewById(R.id.bt_on);
-        bt_off = (Button) findViewById(R.id.bt_off);
+        tv_pared = (TextView) findViewById(R.id.tv_pared);
         bt_disc = (Button) findViewById(R.id.bt_disc);
-        bt_list = (Button) findViewById(R.id.bt_list);
         bt_find_stop = (Button) findViewById(R.id.bt_find_stop);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         devices = new ArrayList<BluetoothDevice>();
@@ -286,6 +255,8 @@ public class Bluetooth extends Activity {
                 if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_OFF){
                     turnOnBT();
                 } else if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_ON) {
+                    tv_pared.setText("Selecione um dispositivo para conectar");
+                    bluetooth_list_pared();
                     mAcceptThread = new AcceptThread();
                     mAcceptThread.start();
                 }
@@ -296,35 +267,20 @@ public class Bluetooth extends Activity {
     private void turnOnBT() {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        enableButtons();
     }
 
     public void setDeviceVisible() {
         // Se o Bluetooth não estiver ativo, então ele será
         // automaticamenta ativado
-        enableButtons();
         Intent enablaBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         enablaBtIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,DISCOVERABLE_DURATION);
         startActivityForResult(enablaBtIntent, REQUEST_ENABLE_BT);
         //bt_disc.setEnabled(false);
     }
 
-    public void enableButtons() {
-        bt_find_stop.setEnabled(true);
-        bt_list.setEnabled(true);
-        bt_off.setEnabled(true);
-        bt_on.setEnabled(false);
-    }
 
-    public void disableButtons() {
-        bt_find_stop.setEnabled(false);
-        bt_list.setEnabled(false);
-        bt_off.setEnabled(false);
-        bt_on.setEnabled(true);
-        tv_text.setText("Ative o Bluetooth!!!");
-    }
 
-    public void find(View view) {
+    public void find() {
         // Se estiver buscando disposito então para de buscar
         if (mBluetoothAdapter.isEnabled())
             if (mBluetoothAdapter.isDiscovering()) {
@@ -342,37 +298,21 @@ public class Bluetooth extends Activity {
         if(!mBluetoothAdapter.isEnabled()) {
             // Solicita a ativação do Bluetooth
             turnOnBT();
-            Toast.makeText(getApplicationContext(),"Bluetooth turned on",
-                    Toast.LENGTH_LONG).show();
-            enableButtons();
-        } else {
-            Toast.makeText(getApplicationContext(),"Bluetooth is already on",
-                    Toast.LENGTH_LONG).show();
         }
     }
 
-    public void bluetooth_off(View view) {
-        mBluetoothAdapter.disable();
-        tv_text.setText("Status: Disconnected");
-        Toast.makeText(getApplicationContext(),"Bluetooth turned off",
-                Toast.LENGTH_LONG).show();
-        disableButtons();
-        mArrayAdapter.clear();
-    }
-
-    public void bluetooth_list_pared(View view){
+    public void bluetooth_list_pared(){
         // Buscando na lista de aplicativos pareados
         pairedDevices = mBluetoothAdapter.getBondedDevices();
         // Se existirem aparelhos pareados
         if(pairedDevices.size() > 0) {
+
             mArrayAdapter.clear();
-            // lopp na lista de aparelhos pareados
+            // loop na lista de aparelhos pareados
             for (BluetoothDevice device: pairedDevices) {
                 // Adiciona o name e o MAC adress em um array adapter para mostrar em uma ListView
                 mArrayAdapter.add(device.getName() + "\n" + device.getAddress() + "\n" + "Pared");
             }
-            Toast.makeText(getApplicationContext(),"Show Paired Devices",
-                    Toast.LENGTH_SHORT).show();
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

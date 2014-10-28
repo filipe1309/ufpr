@@ -3,18 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#22e282"
     tools:context=".MyActivity">
 
     <Button
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_gravity="center"
         android:text="@string/text_bt_new_game"
+        android:background="#11d171"
+        android:textColor="#ffffff"
         android:id="@+id/bt_new_game" />
 
     <Button
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"
         android:text="@string/text_bt_connect"
+        android:background="#11d171"
+        android:textColor="#ffffff"
         android:id="@+id/bt_connect" />
 
 </LinearLayout>

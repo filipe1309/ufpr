@@ -2,50 +2,33 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#22e282"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:id="@+id/tv_text"
         android:text="@string/text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:textColor="#ffffff" />
 
-        <Button
-            android:id="@+id/bt_on"
-            android:text="@string/on"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="wrap_content" />
-        <Button
-            android:id="@+id/bt_off"
-            android:text="@string/off"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_width="wrap_content" />
-
-    </LinearLayout>
 
     <Button
         android:id="@+id/bt_disc"
         android:text="@string/disc"
+        android:layout_marginTop="15dp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/bt_list"
-        android:text="@string/list"
-        android:layout_width="fill_parent"
+        android:background="#11d171"
+        android:textColor="#ffffff"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/bt_find_stop"
         android:text="@string/find_stop"
+        android:layout_marginTop="15dp"
         android:layout_width="fill_parent"
+        android:background="#11d171"
+        android:textColor="#ffffff"
         android:layout_height="wrap_content" />
 
     <Button
@@ -53,12 +36,25 @@
         android:text="@string/data"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="#11d171"
+        android:textColor="#ffffff"
         android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/tv_pared"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="#11d171"
+        android:textColor="#ffffff"
+        android:text="@string/paired" />
 
     <ListView
         android:id="@+id/lv_pared_devices"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:textColor="#ffffff" >
     </ListView>
 
 </LinearLayout>

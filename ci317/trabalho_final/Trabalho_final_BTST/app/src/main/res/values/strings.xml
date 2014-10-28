@@ -9,12 +9,9 @@
     <string name="text_bt_connect">Conectar</string>
     <string name="title_activity_bluetooth">Bluetooth</string>
     <string name="find_stop">Buscar</string>
-    <string name="on">Ativar</string>
-    <string name="off">Desativar</string>
-    <string name="list">Listar pareados</string>
     <string name="text">Status: ----</string>
     <string name="disc">Tornar visível</string>
     <string name="data">Enviar MSG</string>
-
+    <string name="paired">Sem dispositivos pareados</string>
 
 </resources>
