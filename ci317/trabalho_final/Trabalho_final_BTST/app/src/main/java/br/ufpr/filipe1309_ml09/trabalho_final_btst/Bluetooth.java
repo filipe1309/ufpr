@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
@@ -46,6 +48,7 @@ public class Bluetooth extends Activity {
     Set<BluetoothDevice> pairedDevices;
     ArrayList<BluetoothDevice> devices;
     ListView listView;
+    int devicesDiscovered = 0;
     // Server
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     ConnectThread mConnectThread;
@@ -78,9 +81,10 @@ public class Bluetooth extends Activity {
             tv_text.setText("Status: not supported");
             Toast.makeText(this, "Device does not support Bluetooth", Toast.LENGTH_LONG).show();
         } else {
+            configList();
+            initBt();
             configButtons();
             setHandler();
-            configList();
             registerBR();
         }
     }
@@ -112,8 +116,6 @@ public class Bluetooth extends Activity {
                         byte[] readBuf = (byte[])msg.obj;
                         String string = new String(readBuf);
                         Toast.makeText(getApplicationContext(), "MSG Recebida: "+string, Toast.LENGTH_LONG).show();
-                        //tv_text.setText("Status: Device connected - Message received");
-                        //Toast.makeText(getApplicationContext(),"Device Connected, msg: " + (String) msg.obj, Toast.LENGTH_LONG).show();
                         tv_text.setText("Status: Device connected - msg: "+ (String) msg.obj);
                         break;
                     case FAIL:
@@ -150,13 +152,34 @@ public class Bluetooth extends Activity {
 
         listView = (ListView) findViewById(R.id.lv_pared_devices);
         listView.setAdapter(mArrayAdapter);
+        //find();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (mBluetoothAdapter.isDiscovering())
+                    mBluetoothAdapter.cancelDiscovery();
+
+                /*
+                * BUG: O pareamento só esta funcionando quando se clica 2 veves no novo device :(
+                */
+                if (mArrayAdapter.getItem(i).contains("(Novo)")){
+                    pairDevice(devices.get(i));
+                }
+                connectDevice(devices.get(i));
+            }
+        });
+    }
+
+    private void pairDevice(BluetoothDevice device) {
+        try {
+            Method method = device.getClass().getMethod("createBond", (Class[]) null);
+            method.invoke(device, (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void configButtons() {
-        if(!mBluetoothAdapter.isEnabled()) {
-            bluetooth_on();
-        }
-
         bt_disc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,6 +215,8 @@ public class Bluetooth extends Activity {
         filter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
         // Para verificar se o bluetooth foi desativado
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        // Para quando terminar o pareamento dos dispositivos
+        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         this.registerReceiver(mReceiver,filter);
         //registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
     }
@@ -203,42 +228,36 @@ public class Bluetooth extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            BluetoothDevice device = null;
             // Quando 'discovery' encontrar um dispositivo
             if(BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // obtem o objeto BluetoothDevice (remoto) do intent
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                devices.add(device);
-                boolean foundPared = false;
-                // Se encontrar dispositivo já pareado
-                /*for (BluetoothDevice paredDevice: pairedDevices)  {
-                    if(device.getName().equals(paredDevice.getName())){
-                        mArrayAdapter.add(device.getName() + "\n" + device.getAddress() + "\n" +
-                                "(Finded/Pared)");
-                        foundPared = true;
-                        break;
+                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                boolean deviceAlreadyPared = false;
+
+                for (int i = 0; i < mArrayAdapter.getCount(); i++) {
+                    if (mArrayAdapter.getItem(i).contains(device.getAddress())){
+                        deviceAlreadyPared = true;
                     }
                 }
-                if(!foundPared)*/
-                mArrayAdapter.add(device.getName() + "\n" + device.getAddress() + "\n" + "(Finded)");
-                mArrayAdapter.notifyDataSetChanged();
-
+                if (!deviceAlreadyPared) {
+                    devices.add(device);
+                    mArrayAdapter.add(device.getName() +" (Novo)"+ "\n" + device.getAddress());
+                    mArrayAdapter.notifyDataSetChanged();
+                    devicesDiscovered++;
+                }
 
             } else if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 if(mBluetoothAdapter.isEnabled()) {
-                    /*for (BluetoothDevice paredDevice: pairedDevices)  {
-                        for (int j = 0; j < mArrayAdapter.getCount(); j++)
-                        if(mArrayAdapter.getItem(j).contains(paredDevice.getName().toString())){
-                            mArrayAdapter.getItem(j).concat("(Pared)");
-                            break;
-                        }
-                    }*/
-                    /*for (int i = 0; i < pairedDevices.size(); i++) {
-                        for (int j = 0; j < mArrayAdapter.getCount(); j++)
-                        if(mArrayAdapter.getItem(j).contains(pairedDevices.toArray()))
-                    }*/
                     bt_find_stop.setEnabled(true);
                 }
                 bt_find_stop.setText(R.string.find_stop);
+                if (mArrayAdapter.getCount() != 0){
+                    for (int i = 0; i < mArrayAdapter.getCount(); i++) {
+
+                    }
+                }
+
             } else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {
                 // Quando mudar modo visivel
                 int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE,0);
@@ -250,19 +269,48 @@ public class Bluetooth extends Activity {
                 } else {
                     bt_disc.setEnabled(true);
                 }
+
             } else if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
                 // Se o Bluetooth for desligado, solicitar reativação
                 if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_OFF){
                     turnOnBT();
                 } else if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_ON) {
-                    tv_pared.setText("Selecione um dispositivo para conectar");
-                    bluetooth_list_pared();
-                    mAcceptThread = new AcceptThread();
-                    mAcceptThread.start();
+                    mArrayAdapter.clear();
+                    initBt();
+                }
+            } else if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)){
+                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                switch (device.getBondState()) {
+                    case BluetoothDevice.BOND_BONDING:
+                        Log.d("BlueToothTestActivity", "it is pairing");
+                        break;
+                    case BluetoothDevice.BOND_BONDED:
+                        Toast.makeText(getApplicationContext(),"Paired finish",
+                                Toast.LENGTH_SHORT).show();
+                        Log.d("BlueToothTestActivity", "Paired finish");
+                        mArrayAdapter.clear();
+                        bluetooth_list_pared();
+                        //connect(device);
+                        break;
+                    case BluetoothDevice.BOND_NONE:
+                        Log.d("BlueToothTestActivity", "cancel");
+                    default:
+                        break;
                 }
             }
         }
     };
+
+    private void initBt() {
+        if(!mBluetoothAdapter.isEnabled()) {
+            bluetooth_on();
+        }
+        tv_pared.setText("Selecione um dispositivo para conectar");
+        bluetooth_list_pared();
+        //find();
+        mAcceptThread = new AcceptThread();
+        mAcceptThread.start();
+    }
 
     private void turnOnBT() {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -286,7 +334,15 @@ public class Bluetooth extends Activity {
             if (mBluetoothAdapter.isDiscovering()) {
                 mBluetoothAdapter.cancelDiscovery();
             } else { // inicia busca
-                mArrayAdapter.clear();
+                //mArrayAdapter.clear();
+                if (devicesDiscovered != 0) {
+                    for (int i = devicesDiscovered; i > 0; i-- ) {
+                        mArrayAdapter.remove(mArrayAdapter.getItem(mArrayAdapter.getCount()-1));
+                    }
+                    mArrayAdapter.notifyDataSetChanged();
+                    devicesDiscovered = 0;
+                }
+
                 bt_find_stop.setEnabled(false);
                 bt_find_stop.setText("Pesquisando...");
                 mBluetoothAdapter.startDiscovery();
@@ -306,53 +362,39 @@ public class Bluetooth extends Activity {
         pairedDevices = mBluetoothAdapter.getBondedDevices();
         // Se existirem aparelhos pareados
         if(pairedDevices.size() > 0) {
-
-            mArrayAdapter.clear();
+            //mArrayAdapter.clear();
             // loop na lista de aparelhos pareados
             for (BluetoothDevice device: pairedDevices) {
+                devices.add(device);
                 // Adiciona o name e o MAC adress em um array adapter para mostrar em uma ListView
-                mArrayAdapter.add(device.getName() + "\n" + device.getAddress() + "\n" + "Pared");
+                mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
             }
+            mArrayAdapter.notifyDataSetChanged();
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                    if (mBluetoothAdapter.isDiscovering())
-                        mBluetoothAdapter.cancelDiscovery();
-
-                    //pairedDevices[i];
-                    int pos = 0;
-                    //Toast.makeText(getApplicationContext(),"Connecting to  "+mArrayAdapter.getItem(i),
-                    //        Toast.LENGTH_SHORT).show();
-                    for (BluetoothDevice device: pairedDevices) {
-                        if(pos == i) {
-                            //if (mArrayAdapter.getItem(i).contains("(Finded)(Pared)")) {
-                            Toast.makeText(getApplicationContext(), "Connecting with  " + device.getName(),
-                                    Toast.LENGTH_SHORT).show();
-
-                            tv_text.setText("Status: Connecting with "+ device.getName());
-                            setConnected(CONNECTING);
-                            mConnectThread = new ConnectThread(device);
-                            mConnectThread.start();
-                            if(isConnected() == CONNECTED)
-                                tv_text.setText("Status: Connected with "+ device.getName());
-                            break; // Depois que encontrar pode sair do for
-                            //}
-                        }
-                        pos++;
-                    }
-
-                    //mBluetoothAdapter.getRemoteDevice(adress);
-                }
-            });
         } else {
             Toast.makeText(getApplicationContext(),"Paired Devices not found",
                     Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void connectDevice(BluetoothDevice device) {
+        Toast.makeText(getApplicationContext(), "Connecting with  " + device.getName(),
+                Toast.LENGTH_SHORT).show();
 
+        tv_text.setText("Status: Connecting with "+ device.getName());
+        setConnected(CONNECTING);
+        mConnectThread = new ConnectThread(device);
+        mConnectThread.start();
+        if(isConnected() == CONNECTED)
+            tv_text.setText("Status: Connected with "+ device.getName());
+    }
+
+
+    /*
+    * se o usuário aceitar(YES) entrar em modo visivel(discoverable), então o result Code
+    * será igual a duração em que o aparecho ficará neste modo, caso contrário,
+    * (NO) ou se um erro ocorrer, o result Code será RESULT_CANCELED
+    */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_ENABLE_BT) {
@@ -360,12 +402,6 @@ public class Bluetooth extends Activity {
         } else {
             tv_text.setText("Status: Disable");
         }
-
-        /*
-        * se o usuário aceitar(YES) entrar em modo visivel(discoverable), então o result Code
-        * será igual a duração em que o aparecho ficará neste modo, caso contrário,
-        * (NO) ou se um erro ocorrer, o result Code será RESULT_CANCELED
-        * */
     }
 
 
