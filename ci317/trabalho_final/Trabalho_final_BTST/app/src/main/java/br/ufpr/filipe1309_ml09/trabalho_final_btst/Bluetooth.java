@@ -58,9 +58,9 @@ public class Bluetooth extends Activity {
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
     public static final int ANSWER = 2;
-    public static final int DISCONNECTED = 0;
-    public static final int CONNECTED = 1;
-    public static final int CONNECTING = 2;
+    public static final int DISCONNECTED = 4;
+    public static final int CONNECTED = 3;
+    public static final int CONNECTING = 5;
 
     // É um requestCode(qualquer inteiro > 0 único), que pode ser checado
     // com onActivityResult()
@@ -120,6 +120,12 @@ public class Bluetooth extends Activity {
                         break;
                     case FAIL:
                         Toast.makeText(getApplicationContext(), "Fail: " + (String) msg.obj, Toast.LENGTH_LONG).show();
+                        break;
+                    case CONNECTED:
+                        Toast.makeText(getApplicationContext(), "Receive connection from other device", Toast.LENGTH_LONG).show();
+                        //mConnectThread = new ConnectThread((BluetoothSocket)msg.obj.getRemoteDevice());
+                        /*mConnectedThread = new ConnectedThread((BluetoothSocket)msg.obj);
+                        mConnectedThread.start();*/
                         break;
                     default:
                         Toast.makeText(getApplicationContext(),"default: " + (String) msg.obj, Toast.LENGTH_LONG).show();
@@ -421,6 +427,7 @@ public class Bluetooth extends Activity {
     // Server
     private class AcceptThread extends Thread {
         private final BluetoothServerSocket mmServerSocket;
+        //private InputStream mmInStream = null;
 
         public AcceptThread() {
             // Use a temporary object that is later assigned to mmServerSocket,
@@ -444,6 +451,7 @@ public class Bluetooth extends Activity {
             while (true) {
                 try {
                     socket = mmServerSocket.accept();
+                    //mmInStream = socket.getInputStream();
                 } catch (IOException e) {
                     break;
                 }
@@ -451,6 +459,7 @@ public class Bluetooth extends Activity {
                 if (socket != null) {
                     // Do work to manage the connection (in a separate thread)
                     //manageConnectedSocket(socket);
+                    mHandler.obtainMessage(CONNECTED, socket).sendToTarget();
                     try {
                         mmServerSocket.close();
                         break;
