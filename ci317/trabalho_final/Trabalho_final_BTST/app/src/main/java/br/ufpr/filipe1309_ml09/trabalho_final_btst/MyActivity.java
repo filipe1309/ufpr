@@ -25,6 +25,15 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
+        bt_new_game = (Button) findViewById(R.id.bt_new_game);
+        bt_new_game.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
+                startActivity(intent);
+            }
+        });
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null) {
             Toast.makeText(getBaseContext(), "Este dispositivo não possui Bluetooth", Toast.LENGTH_LONG).show();
@@ -38,14 +47,7 @@ public class MyActivity extends Activity {
     }
 
     private void configButtons() {
-        bt_new_game = (Button) findViewById(R.id.bt_new_game);
-        bt_new_game.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
-                startActivity(intent);
-            }
-        });
+
 
         bt_connection = (Button) findViewById(R.id.bt_connect);
         bt_connection.setOnClickListener(new View.OnClickListener() {

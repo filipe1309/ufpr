@@ -21,10 +21,61 @@
         android:layout_height="wrap_content"
         android:id="@+id/test_image"
         android:src="@drawable/odisseia_no_espaco"
-        android:layout_above="@+id/button1"
         android:layout_alignParentTop="true"
+        android:layout_above="@+id/button1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/button1"
+        android:layout_marginBottom="32dp"
+        android:gravity="fill"
+        android:layout_gravity="left"
+        android:layout_marginRight="39dp"
+        android:layout_above="@+id/button1"
+        android:layout_alignRight="@+id/button1"
+        android:layout_alignEnd="@+id/button1">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duração"
+            android:id="@+id/radioButton1"
+            android:layout_centerVertical="true"
+            android:layout_alignRight="@+id/button1"
+            android:layout_alignEnd="@+id/button1"
+            android:checked="false" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bilheteria"
+            android:id="@+id/radioButton2"
+            android:layout_centerVertical="true"
+            android:layout_alignRight="@+id/button2"
+            android:layout_alignEnd="@+id/button2"
+            android:checked="false" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oscars"
+            android:id="@+id/radioButton3"
+            android:layout_centerVertical="true"
+            android:layout_alignRight="@+id/button3"
+            android:layout_alignEnd="@+id/button3"
+            android:checked="false" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nota IMDB"
+            android:id="@+id/radioButton4"
+            android:layout_centerVertical="true"
+            android:layout_alignRight="@+id/button4"
+            android:layout_alignEnd="@+id/button4"
+            android:checked="false" />
+    </RadioGroup>
+
+
 </RelativeLayout>
