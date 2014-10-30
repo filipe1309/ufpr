@@ -41,20 +41,35 @@
         android:textColor="#ffffff"
         android:visibility="invisible"/>
 
-    <TextView
-        android:id="@+id/tv_pared"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="#11d171"
-        android:textColor="#ffffff"
-        android:text="@string/paired" />
-
-    <ListView
-        android:id="@+id/lv_pared_devices"
+    <TextView android:id="@+id/title_paired_devices"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="#ffffff" >
-    </ListView>
+        android:layout_height="wrap_content"
+        android:text="@string/title_paired_devices"
+        android:visibility="gone"
+        android:background="#666"
+        android:textColor="#fff"
+        android:paddingLeft="5dp"
+        />
+    <ListView android:id="@+id/paired_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stackFromBottom="true"
+        android:layout_weight="1"
+        />
+    <TextView android:id="@+id/title_new_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_other_devices"
+        android:visibility="gone"
+        android:background="#666"
+        android:textColor="#fff"
+        android:paddingLeft="5dp"
+        />
+    <ListView android:id="@+id/new_devices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stackFromBottom="true"
+        android:layout_weight="2"
+        />
 
 </LinearLayout>
