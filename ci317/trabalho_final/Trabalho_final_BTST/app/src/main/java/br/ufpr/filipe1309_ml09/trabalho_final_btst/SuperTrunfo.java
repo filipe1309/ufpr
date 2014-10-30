@@ -68,6 +68,11 @@ public class SuperTrunfo extends Activity {
                 Card card2=(Card) baralho.get(round % baralho.size());
                 image.setImageResource(card2.card_img);
                 sendBtMessage(String.valueOf(round));
+
+                /*Toast.makeText(getApplicationContext(),
+                        "m: : "+ mBTService.message,
+                        Toast.LENGTH_SHORT).show();
+                */
                 round++;
             }
         });

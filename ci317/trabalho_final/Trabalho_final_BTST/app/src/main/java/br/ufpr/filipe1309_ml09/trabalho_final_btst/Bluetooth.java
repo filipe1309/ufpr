@@ -112,7 +112,9 @@ public class Bluetooth extends Activity {
                             //mConversationArrayAdapter.clear();
                             Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
                             //intent.putExtra("BluetoothService", mBTService);
+                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             Globals.myBTService = mBTService;
+
                             startActivity(intent);
                             break;
                         case BluetoothService.STATE_CONNECTING:
@@ -142,6 +144,7 @@ public class Bluetooth extends Activity {
                     Toast.makeText(getApplicationContext(),
                             "MSG received: "+ readMessage,
                             Toast.LENGTH_SHORT).show();
+                    //mBTService.message = readMessage;
                     break;
                 case MESSAGE_DEVICE_NAME:
                     // save the connected device's name
