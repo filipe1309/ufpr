@@ -110,6 +110,10 @@ public class Bluetooth extends Activity {
                             });
                             bt_data.setVisibility(View.VISIBLE);
                             //mConversationArrayAdapter.clear();
+                            Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
+                            //intent.putExtra("BluetoothService", mBTService);
+                            Globals.myBTService = mBTService;
+                            startActivity(intent);
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             tv_text.setText("Status: connecting...");
@@ -171,11 +175,6 @@ public class Bluetooth extends Activity {
             finish();
             return;
         }
-           /* configList();
-            initBt();
-            configButtons();
-            setHandler();
-            registerBR();*/
 
         // Initialize array adapters. One for already paired devices and
         // one for newly discovered devices

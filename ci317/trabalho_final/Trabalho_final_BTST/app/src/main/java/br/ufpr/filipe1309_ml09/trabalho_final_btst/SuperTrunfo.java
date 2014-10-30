@@ -8,12 +8,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 public class SuperTrunfo extends Activity {
+
+    private BluetoothService mBTService = null;
 
     public class Card{
         int card_img;
@@ -45,6 +48,13 @@ public class SuperTrunfo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_super_trunfo);
 
+        //mBTService = (BluetoothService) getIntent().getSerializableExtra("BluetoothService");
+        mBTService = Globals.myBTService;
+        if (mBTService != null) {
+            Toast.makeText(getBaseContext(), "Objeto recebido", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getBaseContext(), "Objeto NÃO recebido", Toast.LENGTH_SHORT).show();
+        }
         initCards();
         randomCards();
         configureButtons();
@@ -55,8 +65,9 @@ public class SuperTrunfo extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ImageView image = (ImageView) findViewById(R.id.test_image);
-                Card card2=(Card) baralho.get(round);
+                Card card2=(Card) baralho.get(round % baralho.size());
                 image.setImageResource(card2.card_img);
+                sendBtMessage(String.valueOf(round));
                 round++;
             }
         });
@@ -124,6 +135,22 @@ public class SuperTrunfo extends Activity {
 //        card[newPos] = card[i];
 //        card[i] = aux;
 //    }
+
+    private void sendBtMessage(String message) {
+        // Check that we're actually connected before trying anything
+        if (mBTService.getState() != BluetoothService.STATE_CONNECTED) {
+            Toast.makeText(this, "Você não esta conectado a um dispositivo", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
+        // Check that there's actually something to send
+        if (message.length() > 0) {
+            // Get the message bytes and tell the BluetoothChatService to write
+            byte[] send = message.getBytes();
+            mBTService.write(send);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
