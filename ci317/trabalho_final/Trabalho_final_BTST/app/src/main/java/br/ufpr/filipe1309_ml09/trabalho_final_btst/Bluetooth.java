@@ -3,8 +3,6 @@ package br.ufpr.filipe1309_ml09.trabalho_final_btst;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,18 +20,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.UUID;
 
 
 public class Bluetooth extends Activity {
     // Return Intent extra
-    public static String EXTRA_DEVICE_ADDRESS = "device_address";
+    //public static String EXTRA_DEVICE_ADDRESS = "device_address";
 
     // Member fields
     private BluetoothAdapter mBtAdapter;
@@ -42,18 +35,12 @@ public class Bluetooth extends Activity {
 
     // Views
     private Button bt_find_stop;
-    private Button bt_list;
     private Button bt_disc;
-    private Button bt_on;
-    private Button bt_off;
     private Button bt_data;
     private TextView tv_text;
-    private TextView tv_pared;
-    private ListView listView;
+    private TextView title_new_devices;
 
     int DISCOVERABLE_DURATION = 15;
-    ArrayAdapter<String> mArrayAdapter;
-    Set<BluetoothDevice> pairedDevices;
     ArrayList<BluetoothDevice> devices;
 
     // Message types sent from the BluetoothService Handler
@@ -78,8 +65,6 @@ public class Bluetooth extends Activity {
 
     // Name of the connected device
     private String mConnectedDeviceName = null;
-    // Array adapter for the conversation thread
-    private ArrayAdapter<String> mConversationArrayAdapter;
     // String buffer for outgoing messages
     private StringBuffer mOutStringBuffer;
     // Local Bluetooth adapter
@@ -225,6 +210,7 @@ public class Bluetooth extends Activity {
         bt_find_stop = (Button) findViewById(R.id.bt_find_stop);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         devices = new ArrayList<BluetoothDevice>();
+        title_new_devices = (TextView) findViewById(R.id.title_new_devices);
     }
 
     @Override
@@ -270,15 +256,6 @@ public class Bluetooth extends Activity {
 
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
-    }
-
-    private void pairDevice(BluetoothDevice device) {
-        try {
-            Method method = device.getClass().getMethod("createBond", (Class[]) null);
-            method.invoke(device, (Object[]) null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void configButtons() {
@@ -341,7 +318,7 @@ public class Bluetooth extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            BluetoothDevice device = null;
+            BluetoothDevice device;
             // Quando 'discovery' encontrar um dispositivo
             if(BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // obtem o objeto BluetoothDevice (remoto) do intent
@@ -354,7 +331,7 @@ public class Bluetooth extends Activity {
                     mNewDevicesArrayAdapter.add(device.getName() + "\n"
                             + device.getAddress());
                 } else {
-                    Toast.makeText(getApplicationContext(),"Devide founded aready paired: "+device.getName(),
+                    Toast.makeText(getApplicationContext(),"Device founded already paired: "+device.getName(),
                             Toast.LENGTH_SHORT).show();
                     /*for (int i = 0; i < mPairedDevicesArrayAdapter.getCount(); i++) {
                         if (mPairedDevicesArrayAdapter.getItem(i).contains(device.getAddress())) {
@@ -439,6 +416,9 @@ public class Bluetooth extends Activity {
             if (mBluetoothAdapter.isDiscovering()) {
                 mBluetoothAdapter.cancelDiscovery();
             } else { // inicia busca
+                // Limpa lista de novos devices, para remover repetições
+                mNewDevicesArrayAdapter.clear();
+                title_new_devices.setVisibility(View.VISIBLE);
                 bt_find_stop.setEnabled(false);
                 bt_find_stop.setText("Pesquisando...");
                 mBluetoothAdapter.startDiscovery();
