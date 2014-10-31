@@ -182,6 +182,13 @@ public class SuperTrunfo extends Activity {
     };
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //Intent intent = new Intent(getBaseContext(), Bluetooth.class);
+        // flag para criar uma nova e destruir a que ja esta rodando (Bluetooth.java)
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.super_trunfo, menu);
