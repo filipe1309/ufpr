@@ -470,8 +470,8 @@ public class Bluetooth extends Activity {
         super.onDestroy();
         if (mBtAdapter != null) {
             mBtAdapter.cancelDiscovery();
+            this.unregisterReceiver(mReceiver);
         }
-        this.unregisterReceiver(mReceiver);
 
         // Stop the Bluetooth chat services
         if (mBTService != null)

@@ -1,7 +1,10 @@
 package br.ufpr.filipe1309_ml09.trabalho_final_btst;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +19,18 @@ import java.util.Random;
 
 public class SuperTrunfo extends Activity {
 
+    // Message types sent from the BluetoothService Handler
+    public static final int MESSAGE_STATE_CHANGE = 1;
+    public static final int MESSAGE_READ = 2;
+    public static final int MESSAGE_WRITE = 3;
+    public static final int MESSAGE_DEVICE_NAME = 4;
+    public static final int MESSAGE_TOAST = 5;
+
     private BluetoothService mBTService = null;
+
+    // Debugging
+    private static final String TAG = "Super Trunfo";
+    private static final boolean D = true;
 
     public class Card{
         int card_img;
@@ -39,25 +53,21 @@ public class SuperTrunfo extends Activity {
     int round=0;
     final Integer[] myCards = new Integer[20];
     ArrayList baralho = new ArrayList();
-//    Card card1 = new Card();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_super_trunfo);
 
-        //mBTService = (BluetoothService) getIntent().getSerializableExtra("BluetoothService");
-        mBTService = Globals.myBTService;
-        if (mBTService != null) {
-            Toast.makeText(getBaseContext(), "Objeto recebido", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getBaseContext(), "Objeto NÃO recebido", Toast.LENGTH_SHORT).show();
-        }
+        setupBluetoothService();
         initCards();
         randomCards();
         configureButtons();
+    }
+
+    private void setupBluetoothService() {
+        mBTService = Globals.myBTService;
+        mBTService.setHandler(messageHandler);
     }
 
     private void configureButtons() {
@@ -68,11 +78,6 @@ public class SuperTrunfo extends Activity {
                 Card card2=(Card) baralho.get(round % baralho.size());
                 image.setImageResource(card2.card_img);
                 sendBtMessage(String.valueOf(round));
-
-                /*Toast.makeText(getApplicationContext(),
-                        "m: : "+ mBTService.message,
-                        Toast.LENGTH_SHORT).show();
-                */
                 round++;
             }
         });
@@ -83,12 +88,6 @@ public class SuperTrunfo extends Activity {
         o player 1 e a segunda para o player2
     */
     private void randomCards() {
-//        for (int i = 0; i < TAM_CARDS; i ++) {
-//            Random r = new Random();
-//            int newPos = r.nextInt((TAM_CARDS-1) - 0) + 0;
-//            changePos(baralho,newPos,i);
-//            Log.i("Cards", "In Mod card[" + i + "] -> [" + newPos + "]");
-//        }
         Collections.shuffle(baralho);
     }
 
@@ -156,6 +155,31 @@ public class SuperTrunfo extends Activity {
             mBTService.write(send);
         }
     }
+
+    // The Handler that gets information back from the BluetoothChatService
+    private final Handler messageHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    // construct a string from the buffer
+                    String writeMessage = new String(writeBuf);
+                    Toast.makeText(getApplicationContext(),
+                            "MSG writed: "+ writeMessage,
+                            Toast.LENGTH_SHORT).show();
+                    break;
+                case MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    // construct a string from the valid bytes in the buffer
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    Toast.makeText(getApplicationContext(),
+                            "MSG received: "+ readMessage,
+                            Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

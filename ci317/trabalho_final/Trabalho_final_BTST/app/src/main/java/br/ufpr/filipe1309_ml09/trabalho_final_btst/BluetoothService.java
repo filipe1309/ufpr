@@ -38,7 +38,7 @@ import android.util.Log;
  * connections, a thread for connecting with a device, and a thread for
  * performing data transmissions when connected.
  */
-public class BluetoothService implements Serializable {
+public class BluetoothService {
 	// Debugging
 	private static final String TAG = "BluetoothChatService";
 	private static final boolean D = true;
@@ -60,6 +60,7 @@ public class BluetoothService implements Serializable {
 	// Member fields
 	private final BluetoothAdapter mAdapter;
 	private final Handler mHandler;
+    public Handler messageHandler;
 	private AcceptThread mAcceptThread;
 	private ConnectThread mConnectThread;
 	private ConnectedThread mConnectedThread;
@@ -103,6 +104,10 @@ public class BluetoothService implements Serializable {
 		mHandler.obtainMessage(Bluetooth.MESSAGE_STATE_CHANGE, state, -1)
 				.sendToTarget();
 	}
+
+    public void setHandler(Handler handler) {
+        this.messageHandler = handler;
+    }
 
 	/**
 	 * Return the current connection state.
@@ -479,8 +484,10 @@ public class BluetoothService implements Serializable {
 					bytes = mmInStream.read(buffer);
 
 					// Send the obtained bytes to the UI Activity
-					mHandler.obtainMessage(Bluetooth.MESSAGE_READ, bytes,
-							-1, buffer).sendToTarget();
+					//mHandler.obtainMessage(Bluetooth.MESSAGE_READ, bytes,
+					//		-1, buffer).sendToTarget();
+                    messageHandler.obtainMessage(Bluetooth.MESSAGE_READ, bytes,
+                            -1, buffer).sendToTarget();
 				} catch (IOException e) {
 					Log.e(TAG, "disconnected", e);
 					connectionLost();
@@ -502,8 +509,10 @@ public class BluetoothService implements Serializable {
 				mmOutStream.write(buffer);
 
 				// Share the sent message back to the UI Activity
-				mHandler.obtainMessage(Bluetooth.MESSAGE_WRITE, -1, -1,
-						buffer).sendToTarget();
+				//mHandler.obtainMessage(Bluetooth.MESSAGE_WRITE, -1, -1,
+				//		buffer).sendToTarget();
+                messageHandler.obtainMessage(Bluetooth.MESSAGE_WRITE, -1, -1,
+                        buffer).sendToTarget();
 			} catch (IOException e) {
 				Log.e(TAG, "Exception during write", e);
 			}
