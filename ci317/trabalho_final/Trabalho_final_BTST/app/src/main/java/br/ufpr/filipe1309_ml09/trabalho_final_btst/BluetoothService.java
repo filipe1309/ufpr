@@ -284,7 +284,7 @@ public class BluetoothService {
 	 */
 	private void connectionLost() {
 		// Send a failure message back to the Activity
-		Message msg = mHandler.obtainMessage(Bluetooth.MESSAGE_TOAST);
+		Message msg = mHandler.obtainMessage(Bluetooth.MESSAGE_RESET);
 		Bundle bundle = new Bundle();
 		bundle.putString(Bluetooth.TOAST, "Device connection was lost");
 		msg.setData(bundle);

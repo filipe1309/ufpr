@@ -49,6 +49,8 @@ public class Bluetooth extends Activity {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_RESET = 6;
+
 
     static final int CLOSE_ST_ACTIVITY_REQUEST = 0;
 
@@ -102,7 +104,7 @@ public class Bluetooth extends Activity {
                             //intent.putExtra("BluetoothService", mBTService);
                             Globals.myBTService = mBTService;
 
-                            startActivityForResult(intent, CLOSE_ST_ACTIVITY_REQUEST);
+                            startActivity(intent);
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             tv_text.setText("Status: connecting...");
@@ -144,7 +146,17 @@ public class Bluetooth extends Activity {
                     Toast.makeText(getApplicationContext(),"Toast: "+
                             msg.getData().getString(TOAST), Toast.LENGTH_SHORT)
                             .show();
-                    SuperTrunfo.st.finish();
+
+
+                    break;
+                case MESSAGE_RESET:
+                    Toast.makeText(getApplicationContext(),"MSG Reset ", Toast.LENGTH_SHORT)
+                            .show();
+                    // Se a conexão com o adversario
+                    // for fechada, então fecha a ac st deste(se estiver aberta) e restart.
+                    if (SuperTrunfo.st != null)
+                        SuperTrunfo.st.finish();
+                    restartActivity();
                     break;
             }
         }
@@ -373,11 +385,11 @@ public class Bluetooth extends Activity {
                 // Se o Bluetooth for desligado, solicitar reativação
                if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_OFF){
                     //turnOnBT();
-                   finish();
+                   //restartActivity();
                 } else if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_ON) {
                     //mArrayAdapter.clear();
                     //initBt();
-                   restartActivity();
+                   //restartActivity();
                }
             } else if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)){
                 /*device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -389,8 +401,9 @@ public class Bluetooth extends Activity {
                         Toast.makeText(getApplicationContext(),"Paired finish",
                                 Toast.LENGTH_SHORT).show();
                         Log.d("BlueToothTestActivity", "Paired finish");
-                        mArrayAdapter.clear();
-                        bluetooth_list_pared();
+                        //restartActivity();
+                        //mArrayAdapter.clear();
+                        //bluetooth_list_pared();
                         //connect(device);
                         break;
                     case BluetoothDevice.BOND_NONE:
@@ -408,6 +421,8 @@ public class Bluetooth extends Activity {
     }
 
     private void restartActivity() {
+        if (mBTService != null)
+            mBTService.stop();
         recreate();
     }
 
@@ -457,6 +472,7 @@ public class Bluetooth extends Activity {
                 if (resultCode == Activity.RESULT_OK) {
                     // Bluetooth is now enabled, so set up a chat session
                     tv_text.setText("Status: Enable");
+                    restartActivity();
                     setupBluetooth();
                 } else {
                     // User did not enable Bluetooth or an error occurred
@@ -465,11 +481,6 @@ public class Bluetooth extends Activity {
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }
-            case CLOSE_ST_ACTIVITY_REQUEST:
-                Toast.makeText(this,"Restarting BT...",
-                        Toast.LENGTH_SHORT).show();
-                restartActivity();
-                break;
         }
     }
 

@@ -21,7 +21,6 @@ import java.util.Random;
 
 public class SuperTrunfo extends Activity {
 
-    static final int CLOSE_ST_ACTIVITY_REQUEST = 0;
     public static Activity st;
 
     // Message types sent from the BluetoothService Handler
@@ -218,13 +217,13 @@ public class SuperTrunfo extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        setResult(CLOSE_ST_ACTIVITY_REQUEST);
         mBTService.stop();
         finish();
     }
 
     @Override
     protected void onDestroy() {
+        mBTService.stop();
         super.onDestroy();
         //Intent intent = new Intent(getBaseContext(), Bluetooth.class);
         // flag para criar uma nova e destruir a que ja esta rodando (Bluetooth.java)
