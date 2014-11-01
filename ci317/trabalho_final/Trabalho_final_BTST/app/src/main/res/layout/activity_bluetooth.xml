@@ -15,7 +15,7 @@
 
     <Button
         android:id="@+id/bt_disc"
-        android:text="@string/disc"
+        android:text="@string/discoverable"
         android:layout_marginTop="15dp"
         android:layout_width="fill_parent"
         android:background="#11d171"
@@ -48,7 +48,7 @@
         android:visibility="gone"
         android:background="#666"
         android:textColor="#fff"
-        android:paddingLeft="5dp"
+        android:padding="5dp"
         />
     <ListView android:id="@+id/paired_devices"
         android:layout_width="match_parent"
@@ -63,7 +63,7 @@
         android:visibility="gone"
         android:background="#666"
         android:textColor="#fff"
-        android:paddingLeft="5dp"
+        android:padding="5dp"
         />
     <ListView android:id="@+id/new_devices"
         android:layout_width="match_parent"

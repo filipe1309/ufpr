@@ -1,11 +1,9 @@
 package br.ufpr.filipe1309_ml09.trabalho_final_btst;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,24 +15,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 public class SuperTrunfo extends Activity {
 
     public static Activity st;
 
     // Message types sent from the BluetoothService Handler
-    public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_DEVICE_NAME = 4;
-    public static final int MESSAGE_TOAST = 5;
 
     private BluetoothService mBTService = null;
-
-    // Debugging
-    private static final String TAG = "Super Trunfo";
-    private static final boolean D = true;
 
     // Views
     Button rb_selected;
@@ -45,7 +35,7 @@ public class SuperTrunfo extends Activity {
     TextView imdb;
     ImageView card_image;
 
-    ArrayList myCards = new ArrayList();
+    ArrayList<Card> myCards = new ArrayList<Card>();
     int round=0;
     Card selectedCard;
 
@@ -87,7 +77,7 @@ public class SuperTrunfo extends Activity {
         rb_selected = (Button) findViewById(radioButton);
         rb_selected.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                selectedCard=(Card) myCards.get(round % myCards.size());
+                selectedCard = myCards.get(round % myCards.size());
                 updateCard(selectedCard);
                 if(mBTService != null)
                     sendBtMessage(String.valueOf(round));
@@ -242,9 +232,6 @@ public class SuperTrunfo extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 }

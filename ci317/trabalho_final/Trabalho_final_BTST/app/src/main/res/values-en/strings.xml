@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Trabalho_final_BTST</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_super_trunfo">SuperTrunfo</string>
+    <string name="text_bt_new_game">New Game</string>
+    <string name="title_activity_bluetooth">Bluetooth</string>
+    <string name="find_stop">Find</string>
+    <string name="text">Status: ----</string>
+    <string name="data">Send MSG</string>
+    <string name="paired">No devices paired</string>
+
+    <string name="duration">Duration</string>
+    <string name="box_office">Box Office</string>
+    <string name="orcars">Orcars</string>
+    <string name="imdb_score">Score(IMDB)</string>
+    <string name="empty_field">…</string>
+    <string name="round">Round</string>
+    <string name="me">Me</string>
+    <string name="opponent">Opponent</string>
+
+    <!--  BluetoothChat -->
+    <string name="send">Send</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="title_connecting">connecting…</string>
+    <string name="title_connected_to">connected to </string>
+    <string name="title_not_connected">not connected</string>
+
+    <!--  DeviceListActivity -->
+    <string name="scanning">scanning for devices…</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+
+    <!-- Options Menu -->
+    <string name="connect">Connect a device</string>
+    <string name="discoverable">Make discoverable</string>
+
+</resources>

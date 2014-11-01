@@ -11,6 +11,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/empty_field"
         android:id="@+id/card_image"
         android:src="@drawable/carregando"
         android:layout_alignParentTop="true"
@@ -23,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
+        android:layout_marginStart="60dp"
         android:layout_marginLeft="60dp"
         android:layout_alignBottom="@+id/card_image"
         android:layout_alignParentLeft="true"
@@ -38,25 +40,25 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Duração"
+                android:text="@string/duration"
                 android:id="@+id/rb_duration"
                 android:checked="false" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bilheteria"
+                android:text="@string/box_office"
                 android:id="@+id/rb_boxOffice"
                 android:checked="false" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Oscars"
+                android:text="@string/orcars"
                 android:id="@+id/rb_orcar"
                 android:checked="false" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nota IMDB"
+                android:text="@string/imdb_score"
                 android:id="@+id/rb_imdb"
                 android:checked="false" />
         </RadioGroup>
@@ -65,45 +67,45 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="..."
+            android:text="@string/empty_field"
             android:id="@+id/tv_duration"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/rg_card"
             android:layout_toEndOf="@+id/rg_card"
-            android:layout_marginTop="30dp" />
+            android:layout_marginTop="25dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="..."
+            android:text="@string/empty_field"
             android:id="@+id/tv_boxOffice"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/rg_card"
             android:layout_toEndOf="@+id/rg_card"
-            android:layout_marginTop="70dp" />
+            android:layout_marginTop="55dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="..."
+            android:text="@string/empty_field"
             android:id="@+id/tv_oscar"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/rg_card"
             android:layout_toEndOf="@+id/rg_card"
-            android:layout_marginTop="110dp" />
+            android:layout_marginTop="90dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="..."
+            android:text="@string/empty_field"
             android:id="@+id/tv_imdb"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/rg_card"
             android:layout_toEndOf="@+id/rg_card"
-            android:layout_marginTop="145dp" />
+            android:layout_marginTop="125dp" />
 
     </RelativeLayout>
 
@@ -117,33 +119,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Rodada"
+            android:text="@string/round"
             android:id="@+id/tv_round"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_margin="20dp" />
+            android:layout_margin="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Player1"
-            android:id="@+id/tv_player1"
+            android:text="@string/me"
+            android:id="@+id/tv_my_score"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv_round"
             android:layout_toEndOf="@+id/tv_round"
-            android:layout_margin="20dp" />
+            android:layout_margin="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Player2"
-            android:id="@+id/tv_player2"
+            android:text="@string/opponent"
+            android:id="@+id/tv_opponent_score"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/tv_player1"
-            android:layout_toEndOf="@+id/tv_player1"
+            android:layout_toRightOf="@+id/tv_my_score"
+            android:layout_toEndOf="@+id/tv_my_score"
             android:layout_margin="10dp" />
     </RelativeLayout>
+    
 </RelativeLayout>
