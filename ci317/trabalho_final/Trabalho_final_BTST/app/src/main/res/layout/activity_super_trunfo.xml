@@ -8,74 +8,142 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MyActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Random"
-        android:id="@+id/button1"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/test_image"
-        android:src="@drawable/odisseia_no_espaco"
+        android:id="@+id/card_image"
+        android:src="@drawable/carregando"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/button1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <RadioGroup
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="60dp"
+        android:layout_alignBottom="@+id/card_image"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="fill"
+            android:id="@+id/rg_card"
+            android:layout_margin="20dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duração"
+                android:id="@+id/rb_duration"
+                android:checked="false" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bilheteria"
+                android:id="@+id/rb_boxOffice"
+                android:checked="false" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oscars"
+                android:id="@+id/rb_orcar"
+                android:checked="false" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nota IMDB"
+                android:id="@+id/rb_imdb"
+                android:checked="false" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="..."
+            android:id="@+id/tv_duration"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/rg_card"
+            android:layout_toEndOf="@+id/rg_card"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="..."
+            android:id="@+id/tv_boxOffice"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/rg_card"
+            android:layout_toEndOf="@+id/rg_card"
+            android:layout_marginTop="70dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="..."
+            android:id="@+id/tv_oscar"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/rg_card"
+            android:layout_toEndOf="@+id/rg_card"
+            android:layout_marginTop="110dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="..."
+            android:id="@+id/tv_imdb"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/rg_card"
+            android:layout_toEndOf="@+id/rg_card"
+            android:layout_marginTop="145dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/button1"
-        android:layout_marginBottom="32dp"
-        android:gravity="fill"
-        android:layout_gravity="left"
-        android:layout_marginRight="39dp"
-        android:layout_above="@+id/button1"
-        android:layout_alignRight="@+id/button1"
-        android:layout_alignEnd="@+id/button1">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Duração"
-            android:id="@+id/radioButton1"
-            android:layout_centerVertical="true"
-            android:layout_alignRight="@+id/button1"
-            android:layout_alignEnd="@+id/button1"
-            android:checked="false" />
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bilheteria"
-            android:id="@+id/radioButton2"
-            android:layout_centerVertical="true"
-            android:layout_alignRight="@+id/button2"
-            android:layout_alignEnd="@+id/button2"
-            android:checked="false" />
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Oscars"
-            android:id="@+id/radioButton3"
-            android:layout_centerVertical="true"
-            android:layout_alignRight="@+id/button3"
-            android:layout_alignEnd="@+id/button3"
-            android:checked="false" />
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nota IMDB"
-            android:id="@+id/radioButton4"
-            android:layout_centerVertical="true"
-            android:layout_alignRight="@+id/button4"
-            android:layout_alignEnd="@+id/button4"
-            android:checked="false" />
-    </RadioGroup>
+        android:layout_below="@+id/card_image"
+        android:layout_centerHorizontal="true">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Rodada"
+            android:id="@+id/tv_round"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="20dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Player1"
+            android:id="@+id/tv_player1"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv_round"
+            android:layout_toEndOf="@+id/tv_round"
+            android:layout_margin="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Player2"
+            android:id="@+id/tv_player2"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv_player1"
+            android:layout_toEndOf="@+id/tv_player1"
+            android:layout_margin="10dp" />
+    </RelativeLayout>
 </RelativeLayout>

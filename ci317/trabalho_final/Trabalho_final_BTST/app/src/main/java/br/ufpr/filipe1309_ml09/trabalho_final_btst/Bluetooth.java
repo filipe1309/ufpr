@@ -50,6 +50,9 @@ public class Bluetooth extends Activity {
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
 
+    static final int CLOSE_ST_ACTIVITY_REQUEST = 0;
+
+
     // Key names received from the BluetoothChatService Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
@@ -97,10 +100,9 @@ public class Bluetooth extends Activity {
                             //mConversationArrayAdapter.clear();
                             Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
                             //intent.putExtra("BluetoothService", mBTService);
-                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             Globals.myBTService = mBTService;
 
-                            startActivity(intent);
+                            startActivityForResult(intent, CLOSE_ST_ACTIVITY_REQUEST);
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             tv_text.setText("Status: connecting...");
@@ -139,9 +141,10 @@ public class Bluetooth extends Activity {
                             Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(),
+                    Toast.makeText(getApplicationContext(),"Toast: "+
                             msg.getData().getString(TOAST), Toast.LENGTH_SHORT)
                             .show();
+                    SuperTrunfo.st.finish();
                     break;
             }
         }
@@ -161,6 +164,8 @@ public class Bluetooth extends Activity {
             tv_text.setText("Status: not supported");
             Toast.makeText(this, "Device does not support Bluetooth", Toast.LENGTH_LONG).show();
             finish();
+            Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
+            startActivity(intent);
             return;
         }
 
@@ -366,12 +371,14 @@ public class Bluetooth extends Activity {
 
             } else if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
                 // Se o Bluetooth for desligado, solicitar reativação
-              /*  if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_OFF){
-                    turnOnBT();
+               if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_OFF){
+                    //turnOnBT();
+                   finish();
                 } else if(mBluetoothAdapter.getState() == mBluetoothAdapter.STATE_ON) {
-                    mArrayAdapter.clear();
-                    initBt();
-                }*/
+                    //mArrayAdapter.clear();
+                    //initBt();
+                   restartActivity();
+               }
             } else if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)){
                 /*device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 switch (device.getBondState()) {
@@ -398,6 +405,10 @@ public class Bluetooth extends Activity {
     private void turnOnBT() {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    }
+
+    private void restartActivity() {
+        recreate();
     }
 
     public void setDeviceVisible() {
@@ -454,6 +465,11 @@ public class Bluetooth extends Activity {
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }
+            case CLOSE_ST_ACTIVITY_REQUEST:
+                Toast.makeText(this,"Restarting BT...",
+                        Toast.LENGTH_SHORT).show();
+                restartActivity();
+                break;
         }
     }
 
