@@ -29,8 +29,8 @@ public class SuperTrunfo extends Activity {
     // Views
     Button rb_selected;
     RadioGroup rg_card;
-    TextView duracao;
-    TextView bilheteria;
+    TextView duration;
+    TextView box_office;
     TextView oscar;
     TextView imdb;
     ImageView card_image;
@@ -41,15 +41,15 @@ public class SuperTrunfo extends Activity {
 
     public class Card {
         int card_image;
-        int duracao;
-        int bilheteria;
+        int duration;
+        int box_office;
         int oscar;
         double imdb;
 
-        public Card(int card_image, int duracao, int bilheteria, int oscar, double imdb){
+        public Card(int card_image, int duration, int box_office, int oscar, double imdb){
             this.card_image = card_image;
-            this.duracao =duracao;
-            this.bilheteria=bilheteria;
+            this.duration =duration;
+            this.box_office=box_office;
             this.oscar=oscar;
             this.imdb=imdb;
         }
@@ -88,8 +88,8 @@ public class SuperTrunfo extends Activity {
 
     private void updateCard(Card selectedCard) {
         card_image.setImageResource(selectedCard.card_image);
-        duracao.setText(String.valueOf(selectedCard.duracao)+" Min");
-        bilheteria.setText("$ "+String.valueOf(selectedCard.bilheteria)+" M");
+        duration.setText(String.valueOf(selectedCard.duration)+" Min");
+        box_office.setText("$ "+String.valueOf(selectedCard.box_office)+" M");
         oscar.setText(String.valueOf(selectedCard.oscar));
         imdb.setText(String.valueOf(selectedCard.imdb));
     }
@@ -97,8 +97,8 @@ public class SuperTrunfo extends Activity {
 
     private void configureViews() {
         card_image = (ImageView) findViewById(R.id.card_image);
-        duracao = (TextView)findViewById(R.id.tv_duration);
-        bilheteria = (TextView)findViewById(R.id.tv_boxOffice);
+        duration = (TextView)findViewById(R.id.tv_duration);
+        box_office = (TextView)findViewById(R.id.tv_boxOffice);
         oscar = (TextView)findViewById(R.id.tv_oscar);
         imdb = (TextView)findViewById(R.id.tv_imdb);
         rg_card = (RadioGroup) findViewById(R.id.rg_card);
