@@ -5,4 +5,5 @@ package br.ufpr.filipe1309_ml09.trabalho_final_btst;
  */
 public class Globals {
     public static BluetoothService myBTService = null;
+    public static boolean server = false;
 }

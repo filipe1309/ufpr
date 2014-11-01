@@ -71,7 +71,17 @@ public class SuperTrunfo extends Activity {
         mBTService = Globals.myBTService;
         if(mBTService != null)
             mBTService.setHandler(messageHandler);
+
+        if (Globals.server) {
+            Toast.makeText(getApplicationContext(), "Server",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Client",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
+
 
     private void nextCard(int radioButton) {
         rb_selected = (Button) findViewById(radioButton);

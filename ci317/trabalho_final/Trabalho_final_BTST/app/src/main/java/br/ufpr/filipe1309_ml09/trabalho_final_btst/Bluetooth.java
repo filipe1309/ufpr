@@ -146,8 +146,7 @@ public class Bluetooth extends Activity {
                     Toast.makeText(getApplicationContext(),"Toast: "+
                             msg.getData().getString(TOAST), Toast.LENGTH_SHORT)
                             .show();
-
-
+                    Globals.server = false;
                     break;
                 case MESSAGE_RESET:
                     Toast.makeText(getApplicationContext(),"MSG Reset ", Toast.LENGTH_SHORT)
@@ -423,6 +422,7 @@ public class Bluetooth extends Activity {
     private void restartActivity() {
         if (mBTService != null)
             mBTService.stop();
+        Globals.server = false;
         recreate();
     }
 
@@ -517,7 +517,7 @@ public class Bluetooth extends Activity {
             // View
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
-
+            Globals.server = true;
             connectDevice(address);
         }
     };
