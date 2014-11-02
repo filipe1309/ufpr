@@ -34,8 +34,10 @@ public class SuperTrunfo extends Activity {
     TextView oscar;
     TextView imdb;
     ImageView card_image;
+    TextView tv_round;
 
     ArrayList<Card> myCards = new ArrayList<Card>();
+    String clientIds;
     int round=0;
     Card selectedCard;
 
@@ -62,7 +64,7 @@ public class SuperTrunfo extends Activity {
 
         setupBluetoothService();
         initCards();
-        randomCards();
+        reorganizeCards();
         configureViews();
     }
 
@@ -72,13 +74,13 @@ public class SuperTrunfo extends Activity {
         if(mBTService != null)
             mBTService.setHandler(messageHandler);
 
-        if (Globals.server) {
-            Toast.makeText(getApplicationContext(), "Server",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Client",
-                    Toast.LENGTH_SHORT).show();
-        }
+//        if (Globals.server) {
+//            Toast.makeText(getApplicationContext(), "Server",
+//                    Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(getApplicationContext(), "Client",
+//                    Toast.LENGTH_SHORT).show();
+//        }
 
     }
 
@@ -87,11 +89,13 @@ public class SuperTrunfo extends Activity {
         rb_selected = (Button) findViewById(radioButton);
         rb_selected.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                selectedCard = myCards.get(round % myCards.size());
-                updateCard(selectedCard);
-                if(mBTService != null)
-                    sendBtMessage(String.valueOf(round));
-                round++;
+                if(round < (myCards.size()/2)) {
+                    selectedCard = myCards.get(round);
+                    updateCard(selectedCard);
+                    if (mBTService != null)
+                        sendBtMessage(String.valueOf(rb_selected.getId()));
+                    round++;
+                }
             }
         });
     }
@@ -112,6 +116,7 @@ public class SuperTrunfo extends Activity {
         oscar = (TextView)findViewById(R.id.tv_oscar);
         imdb = (TextView)findViewById(R.id.tv_imdb);
         rg_card = (RadioGroup) findViewById(R.id.rg_card);
+        tv_round = (TextView) findViewById(R.id.tv_round);
 
         rg_card.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -146,8 +151,32 @@ public class SuperTrunfo extends Activity {
         Reordena o vetor randomicamente, atribuindo a primeira metade para
         o player 1 e a segunda para o player2
     */
-    private void randomCards() {
-        Collections.shuffle(myCards);
+    private void reorganizeCards() {
+        /*Mistura o baralho e envia a primeira metade para o player2(client)*/
+        if (Globals.server) {
+            Collections.shuffle(myCards);
+
+            clientIds = "";
+            for (int i = 0; i < (myCards.size()/2); i++) {
+               clientIds = clientIds.concat(myCards.get(i).card_image+",");
+            }
+            //clientIds = clientIds.substring(0, clientIds.length()-1);
+            Toast.makeText(getApplicationContext(), "Server: "+clientIds,
+                    Toast.LENGTH_SHORT).show();
+        }  else {
+            //round--;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (Globals.server)
+            sendBtMessage(clientIds);
+    }
+
+    private void reorganizeClientCards() {
+
     }
 
     private void initCards() {
@@ -201,18 +230,65 @@ public class SuperTrunfo extends Activity {
                     Toast.makeText(getApplicationContext(),
                             "MSG writed: "+ writeMessage,
                             Toast.LENGTH_SHORT).show();
+                    updateRound();
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    Toast.makeText(getApplicationContext(),
+//                    Toast.makeText(getApplicationContext(),
+//                            "MSG received: "+ readMessage,
+//                            Toast.LENGTH_SHORT).show();
+                    if(!Globals.server && round == 0) {
+                        Toast.makeText(getApplicationContext(),
                             "MSG received: "+ readMessage,
                             Toast.LENGTH_SHORT).show();
+                        reorganizeClientCards();
+                    } else if (round >= (myCards.size()/2)) {
+                        Toast.makeText(getApplicationContext(),
+                            "Game finished",
+                            Toast.LENGTH_SHORT).show();
+                    } else {
+                        updateRound();
+                        checkChoice(Integer.parseInt(readMessage));
+                        round++;
+                    }
                     break;
             }
         }
     };
+
+
+    private void checkChoice(int choice) {
+        switch (choice) {
+            case R.id.rb_duration:
+                Toast.makeText(getApplicationContext(),
+                     "Duration chosed",
+                      Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.rb_boxOffice:
+                Toast.makeText(getApplicationContext(),
+                        "Box Office chosed",
+                        Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.rb_orcar:
+                Toast.makeText(getApplicationContext(),
+                        "Oscar chosed",
+                        Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.rb_imdb:
+                Toast.makeText(getApplicationContext(),
+                        "IMDB chosed",
+                        Toast.LENGTH_SHORT).show();
+                break;
+        }
+        selectedCard = myCards.get(round % myCards.size());
+        updateCard(selectedCard);
+    }
+
+    private void updateRound() {
+        tv_round.setText("Rodada\n   "+round);
+    }
 
     @Override
     public void onBackPressed() {
