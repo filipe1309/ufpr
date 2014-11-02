@@ -138,7 +138,7 @@ public class Bluetooth extends Activity {
                     Globals.server = false;
                     break;
                 case MESSAGE_RESET:
-                    Toast.makeText(getApplicationContext(),"MSG Reset ", Toast.LENGTH_SHORT)
+                    Toast.makeText(getApplicationContext(),"Connection Lost", Toast.LENGTH_SHORT)
                             .show();
                     // Se a conexão com o adversario
                     // for fechada, então fecha a ac st deste(se estiver aberta) e restart.

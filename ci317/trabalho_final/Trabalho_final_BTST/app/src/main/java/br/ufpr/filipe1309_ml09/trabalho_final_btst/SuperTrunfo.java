@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,57 +88,20 @@ public class SuperTrunfo extends Activity {
                                 Toast.LENGTH_SHORT).show();
                         ringProgressDialog.dismiss();
                         reorganizeClientCards(readMessage);
-                    } else if (round >= (myCards.size()/2)) {
+                        changeStateOfRoundCard(false);
+                    } else if (round > (myCards.size()/2)) {
                         Toast.makeText(getApplicationContext(),
                                 "Game finished",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        updateRound();
                         checkChoice(Integer.parseInt(readMessage));
                     }
+                    updateRound();
                     round++;
                     break;
             }
         }
     };
-
-    private void openAlert() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SuperTrunfo.this);
-
-        alertDialogBuilder.setTitle(this.getTitle());
-        alertDialogBuilder.setMessage("Iniciar partida?");
-        alertDialogBuilder.setCancelable(false);
-        // set positive button: Yes message
-        alertDialogBuilder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
-                // go to a new activity of the app
-                //if (round == 0 && Globals.server) {
-                    sendBtMessage(clientIds);
-                    round++;
-                //}
-            }
-        });
-        // set negative button: No message
-        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
-                // cancel the alert box and put a Toast to the user
-                dialog.cancel();
-                finish();
-            }
-        });
-        //alertDialogBuilder.setOnDismissListener()
-        // set neutral button: Exit the app message
-//        alertDialogBuilder.setNeutralButton("Exit the app",new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog,int id) {
-//                // exit the app and go to the HOME
-//                //MainActivity.this.finish();
-//            }
-//        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        // show alert
-        alertDialog.show();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +131,45 @@ public class SuperTrunfo extends Activity {
         }
     }
 
+    private void changeStateOfRoundCard(boolean b) {
+        for(int i = 0; i < rg_card.getChildCount(); i++){
+            (rg_card.getChildAt(i)).setEnabled(b);
+        }
+    }
+
+
+    private void openAlert() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SuperTrunfo.this);
+
+        alertDialogBuilder.setTitle(this.getTitle());
+        alertDialogBuilder.setMessage("Iniciar partida?");
+        alertDialogBuilder.setCancelable(false);
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                // go to a new activity of the app
+                //if (round == 0 && Globals.server) {
+                sendBtMessage(clientIds);
+                selectedCard = myCards.get(0);
+                updateCard(selectedCard);
+                //round++;
+                //}
+            }
+        });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                // cancel the alert box and put a Toast to the user
+                dialog.cancel();
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+    }
+
     public void launchRingDialog() {
         ringProgressDialog = ProgressDialog.show(SuperTrunfo.this, "Por favor aguarde ...",	"Esperando oponente ...", true);
         ringProgressDialog.setCancelable(false);
@@ -185,11 +188,6 @@ public class SuperTrunfo extends Activity {
         }).start();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
     private void setupBluetoothService() {
         st = this;
         mBTService = Globals.myBTService;
@@ -197,17 +195,16 @@ public class SuperTrunfo extends Activity {
             mBTService.setHandler(messageHandler);
     }
 
-
     private void nextCard(int radioButton) {
         rb_selected = (Button) findViewById(radioButton);
         rb_selected.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(round < (myCards.size()/2)) {
+                    round++;
                     selectedCard = myCards.get(round);
                     updateCard(selectedCard);
                     if (mBTService != null)
                         sendBtMessage(String.valueOf(rb_selected.getId()));
-                    round++;
                 }
             }
         });
@@ -220,7 +217,6 @@ public class SuperTrunfo extends Activity {
         oscar.setText(String.valueOf(selectedCard.oscar));
         imdb.setText(String.valueOf(selectedCard.imdb));
     }
-
 
     private void configureViews() {
         card_image = (ImageView) findViewById(R.id.card_image);
@@ -268,16 +264,10 @@ public class SuperTrunfo extends Activity {
         /*Mistura o baralho e envia od ids da primeira metade para o player2(client)*/
         if (Globals.server) {
             Collections.shuffle(myCards);
-
             clientIds = "";
             for (int i = 0; i < (myCards.size()); i++) {
                clientIds = clientIds.concat(myCards.get(i).card_image+",");
             }
-            //clientIds = clientIds.substring(0, clientIds.length()-1);
-//            Toast.makeText(getApplicationContext(), "Server: "+clientIds,
-//                    Toast.LENGTH_SHORT).show();
-        }  else {
-            //round--;
         }
     }
 
@@ -293,6 +283,8 @@ public class SuperTrunfo extends Activity {
                 }
             }
         }
+        selectedCard = myCards.get(0);
+        updateCard(selectedCard);
     }
 
     private void changeCardPos(int newPos, int i) {
