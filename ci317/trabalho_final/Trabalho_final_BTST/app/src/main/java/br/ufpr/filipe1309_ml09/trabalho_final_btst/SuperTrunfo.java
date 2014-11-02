@@ -47,6 +47,7 @@ public class SuperTrunfo extends Activity {
     int round;
     Card selectedCard;
     ProgressDialog ringProgressDialog;
+    boolean initialData;
 
     public class Card {
         int card_image;
@@ -72,23 +73,30 @@ public class SuperTrunfo extends Activity {
                 case MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
-                    String writeMessage = new String(writeBuf);
-                    Toast.makeText(getApplicationContext(),
-                            "MSG writed: "+ writeMessage,
-                            Toast.LENGTH_SHORT).show();
-                    updateRound();
+//                    String writeMessage = new String(writeBuf);
+//                    Toast.makeText(getApplicationContext(),
+//                            "MSG writed: "+ writeMessage,
+//                            Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    if(!Globals.server && round == 0) {
+
+                    if (initialData)
+                        round++;
+                    updateRound();
+                    selectedCard = myCards.get(round % myCards.size());
+                    updateCard(selectedCard);
+
+                    if(!Globals.server && !initialData) {
                         Toast.makeText(getApplicationContext(),
                                 "MSG received: "+ readMessage,
                                 Toast.LENGTH_SHORT).show();
                         ringProgressDialog.dismiss();
                         reorganizeClientCards(readMessage);
-                        changeStateOfRoundCard(false);
+                        initialData = true;
+                        //changeStateOfRoundCard(false);
                     } else if (round > (myCards.size()/2)) {
                         Toast.makeText(getApplicationContext(),
                                 "Game finished",
@@ -96,8 +104,6 @@ public class SuperTrunfo extends Activity {
                     } else {
                         checkChoice(Integer.parseInt(readMessage));
                     }
-                    updateRound();
-                    round++;
                     break;
             }
         }
@@ -120,6 +126,7 @@ public class SuperTrunfo extends Activity {
 
         if (Globals.server) {
             //sendBtMessage(clientIds);
+            initialData = true;
             Toast.makeText(getApplicationContext(), "Server",
                     Toast.LENGTH_SHORT).show();
             openAlert();
@@ -189,6 +196,7 @@ public class SuperTrunfo extends Activity {
     }
 
     private void setupBluetoothService() {
+        initialData = false;
         st = this;
         mBTService = Globals.myBTService;
         if(mBTService != null)
@@ -201,6 +209,7 @@ public class SuperTrunfo extends Activity {
             public void onClick(View v) {
                 if(round < (myCards.size()/2)) {
                     round++;
+                    updateRound();
                     selectedCard = myCards.get(round);
                     updateCard(selectedCard);
                     if (mBTService != null)
@@ -333,34 +342,38 @@ public class SuperTrunfo extends Activity {
         }
     }
 
-
-
-
     private void checkChoice(int choice) {
+        int value;
+        double score;
         switch (choice) {
             case R.id.rb_duration:
                 Toast.makeText(getApplicationContext(),
                      "Duration chosed",
                       Toast.LENGTH_SHORT).show();
+                value = myCards.get(round).duration;
                 break;
             case R.id.rb_boxOffice:
                 Toast.makeText(getApplicationContext(),
                         "Box Office chosed",
                         Toast.LENGTH_SHORT).show();
+                value = myCards.get(round).box_office;
                 break;
             case R.id.rb_orcar:
                 Toast.makeText(getApplicationContext(),
                         "Oscar chosed",
                         Toast.LENGTH_SHORT).show();
+                value = myCards.get(round).oscar;
                 break;
             case R.id.rb_imdb:
                 Toast.makeText(getApplicationContext(),
                         "IMDB chosed",
                         Toast.LENGTH_SHORT).show();
+                score = myCards.get(round).imdb;
                 break;
         }
-        selectedCard = myCards.get(round % myCards.size());
-        updateCard(selectedCard);
+
+        //if (myCards.get(round).)
+
     }
 
     private void updateRound() {
