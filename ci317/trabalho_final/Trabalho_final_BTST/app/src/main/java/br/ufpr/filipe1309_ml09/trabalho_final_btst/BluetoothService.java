@@ -486,8 +486,9 @@ public class BluetoothService {
 					// Send the obtained bytes to the UI Activity
 					//mHandler.obtainMessage(Bluetooth.MESSAGE_READ, bytes,
 					//		-1, buffer).sendToTarget();
-                    messageHandler.obtainMessage(Bluetooth.MESSAGE_READ, bytes,
-                            -1, buffer).sendToTarget();
+                    if (messageHandler != null)
+                        messageHandler.obtainMessage(Bluetooth.MESSAGE_READ, bytes,
+                                -1, buffer).sendToTarget();
 				} catch (IOException e) {
 					Log.e(TAG, "disconnected", e);
 					connectionLost();

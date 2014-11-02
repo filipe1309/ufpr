@@ -28,6 +28,8 @@ public class Bluetooth extends Activity {
     // Return Intent extra
     //public static String EXTRA_DEVICE_ADDRESS = "device_address";
 
+    public static Activity bt;
+
     // Member fields
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
@@ -89,21 +91,8 @@ public class Bluetooth extends Activity {
                     switch (msg.arg1) {
                         case BluetoothService.STATE_CONNECTED:
                             tv_text.setText("Status: Device connected to "+mConnectedDeviceName);
-                            bt_data = (Button) findViewById(R.id.bt_send_data);
-                            bt_data.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    String message = "successfully connected - create";
-                                    Toast.makeText(getBaseContext(),"MSG Enviada", Toast.LENGTH_SHORT).show();
-                                    sendBtMessage(message);
-                                }
-                            });
-                            bt_data.setVisibility(View.VISIBLE);
-                            //mConversationArrayAdapter.clear();
                             Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
-                            //intent.putExtra("BluetoothService", mBTService);
                             Globals.myBTService = mBTService;
-
                             startActivity(intent);
                             break;
                         case BluetoothService.STATE_CONNECTING:
@@ -167,7 +156,7 @@ public class Bluetooth extends Activity {
         setContentView(R.layout.activity_bluetooth);
 
         setConfigs();
-
+        bt = this;
         // Verifica se o aparelho possui Bluetooth
         if(mBluetoothAdapter == null) {
             bt_find_stop.setEnabled(false);
@@ -422,6 +411,7 @@ public class Bluetooth extends Activity {
     private void restartActivity() {
         if (mBTService != null)
             mBTService.stop();
+        Globals.myBTService = null;
         Globals.server = false;
         recreate();
     }

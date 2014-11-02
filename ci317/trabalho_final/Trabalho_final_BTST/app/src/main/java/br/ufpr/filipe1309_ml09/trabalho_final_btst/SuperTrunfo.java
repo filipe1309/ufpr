@@ -1,9 +1,14 @@
 package br.ufpr.filipe1309_ml09.trabalho_final_btst;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +43,9 @@ public class SuperTrunfo extends Activity {
 
     ArrayList<Card> myCards = new ArrayList<Card>();
     String clientIds;
-    int round=0;
+    int round;
     Card selectedCard;
+    ProgressDialog ringProgressDialog;
 
     public class Card {
         int card_image;
@@ -50,11 +56,87 @@ public class SuperTrunfo extends Activity {
 
         public Card(int card_image, int duration, int box_office, int oscar, double imdb){
             this.card_image = card_image;
-            this.duration =duration;
-            this.box_office=box_office;
-            this.oscar=oscar;
-            this.imdb=imdb;
+            this.duration = duration;
+            this.box_office = box_office;
+            this.oscar = oscar;
+            this.imdb = imdb;
         }
+    }
+
+    // The Handler that gets information back from the BluetoothService
+    public final Handler messageHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    // construct a string from the buffer
+                    String writeMessage = new String(writeBuf);
+                    Toast.makeText(getApplicationContext(),
+                            "MSG writed: "+ writeMessage,
+                            Toast.LENGTH_SHORT).show();
+                    updateRound();
+                    break;
+                case MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    // construct a string from the valid bytes in the buffer
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    if(!Globals.server && round == 0) {
+                        Toast.makeText(getApplicationContext(),
+                                "MSG received: "+ readMessage,
+                                Toast.LENGTH_SHORT).show();
+                        ringProgressDialog.dismiss();
+                        reorganizeClientCards(readMessage);
+                    } else if (round >= (myCards.size()/2)) {
+                        Toast.makeText(getApplicationContext(),
+                                "Game finished",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        updateRound();
+                        checkChoice(Integer.parseInt(readMessage));
+                    }
+                    round++;
+                    break;
+            }
+        }
+    };
+
+    private void openAlert() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SuperTrunfo.this);
+
+        alertDialogBuilder.setTitle(this.getTitle());
+        alertDialogBuilder.setMessage("Iniciar partida?");
+        alertDialogBuilder.setCancelable(false);
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                // go to a new activity of the app
+                //if (round == 0 && Globals.server) {
+                    sendBtMessage(clientIds);
+                    round++;
+                //}
+            }
+        });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                // cancel the alert box and put a Toast to the user
+                dialog.cancel();
+                finish();
+            }
+        });
+        //alertDialogBuilder.setOnDismissListener()
+        // set neutral button: Exit the app message
+//        alertDialogBuilder.setNeutralButton("Exit the app",new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog,int id) {
+//                // exit the app and go to the HOME
+//                //MainActivity.this.finish();
+//            }
+//        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
     }
 
     @Override
@@ -68,20 +150,51 @@ public class SuperTrunfo extends Activity {
         configureViews();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (Globals.server) {
+            //sendBtMessage(clientIds);
+            Toast.makeText(getApplicationContext(), "Server",
+                    Toast.LENGTH_SHORT).show();
+            openAlert();
+            //round = 1;
+        } else {
+            Toast.makeText(getApplicationContext(), "Client",
+                    Toast.LENGTH_SHORT).show();
+            launchRingDialog();
+        }
+    }
+
+    public void launchRingDialog() {
+        ringProgressDialog = ProgressDialog.show(SuperTrunfo.this, "Por favor aguarde ...",	"Esperando oponente ...", true);
+        ringProgressDialog.setCancelable(false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Here you should write your time consuming task...
+                    // Let the progress ring for 10 seconds...
+                    //Thread.sleep(10000);
+                } catch (Exception e) {
+
+                }
+                //ringProgressDialog.dismiss();
+            }
+        }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void setupBluetoothService() {
         st = this;
         mBTService = Globals.myBTService;
         if(mBTService != null)
             mBTService.setHandler(messageHandler);
-
-//        if (Globals.server) {
-//            Toast.makeText(getApplicationContext(), "Server",
-//                    Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(getApplicationContext(), "Client",
-//                    Toast.LENGTH_SHORT).show();
-//        }
-
     }
 
 
@@ -152,34 +265,44 @@ public class SuperTrunfo extends Activity {
         o player 1 e a segunda para o player2
     */
     private void reorganizeCards() {
-        /*Mistura o baralho e envia a primeira metade para o player2(client)*/
+        /*Mistura o baralho e envia od ids da primeira metade para o player2(client)*/
         if (Globals.server) {
             Collections.shuffle(myCards);
 
             clientIds = "";
-            for (int i = 0; i < (myCards.size()/2); i++) {
+            for (int i = 0; i < (myCards.size()); i++) {
                clientIds = clientIds.concat(myCards.get(i).card_image+",");
             }
             //clientIds = clientIds.substring(0, clientIds.length()-1);
-            Toast.makeText(getApplicationContext(), "Server: "+clientIds,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Server: "+clientIds,
+//                    Toast.LENGTH_SHORT).show();
         }  else {
             //round--;
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (Globals.server)
-            sendBtMessage(clientIds);
+
+
+    private void reorganizeClientCards(String ids) {
+        String[] split = ids.split(",");
+        for (int i = 0; i < split.length; i++) {
+            Log.d("Split",split[i]);
+            for (int j = i; j < myCards.size(); j++) {
+                if (myCards.get(j).card_image == Integer.parseInt(split[i])) {
+                    changeCardPos(i, j);
+                }
+            }
+        }
     }
 
-    private void reorganizeClientCards() {
-
+    private void changeCardPos(int newPos, int i) {
+        Card aux = myCards.get(newPos);
+        myCards.set(newPos, myCards.get(i));
+        myCards.set(i, aux);
     }
 
     private void initCards() {
+        round = 0;
         myCards.add(new Card(R.drawable.odisseia_no_espaco,160,190,1,8.3));
         myCards.add(new Card(R.drawable.avatar,162,2787,3,7.9));
         myCards.add(new Card(R.drawable.a_vida_e_bela,116,229,3,8.6));
@@ -218,45 +341,7 @@ public class SuperTrunfo extends Activity {
         }
     }
 
-    // The Handler that gets information back from the BluetoothChatService
-    private final Handler messageHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-                    String writeMessage = new String(writeBuf);
-                    Toast.makeText(getApplicationContext(),
-                            "MSG writed: "+ writeMessage,
-                            Toast.LENGTH_SHORT).show();
-                    updateRound();
-                    break;
-                case MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-//                    Toast.makeText(getApplicationContext(),
-//                            "MSG received: "+ readMessage,
-//                            Toast.LENGTH_SHORT).show();
-                    if(!Globals.server && round == 0) {
-                        Toast.makeText(getApplicationContext(),
-                            "MSG received: "+ readMessage,
-                            Toast.LENGTH_SHORT).show();
-                        reorganizeClientCards();
-                    } else if (round >= (myCards.size()/2)) {
-                        Toast.makeText(getApplicationContext(),
-                            "Game finished",
-                            Toast.LENGTH_SHORT).show();
-                    } else {
-                        updateRound();
-                        checkChoice(Integer.parseInt(readMessage));
-                        round++;
-                    }
-                    break;
-            }
-        }
-    };
+
 
 
     private void checkChoice(int choice) {
@@ -294,15 +379,19 @@ public class SuperTrunfo extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
         mBTService.stop();
+        Globals.myBTService = null;
+        Globals.server = false;
+        Bluetooth.bt.recreate();
         finish();
     }
 
     @Override
     protected void onDestroy() {
-        mBTService.stop();
         super.onDestroy();
-        //Intent intent = new Intent(getBaseContext(), Bluetooth.class);
-        // flag para criar uma nova e destruir a que ja esta rodando (Bluetooth.java)
+        mBTService.stop();
+        Globals.myBTService = null;
+        Globals.server = false;
+
     }
 
     @Override
