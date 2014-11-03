@@ -142,7 +142,8 @@ public class SuperTrunfo extends Activity {
             } else {
                 //Toast.makeText(getApplicationContext(), "Client",
                 //        Toast.LENGTH_SHORT).show();
-                launchRingDialog();
+                if (mBTService != null)
+                    launchRingDialog();
             }
         }
     }
@@ -281,18 +282,18 @@ public class SuperTrunfo extends Activity {
 
     private void updateCard(Card selectedCard) {
         card_image.setImageResource(selectedCard.card_image);
-        duration.setText(String.valueOf(selectedCard.duration)+" Min");
-        box_office.setText("$ "+String.valueOf(selectedCard.box_office)+" M");
-        oscar.setText(String.valueOf(selectedCard.oscar));
-        imdb.setText(String.valueOf(selectedCard.imdb));
+        duration.setText(getResources().getString(R.string.duration) +"    "+String.valueOf(selectedCard.duration)+" Min");
+        box_office.setText(getResources().getString(R.string.box_office) +" $ "+String.valueOf(selectedCard.box_office)+" M");
+        oscar.setText(String.valueOf(getResources().getString(R.string.oscars)+"        " +selectedCard.oscar));
+        imdb.setText(String.valueOf(getResources().getString(R.string.imdb_score)+ "         " +selectedCard.imdb));
     }
 
     private void configureViews() {
         card_image = (ImageView) findViewById(R.id.card_image);
-        duration = (TextView)findViewById(R.id.tv_duration);
-        box_office = (TextView)findViewById(R.id.tv_boxOffice);
-        oscar = (TextView)findViewById(R.id.tv_oscar);
-        imdb = (TextView)findViewById(R.id.tv_imdb);
+        duration = (RadioButton)findViewById(R.id.rb_duration);
+        box_office = (RadioButton)findViewById(R.id.rb_boxOffice);
+        oscar = (RadioButton)findViewById(R.id.rb_oscar);
+        imdb = (RadioButton)findViewById(R.id.rb_imdb);
         rg_card = (RadioGroup) findViewById(R.id.rg_card);
         tv_round = (TextView) findViewById(R.id.tv_round);
         tv_my_score = (TextView) findViewById(R.id.tv_my_score);
@@ -306,7 +307,7 @@ public class SuperTrunfo extends Activity {
                     nextRound(checkedId);
                 } else if (checkedId == R.id.rb_boxOffice) {
                     nextRound(checkedId);
-                } else if (checkedId == R.id.rb_orcar) {
+                } else if (checkedId == R.id.rb_oscar) {
                     nextRound(checkedId);
                 } else if (checkedId == R.id.rb_imdb) {
                     nextRound(checkedId);
@@ -331,7 +332,7 @@ public class SuperTrunfo extends Activity {
             case R.id.rb_boxOffice:
                 defineWinner(firstCard.box_office, secondCard.box_office);
                 break;
-            case R.id.rb_orcar:
+            case R.id.rb_oscar:
                 defineWinner(firstCard.oscar, secondCard.oscar);
                 break;
             case R.id.rb_imdb:

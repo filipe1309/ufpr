@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -21,7 +22,7 @@
         android:layout_alignParentEnd="true" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:layout_marginStart="5dp"
@@ -31,7 +32,7 @@
         android:layout_alignParentStart="true">
 
         <RadioGroup
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill"
             android:id="@+id/rg_card"
@@ -53,8 +54,8 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/orcars"
-                android:id="@+id/rb_orcar"
+                android:text="@string/oscars"
+                android:id="@+id/rb_oscar"
                 android:checked="false" />
             <RadioButton
                 android:layout_width="wrap_content"
@@ -63,50 +64,6 @@
                 android:id="@+id/rb_imdb"
                 android:checked="false" />
         </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/empty_field"
-            android:id="@+id/tv_duration"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/rg_card"
-            android:layout_toEndOf="@+id/rg_card"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/empty_field"
-            android:id="@+id/tv_boxOffice"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/rg_card"
-            android:layout_toEndOf="@+id/rg_card"
-            android:layout_marginTop="40dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/empty_field"
-            android:id="@+id/tv_oscar"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/rg_card"
-            android:layout_toEndOf="@+id/rg_card"
-            android:layout_marginTop="75dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/empty_field"
-            android:id="@+id/tv_imdb"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/rg_card"
-            android:layout_toEndOf="@+id/rg_card"
-            android:layout_marginTop="110dp" />
 
     </RelativeLayout>
 

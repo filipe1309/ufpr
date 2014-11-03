@@ -11,10 +11,10 @@
     <string name="text">Status: ----</string>
     <string name="data">Send MSG</string>
 
-    <string name="duration">Duration</string>
+    <string name="duration">Duration  </string>
     <string name="box_office">Box Office</string>
-    <string name="orcars">Orcars</string>
-    <string name="imdb_score">Score(IMDB)</string>
+    <string name="oscars">Oscar     </string>
+    <string name="imdb_score">IMDB      </string>
     <string name="empty_field">…</string>
     <string name="round">Round</string>
     <string name="me">Me</string>
