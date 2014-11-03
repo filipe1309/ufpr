@@ -90,56 +90,55 @@ public class Bluetooth extends Activity {
                         Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
                     switch (msg.arg1) {
                         case BluetoothService.STATE_CONNECTED:
-                            tv_text.setText("Status: Device connected to "+mConnectedDeviceName);
+                            //tv_text.setText("Status: Device connected to "+mConnectedDeviceName);
                             Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
                             Globals.myBTService = mBTService;
                             startActivity(intent);
                             break;
                         case BluetoothService.STATE_CONNECTING:
-                            tv_text.setText("Status: connecting...");
+                            tv_text.setText("Status: "+getResources().getString(R.string.title_connecting));
                             break;
                         case BluetoothService.STATE_LISTEN:
                         case BluetoothService.STATE_NONE:
-                            tv_text.setText("Status: Device not connected");
+                            tv_text.setText("Status: "+getResources().getString(R.string.not_connected));
                             break;
                     }
                     break;
                 case MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
-                    String writeMessage = new String(writeBuf);
-                    //mConversationArrayAdapter.add("Me:  " + writeMessage);
-                    Toast.makeText(getApplicationContext(),
-                            "MSG writed: "+ writeMessage,
-                            Toast.LENGTH_SHORT).show();
+                    //String writeMessage = new String(writeBuf);
+                    //Toast.makeText(getApplicationContext(),
+                    //        "MSG writed: "+ writeMessage,
+                    //        Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    //String readMessage = new String(readBuf, 0, msg.arg1);
                     //mConversationArrayAdapter.add(mConnectedDeviceName + ":  "
                     //        + readMessage);
-                    Toast.makeText(getApplicationContext(),
-                            "MSG received: "+ readMessage,
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),
+                    //        "MSG received: "+ readMessage,
+                    //        Toast.LENGTH_SHORT).show();
                     //mBTService.message = readMessage;
                     break;
                 case MESSAGE_DEVICE_NAME:
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(getApplicationContext(),
-                            "Connected to " + mConnectedDeviceName,
+                            getResources().getString(R.string.title_connected_to) + mConnectedDeviceName,
                             Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(),"Toast: "+
+                    Toast.makeText(getApplicationContext(),
                             msg.getData().getString(TOAST), Toast.LENGTH_SHORT)
                             .show();
                     Globals.server = false;
                     restartActivity();
                     break;
                 case MESSAGE_RESET:
-                    Toast.makeText(getApplicationContext(),"Connection Lost", Toast.LENGTH_SHORT)
+                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.connection_lost), Toast.LENGTH_SHORT)
                             .show();
                     // Se a conexão com o adversario
                     // for fechada, então fecha a ac st deste(se estiver aberta) e restart.
@@ -162,8 +161,8 @@ public class Bluetooth extends Activity {
         if(mBluetoothAdapter == null) {
             bt_find_stop.setEnabled(false);
             bt_disc.setEnabled(false);
-            tv_text.setText("Status: not supported");
-            Toast.makeText(this, "Device does not support Bluetooth", Toast.LENGTH_LONG).show();
+            tv_text.setText("Status: "+getResources().getString(R.string.bt_not_supported_leaving));
+            Toast.makeText(this, getResources().getString(R.string.bt_not_supported_leaving), Toast.LENGTH_LONG).show();
             finish();
             Intent intent = new Intent(getBaseContext(), SuperTrunfo.class);
             startActivity(intent);
@@ -283,7 +282,7 @@ public class Bluetooth extends Activity {
     private void sendBtMessage(String message) {
         // Check that we're actually connected before trying anything
         if (mBTService.getState() != BluetoothService.STATE_CONNECTED) {
-            Toast.makeText(this, "Você não esta conectado a um dispositivo", Toast.LENGTH_SHORT)
+            Toast.makeText(this, getResources().getString(R.string.not_connected), Toast.LENGTH_SHORT)
                     .show();
             return;
         }
@@ -337,14 +336,8 @@ public class Bluetooth extends Activity {
                     mNewDevicesArrayAdapter.add(device.getName() + "\n"
                             + device.getAddress());
                 } else {
-                    Toast.makeText(getApplicationContext(),"Device founded already paired: "+device.getName(),
+                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.already_paired)+device.getName(),
                             Toast.LENGTH_SHORT).show();
-                    /*for (int i = 0; i < mPairedDevicesArrayAdapter.getCount(); i++) {
-                        if (mPairedDevicesArrayAdapter.getItem(i).contains(device.getAddress())) {
-                            mPairedDevicesArrayAdapter.getItem(i).concat("(In Range)");
-                            mPairedDevicesArrayAdapter.notifyDataSetChanged();
-                        }
-                    }*/
                 }
 
             } else if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
@@ -437,7 +430,7 @@ public class Bluetooth extends Activity {
                 mNewDevicesArrayAdapter.clear();
                 title_new_devices.setVisibility(View.VISIBLE);
                 bt_find_stop.setEnabled(false);
-                bt_find_stop.setText("Pesquisando...");
+                bt_find_stop.setText(getResources().getString(R.string.scanning));
                 mBluetoothAdapter.startDiscovery();
             }
     }
@@ -468,7 +461,7 @@ public class Bluetooth extends Activity {
                 } else {
                     // User did not enable Bluetooth or an error occurred
                     Log.d(TAG, "BT not enabled");
-                    Toast.makeText(this,"Bluetooth não foi ativado, fechando app...",
+                    Toast.makeText(this,getResources().getString(R.string.bt_not_enabled_leaving),
                             Toast.LENGTH_SHORT).show();
                     finish();
                 }

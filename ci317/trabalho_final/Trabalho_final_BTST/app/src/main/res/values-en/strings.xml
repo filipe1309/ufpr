@@ -24,10 +24,13 @@
     <!--  Bluetooth -->
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
-    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Super Trunfo.</string>
     <string name="title_connecting">connecting…</string>
     <string name="title_connected_to">connected to </string>
     <string name="title_not_connected">not connected</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="bt_not_supported_leaving">Device does not support Bluetooth. Finishing Super Trunfo…</string>
+    <string name="already_paired">Device already paired: </string>
 
     <!--  List -->
     <string name="scanning">scanning for devices…</string>
