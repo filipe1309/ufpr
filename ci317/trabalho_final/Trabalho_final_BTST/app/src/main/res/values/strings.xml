@@ -31,6 +31,7 @@
     <string name="connection_lost">Conexão perdida</string>
     <string name="bt_not_supported_leaving">Bluetooth não é suportado. Finalizando Super Trunfo…</string>
     <string name="already_paired">Dispositivo encontrado já pareado: </string>
+    <string name="unable_to_connect">Não é possível se conectar neste dispositivo</string>
 
     <!--  List -->
     <string name="scanning">buscando por dispositivos…</string>

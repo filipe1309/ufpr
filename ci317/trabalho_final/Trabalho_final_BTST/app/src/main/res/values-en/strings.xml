@@ -31,6 +31,7 @@
     <string name="connection_lost">Connection lost</string>
     <string name="bt_not_supported_leaving">Device does not support Bluetooth. Finishing Super Trunfo…</string>
     <string name="already_paired">Device already paired: </string>
+    <string name="unable_to_connect">Unable to connect device</string>
 
     <!--  List -->
     <string name="scanning">scanning for devices…</string>
