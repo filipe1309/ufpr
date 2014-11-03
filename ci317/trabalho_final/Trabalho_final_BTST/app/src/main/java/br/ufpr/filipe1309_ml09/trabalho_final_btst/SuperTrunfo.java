@@ -107,7 +107,7 @@ public class SuperTrunfo extends Activity {
                             updateCard(selectedCard);
                         } else {
                             Toast.makeText(getApplicationContext(),
-                                    "Fim",
+                                    getResources().getString(R.string.end_game),
                                     Toast.LENGTH_SHORT).show();
                             changeStateOfRoundCard(false);
                             newGame();
@@ -136,13 +136,12 @@ public class SuperTrunfo extends Activity {
             if (Globals.server) {
                 //sendBtMessage(clientIds);
                 initialData = true;
-                Toast.makeText(getApplicationContext(), "Server",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Server",
+                //        Toast.LENGTH_SHORT).show();
                 openAlert();
             } else {
-
-                Toast.makeText(getApplicationContext(), "Client",
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Client",
+                //        Toast.LENGTH_SHORT).show();
                 launchRingDialog();
             }
         }
@@ -154,11 +153,11 @@ public class SuperTrunfo extends Activity {
         }
         if (round < ((myCards.size()/2))) {
             if(b) {
-                Toast.makeText(this, "Você venceu", Toast.LENGTH_SHORT)
+                Toast.makeText(this, getResources().getString(R.string.you_win), Toast.LENGTH_SHORT)
                         .show();
                 my_score++;
             } else {
-                Toast.makeText(this, "Você perdeu", Toast.LENGTH_SHORT)
+                Toast.makeText(this, getResources().getString(R.string.you_lost), Toast.LENGTH_SHORT)
                         .show();
                 opponent_score++;
             }
@@ -169,10 +168,10 @@ public class SuperTrunfo extends Activity {
     private void openAlert() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SuperTrunfo.this);
         alertDialogBuilder.setTitle(this.getTitle());
-        alertDialogBuilder.setMessage("Iniciar partida?");
+        alertDialogBuilder.setMessage(getResources().getString(R.string.start_game));
         alertDialogBuilder.setCancelable(false);
         // set positive button: Yes message
-        alertDialogBuilder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.yes,new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 sendBtMessage(clientIds);
                 selectedCard = myCards.get(myCardRound);
@@ -181,7 +180,7 @@ public class SuperTrunfo extends Activity {
             }
         });
         // set negative button: No message
-        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.no),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 // cancel the alert box and put a Toast to the user
                 dialog.cancel();
@@ -197,17 +196,17 @@ public class SuperTrunfo extends Activity {
     private void newGameAlert(String playerMessage) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SuperTrunfo.this);
         alertDialogBuilder.setTitle(playerMessage);
-        alertDialogBuilder.setMessage("Iniciar nova partida?");
+        alertDialogBuilder.setMessage(getResources().getString(R.string.start_new_game));
         alertDialogBuilder.setCancelable(false);
         // set positive button: Yes message
-        alertDialogBuilder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.yes),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 newGame = true;
                 recreate();
             }
         });
         // set negative button: No message
-        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.no),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 // cancel the alert box and put a Toast to the user
                 dialog.cancel();
@@ -221,7 +220,7 @@ public class SuperTrunfo extends Activity {
     }
 
     public void launchRingDialog() {
-        ringProgressDialog = ProgressDialog.show(SuperTrunfo.this, "Por favor aguarde ...",	"Esperando oponente ...", true);
+        ringProgressDialog = ProgressDialog.show(SuperTrunfo.this, getResources().getString(R.string.please_wait),	"Esperando oponente ...", true);
         ringProgressDialog.setCancelable(false);
         new Thread(new Runnable() {
             @Override
@@ -260,7 +259,7 @@ public class SuperTrunfo extends Activity {
                     updateCard(selectedCard);
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "Game finished",
+                            getResources().getString(R.string.end_game),
                             Toast.LENGTH_SHORT).show();
                     changeStateOfRoundCard(false);
                     newGame();
@@ -272,11 +271,11 @@ public class SuperTrunfo extends Activity {
     private void newGame() {
         String msg = "";
         if (my_score > opponent_score)
-            msg = "Parabéns voce ganhou =), jogar novamente?";
+            msg = getResources().getString(R.string.you_win_the_game);
         else if (my_score < opponent_score)
-            msg = "Você perder :(, jogar novamente?";
+            msg = getResources().getString(R.string.you_lost_the_game);
         else
-            msg = "Empatou :P, jogar novamente?";
+            msg = getResources().getString(R.string.tied_play_again);
         newGameAlert(msg);
     }
 
@@ -349,7 +348,7 @@ public class SuperTrunfo extends Activity {
                         changeStateOfRoundCard(true);
                     }
                 } else {
-                    Toast.makeText(this, "Empatou", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, getResources().getString(R.string.tied), Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;
@@ -370,7 +369,7 @@ public class SuperTrunfo extends Activity {
                 changeStateOfRoundCard(true);
             }
         } else {
-            Toast.makeText(this, "Empatou", Toast.LENGTH_SHORT)
+            Toast.makeText(this, getResources().getString(R.string.tied), Toast.LENGTH_SHORT)
                     .show();
         }
     }
@@ -396,7 +395,6 @@ public class SuperTrunfo extends Activity {
     private void reorganizeClientCards(String ids) {
         String[] split = ids.split(",");
         for (int i = 0; i < split.length; i++) {
-            Log.d("Split",split[i]);
             for (int j = i; j < myCards.size(); j++) {
                 if (myCards.get(j).card_image == Integer.parseInt(split[i])) {
                     changeCardPos(i, j);
@@ -442,7 +440,7 @@ public class SuperTrunfo extends Activity {
     private void sendBtMessage(String message) {
         // Check that we're actually connected before trying anything
         if (mBTService.getState() != BluetoothService.STATE_CONNECTED) {
-            Toast.makeText(this, "Você não esta conectado a um dispositivo", Toast.LENGTH_SHORT)
+            Toast.makeText(this, getResources().getString(R.string.not_connected), Toast.LENGTH_SHORT)
                     .show();
             return;
         }

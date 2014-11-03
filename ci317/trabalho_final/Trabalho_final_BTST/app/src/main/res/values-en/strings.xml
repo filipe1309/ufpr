@@ -21,7 +21,7 @@
     <string name="me">Me</string>
     <string name="opponent">Opponent</string>
 
-    <!--  BluetoothChat -->
+    <!--  Bluetooth -->
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
@@ -29,7 +29,7 @@
     <string name="title_connected_to">connected to </string>
     <string name="title_not_connected">not connected</string>
 
-    <!--  DeviceListActivity -->
+    <!--  List -->
     <string name="scanning">scanning for devices…</string>
     <string name="select_device">select a device to connect</string>
     <string name="none_paired">No devices have been paired</string>
@@ -37,6 +37,20 @@
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>
     <string name="button_scan">Scan for devices</string>
+
+    <!--  SuperTrunfo -->
+    <string name="you_win">You win</string>
+    <string name="you_lost">You lost</string>
+    <string name="tied">Tied</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="start_game">Start game?</string>
+    <string name="start_new_game">Start new game?</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="end_game">Endgame</string>
+    <string name="you_win_the_game">Congratulations, you win =), play again?</string>
+    <string name="you_lost_the_game">You lost :(, play again?</string>
+    <string name="tied_play_again">Tied :P, play again?</string>
 
     <!-- Options Menu -->
     <string name="connect">Connect a device</string>

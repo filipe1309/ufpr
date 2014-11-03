@@ -29,7 +29,7 @@
     <string name="title_connected_to">conectado a </string>
     <string name="title_not_connected">não conectado</string>
 
-    <!--  DeviceListActivity -->
+    <!--  List -->
     <string name="scanning">buscando por dispositivos…</string>
     <string name="select_device">selecione um dispositivo para conectar</string>
     <string name="none_paired">Nenhum dispositivo foi pareado</string>
@@ -37,6 +37,20 @@
     <string name="title_paired_devices">Dispositivos Pareados</string>
     <string name="title_other_devices">Outros dispositivos disponíveis</string>
     <string name="button_scan">Buscar por dispositivos</string>
+
+    <!--  SuperTrunfo -->
+    <string name="you_win">Você venceu</string>
+    <string name="you_lost">Você perdeu</string>
+    <string name="tied">Empatou</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="start_game">Iniciar partida?</string>
+    <string name="start_new_game">Iniciar nova partida?</string>
+    <string name="please_wait">Por favor aguarde…</string>
+    <string name="end_game">Fim de jogo</string>
+    <string name="you_win_the_game">Parabéns voce ganhou =), jogar novamente?</string>
+    <string name="you_lost_the_game">Você perdeu :(, jogar novamente?</string>
+    <string name="tied_play_again">Empatou :P, jogar novamente?</string>
 
     <!-- Options Menu -->
     <string name="connect">Conecte a um dispositivo</string>
