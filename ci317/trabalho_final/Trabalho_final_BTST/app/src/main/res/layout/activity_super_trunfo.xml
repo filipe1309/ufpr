@@ -116,38 +116,93 @@
         android:layout_below="@+id/card_image"
         android:layout_centerHorizontal="true">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/round"
-            android:id="@+id/tv_round"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_margin="10dp" />
+            android:id="@+id/ll_text_scores"
+            android:gravity="center" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/me"
-            android:id="@+id/tv_my_score"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/tv_round"
-            android:layout_toEndOf="@+id/tv_round"
-            android:layout_margin="10dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/round"
+                android:id="@+id/tv_text_round"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="#ff18a77d"
+                android:layout_margin="5dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/me"
+                android:id="@+id/tv_text_my_score"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#4761f5"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/opponent"
+                android:id="@+id/tv_text_opponent_score"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#fff54842"
+                android:layout_margin="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/opponent"
-            android:id="@+id/tv_opponent_score"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/tv_my_score"
-            android:layout_toEndOf="@+id/tv_my_score"
-            android:layout_margin="10dp" />
+            android:layout_below="@+id/ll_text_scores"
+            android:gravity="center" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/tv_round"
+                android:text="@string/empty_field"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#ff18a77d"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginEnd="35dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/tv_my_score"
+                android:text="@string/empty_field"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#4761f5"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/tv_opponent_score"
+                android:text="@string/empty_field"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#fff54842"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="35dp" />
+            </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

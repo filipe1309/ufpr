@@ -136,6 +136,7 @@ public class Bluetooth extends Activity {
                             msg.getData().getString(TOAST), Toast.LENGTH_SHORT)
                             .show();
                     Globals.server = false;
+                    restartActivity();
                     break;
                 case MESSAGE_RESET:
                     Toast.makeText(getApplicationContext(),"Connection Lost", Toast.LENGTH_SHORT)

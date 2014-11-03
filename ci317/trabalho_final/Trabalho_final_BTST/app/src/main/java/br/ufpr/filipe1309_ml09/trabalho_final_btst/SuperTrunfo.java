@@ -41,13 +41,16 @@ public class SuperTrunfo extends Activity {
     TextView imdb;
     ImageView card_image;
     TextView tv_round;
+    TextView tv_my_score;
+    TextView tv_opponent_score;
 
+    // Local variables
     ArrayList<Card> myCards = new ArrayList<Card>();
     String clientIds;
-    int round;
+    int round, myCardRound, my_score, opponent_score;
     Card selectedCard;
     ProgressDialog ringProgressDialog;
-    boolean initialData;
+    boolean initialData, newGame;
 
     public class Card {
         int card_image;
@@ -71,7 +74,7 @@ public class SuperTrunfo extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
+//                    byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
 //                    String writeMessage = new String(writeBuf);
 //                    Toast.makeText(getApplicationContext(),
@@ -83,26 +86,32 @@ public class SuperTrunfo extends Activity {
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
 
-                    if (initialData)
-                        round++;
-                    updateRound();
-                    selectedCard = myCards.get(round % myCards.size());
-                    updateCard(selectedCard);
-
                     if(!Globals.server && !initialData) {
-                        Toast.makeText(getApplicationContext(),
-                                "MSG received: "+ readMessage,
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),
+//                                "MSG received: "+ readMessage,
+//                                Toast.LENGTH_SHORT).show();
                         ringProgressDialog.dismiss();
                         reorganizeClientCards(readMessage);
                         initialData = true;
-                        //changeStateOfRoundCard(false);
-                    } else if (round > (myCards.size()/2)) {
-                        Toast.makeText(getApplicationContext(),
-                                "Game finished",
-                                Toast.LENGTH_SHORT).show();
+                        // Block radio buttons for player2(client) in the first round
+                        for(int i = 0; i < rg_card.getChildCount(); i++){
+                            (rg_card.getChildAt(i)).setEnabled(false);
+                        }
                     } else {
-                        checkChoice(Integer.parseInt(readMessage));
+                        defineResult(Integer.parseInt(readMessage));
+                        round++;
+                        myCardRound ++;
+                        updateRound();
+                        if (round < (myCards.size()/2)) {
+                            selectedCard = myCards.get(myCardRound);
+                            updateCard(selectedCard);
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Fim",
+                                    Toast.LENGTH_SHORT).show();
+                            changeStateOfRoundCard(false);
+                            newGame();
+                        }
                     }
                     break;
             }
@@ -123,18 +132,19 @@ public class SuperTrunfo extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        if (!initialData) {
+            if (Globals.server) {
+                //sendBtMessage(clientIds);
+                initialData = true;
+                Toast.makeText(getApplicationContext(), "Server",
+                        Toast.LENGTH_SHORT).show();
+                openAlert();
+            } else {
 
-        if (Globals.server) {
-            //sendBtMessage(clientIds);
-            initialData = true;
-            Toast.makeText(getApplicationContext(), "Server",
-                    Toast.LENGTH_SHORT).show();
-            openAlert();
-            //round = 1;
-        } else {
-            Toast.makeText(getApplicationContext(), "Client",
-                    Toast.LENGTH_SHORT).show();
-            launchRingDialog();
+                Toast.makeText(getApplicationContext(), "Client",
+                        Toast.LENGTH_SHORT).show();
+                launchRingDialog();
+            }
         }
     }
 
@@ -142,25 +152,58 @@ public class SuperTrunfo extends Activity {
         for(int i = 0; i < rg_card.getChildCount(); i++){
             (rg_card.getChildAt(i)).setEnabled(b);
         }
+        if (round < ((myCards.size()/2))) {
+            if(b) {
+                Toast.makeText(this, "Você venceu", Toast.LENGTH_SHORT)
+                        .show();
+                my_score++;
+            } else {
+                Toast.makeText(this, "Você perdeu", Toast.LENGTH_SHORT)
+                        .show();
+                opponent_score++;
+            }
+        }
     }
 
 
     private void openAlert() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SuperTrunfo.this);
-
         alertDialogBuilder.setTitle(this.getTitle());
         alertDialogBuilder.setMessage("Iniciar partida?");
         alertDialogBuilder.setCancelable(false);
         // set positive button: Yes message
         alertDialogBuilder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-                // go to a new activity of the app
-                //if (round == 0 && Globals.server) {
                 sendBtMessage(clientIds);
-                selectedCard = myCards.get(0);
+                selectedCard = myCards.get(myCardRound);
                 updateCard(selectedCard);
-                //round++;
-                //}
+                updateRound();
+            }
+        });
+        // set negative button: No message
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                // cancel the alert box and put a Toast to the user
+                dialog.cancel();
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show alert
+        alertDialog.show();
+    }
+
+    private void newGameAlert(String playerMessage) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SuperTrunfo.this);
+        alertDialogBuilder.setTitle(playerMessage);
+        alertDialogBuilder.setMessage("Iniciar nova partida?");
+        alertDialogBuilder.setCancelable(false);
+        // set positive button: Yes message
+        alertDialogBuilder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id) {
+                newGame = true;
+                recreate();
             }
         });
         // set negative button: No message
@@ -207,16 +250,34 @@ public class SuperTrunfo extends Activity {
         rb_selected = (Button) findViewById(radioButton);
         rb_selected.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(round < (myCards.size()/2)) {
-                    round++;
-                    updateRound();
-                    selectedCard = myCards.get(round);
+                if (mBTService != null)
+                    sendBtMessage(String.valueOf(rb_selected.getId()));
+                round++;
+                myCardRound++;
+                updateRound();
+                if(round < ((myCards.size()/2))) {
+                    selectedCard = myCards.get(myCardRound);
                     updateCard(selectedCard);
-                    if (mBTService != null)
-                        sendBtMessage(String.valueOf(rb_selected.getId()));
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Game finished",
+                            Toast.LENGTH_SHORT).show();
+                    changeStateOfRoundCard(false);
+                    newGame();
                 }
             }
         });
+    }
+
+    private void newGame() {
+        String msg = "";
+        if (my_score > opponent_score)
+            msg = "Parabéns voce ganhou =), jogar novamente?";
+        else if (my_score < opponent_score)
+            msg = "Você perder :(, jogar novamente?";
+        else
+            msg = "Empatou :P, jogar novamente?";
+        newGameAlert(msg);
     }
 
     private void updateCard(Card selectedCard) {
@@ -235,34 +296,83 @@ public class SuperTrunfo extends Activity {
         imdb = (TextView)findViewById(R.id.tv_imdb);
         rg_card = (RadioGroup) findViewById(R.id.rg_card);
         tv_round = (TextView) findViewById(R.id.tv_round);
+        tv_my_score = (TextView) findViewById(R.id.tv_my_score);
+        tv_opponent_score = (TextView) findViewById(R.id.tv_opponent_score);
 
         rg_card.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // find which radio button is selected
                 if (checkedId == R.id.rb_duration) {
-                    Toast.makeText(getApplicationContext(), "choice: Duração",
-                            Toast.LENGTH_SHORT).show();
-                    nextCard(checkedId);
-                    rg_card.clearCheck();
+                    nextRound(checkedId);
                 } else if (checkedId == R.id.rb_boxOffice) {
-                    Toast.makeText(getApplicationContext(), "choice: Bilheteria",
-                            Toast.LENGTH_SHORT).show();
-                    nextCard(checkedId);
-                    rg_card.clearCheck();
+                    nextRound(checkedId);
                 } else if (checkedId == R.id.rb_orcar) {
-                    Toast.makeText(getApplicationContext(), "choice: Oscar",
-                            Toast.LENGTH_SHORT).show();
-                    nextCard(checkedId);
-                    rg_card.clearCheck();
+                    nextRound(checkedId);
                 } else if (checkedId == R.id.rb_imdb) {
-                    Toast.makeText(getApplicationContext(), "choice: ImDB",
-                            Toast.LENGTH_SHORT).show();
-                    nextCard(checkedId);
-                    rg_card.clearCheck();
+                    nextRound(checkedId);
                 }
             }
         });
+    }
+
+    private void nextRound(int checkedId) {
+        defineResult(checkedId);
+        nextCard(checkedId);
+        rg_card.clearCheck();
+    }
+
+    private void defineResult(int choice) {
+        Card firstCard = myCards.get(round);
+        Card secondCard =  myCards.get(round+(myCards.size()/2));
+        switch (choice) {
+            case R.id.rb_duration:
+                defineWinner(firstCard.duration, secondCard.duration);
+                break;
+            case R.id.rb_boxOffice:
+                defineWinner(firstCard.box_office, secondCard.box_office);
+                break;
+            case R.id.rb_orcar:
+                defineWinner(firstCard.oscar, secondCard.oscar);
+                break;
+            case R.id.rb_imdb:
+                if (firstCard.imdb > secondCard.imdb) {
+                    if (Globals.server) {
+                        changeStateOfRoundCard(true);
+                    } else {
+                        changeStateOfRoundCard(false);
+                    }
+                } else if (firstCard.imdb < secondCard.imdb) {
+                    if (Globals.server) {
+                        changeStateOfRoundCard(false);
+                    } else {
+                        changeStateOfRoundCard(true);
+                    }
+                } else {
+                    Toast.makeText(this, "Empatou", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+        }
+    }
+
+    private void defineWinner(int value, int otherValue) {
+        if (value > otherValue) {
+            if (Globals.server) {
+               changeStateOfRoundCard(true);
+            } else {
+               changeStateOfRoundCard(false);
+            }
+        } else if (value < otherValue) {
+            if (Globals.server) {
+               changeStateOfRoundCard(false);
+            } else {
+                changeStateOfRoundCard(true);
+            }
+        } else {
+            Toast.makeText(this, "Empatou", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     /*
@@ -270,17 +380,18 @@ public class SuperTrunfo extends Activity {
         o player 1 e a segunda para o player2
     */
     private void reorganizeCards() {
-        /*Mistura o baralho e envia od ids da primeira metade para o player2(client)*/
+        /*Mistura o baralho e envia os ids da primeira metade para o player2(client)*/
         if (Globals.server) {
             Collections.shuffle(myCards);
+            myCardRound = 0;
             clientIds = "";
             for (int i = 0; i < (myCards.size()); i++) {
                clientIds = clientIds.concat(myCards.get(i).card_image+",");
             }
+        } else {
+            myCardRound = (myCards.size()/2);
         }
     }
-
-
 
     private void reorganizeClientCards(String ids) {
         String[] split = ids.split(",");
@@ -292,8 +403,9 @@ public class SuperTrunfo extends Activity {
                 }
             }
         }
-        selectedCard = myCards.get(0);
+        selectedCard = myCards.get(myCardRound);
         updateCard(selectedCard);
+        updateRound();
     }
 
     private void changeCardPos(int newPos, int i) {
@@ -303,7 +415,8 @@ public class SuperTrunfo extends Activity {
     }
 
     private void initCards() {
-        round = 0;
+        round = my_score = opponent_score = 0;
+        newGame = false;
         myCards.add(new Card(R.drawable.odisseia_no_espaco,160,190,1,8.3));
         myCards.add(new Card(R.drawable.avatar,162,2787,3,7.9));
         myCards.add(new Card(R.drawable.a_vida_e_bela,116,229,3,8.6));
@@ -342,42 +455,10 @@ public class SuperTrunfo extends Activity {
         }
     }
 
-    private void checkChoice(int choice) {
-        int value;
-        double score;
-        switch (choice) {
-            case R.id.rb_duration:
-                Toast.makeText(getApplicationContext(),
-                     "Duration chosed",
-                      Toast.LENGTH_SHORT).show();
-                value = myCards.get(round).duration;
-                break;
-            case R.id.rb_boxOffice:
-                Toast.makeText(getApplicationContext(),
-                        "Box Office chosed",
-                        Toast.LENGTH_SHORT).show();
-                value = myCards.get(round).box_office;
-                break;
-            case R.id.rb_orcar:
-                Toast.makeText(getApplicationContext(),
-                        "Oscar chosed",
-                        Toast.LENGTH_SHORT).show();
-                value = myCards.get(round).oscar;
-                break;
-            case R.id.rb_imdb:
-                Toast.makeText(getApplicationContext(),
-                        "IMDB chosed",
-                        Toast.LENGTH_SHORT).show();
-                score = myCards.get(round).imdb;
-                break;
-        }
-
-        //if (myCards.get(round).)
-
-    }
-
     private void updateRound() {
-        tv_round.setText("Rodada\n   "+round);
+        tv_round.setText(""+(round+1));
+        tv_my_score.setText(""+my_score);
+        tv_opponent_score.setText(""+opponent_score);
     }
 
     @Override
@@ -393,10 +474,11 @@ public class SuperTrunfo extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBTService.stop();
-        Globals.myBTService = null;
-        Globals.server = false;
-
+        if (!newGame) {
+            mBTService.stop();
+            Globals.myBTService = null;
+            Globals.server = false;
+        }
     }
 
     @Override

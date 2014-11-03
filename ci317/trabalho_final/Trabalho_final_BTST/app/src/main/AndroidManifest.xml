@@ -12,7 +12,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".SuperTrunfo"
-            android:label="@string/title_activity_super_trunfo" >
+            android:label="@string/title_activity_super_trunfo"
+            android:configChanges="orientation|screenSize" >
         </activity>
         <activity
             android:name=".Bluetooth"
