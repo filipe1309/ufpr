@@ -40,7 +40,7 @@ import android.util.Log;
  */
 public class BluetoothService {
 	// Debugging
-	private static final String TAG = "BluetoothChatService";
+	private static final String TAG = "BluetoothService";
 	private static final boolean D = true;
 
 	// Name for the SDP record when creating server socket
@@ -76,7 +76,7 @@ public class BluetoothService {
 													// device
 
 	/**
-	 * Constructor. Prepares a new BluetoothChat session.
+	 * Constructor. Prepares a new Bluetooth session.
 	 * 
 	 * @param context
 	 *            The UI Activity Context
@@ -90,7 +90,7 @@ public class BluetoothService {
 	}
 
 	/**
-	 * Set the current state of the chat connection
+	 * Set the current state of the connection
 	 * 
 	 * @param state
 	 *            An integer defining the current connection state
@@ -117,7 +117,7 @@ public class BluetoothService {
 	}
 
 	/**
-	 * Start the chat service. Specifically start AcceptThread to begin a
+	 * Start the service. Specifically start AcceptThread to begin a
 	 * session in listening (server) mode. Called by the Activity onResume()
 	 */
 	public synchronized void start() {

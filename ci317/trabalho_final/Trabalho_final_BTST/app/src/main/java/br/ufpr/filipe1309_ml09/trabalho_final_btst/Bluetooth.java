@@ -57,7 +57,7 @@ public class Bluetooth extends Activity {
     static final int CLOSE_ST_ACTIVITY_REQUEST = 0;
 
 
-    // Key names received from the BluetoothChatService Handler
+    // Key names received from the BluetoothService Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
 
@@ -76,11 +76,11 @@ public class Bluetooth extends Activity {
     private StringBuffer mOutStringBuffer;
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
-    // Member object for the chat services
+    // Member object for the services
     private BluetoothService mBTService = null;
 
 
-    // The Handler that gets information back from the BluetoothChatService
+    // The Handler that gets information back from the BluetoothService
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -225,10 +225,10 @@ public class Bluetooth extends Activity {
             Log.e(TAG, "++ ON START ++");
 
         // If BT is not on, request that it be enabled.
-        // setupChat() will then be called during onActivityResult
+        // setup() will then be called during onActivityResult
         if (!mBluetoothAdapter.isEnabled()) {
             turnOnBT();
-            // Otherwise, setup the chat session
+            // Otherwise, setup the session
         } else {
             if (mBTService == null)
                 setupBluetooth();
@@ -246,7 +246,7 @@ public class Bluetooth extends Activity {
             // Only if the state is STATE_NONE, do we know that we haven't
             // started already
             if (mBTService.getState() == BluetoothService.STATE_NONE) {
-                // Start the Bluetooth chat services
+                // Start the Bluetooth services
                 mBTService.start();
             }
         }
@@ -289,7 +289,7 @@ public class Bluetooth extends Activity {
 
         // Check that there's actually something to send
         if (message.length() > 0) {
-            // Get the message bytes and tell the BluetoothChatService to write
+            // Get the message bytes and tell the BluetoothService to write
             byte[] send = message.getBytes();
             mBTService.write(send);
 
@@ -454,7 +454,7 @@ public class Bluetooth extends Activity {
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
-                    // Bluetooth is now enabled, so set up a chat session
+                    // Bluetooth is now enabled, so set up a session
                     tv_text.setText("Status: Enable");
                     restartActivity();
                     setupBluetooth();
@@ -484,7 +484,7 @@ public class Bluetooth extends Activity {
             this.unregisterReceiver(mReceiver);
         }
 
-        // Stop the Bluetooth chat services
+        // Stop the Bluetooth services
         if (mBTService != null)
             mBTService.stop();
         if (D)

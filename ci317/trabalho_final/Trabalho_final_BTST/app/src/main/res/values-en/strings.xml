@@ -10,7 +10,6 @@
     <string name="find_stop">Find</string>
     <string name="text">Status: ----</string>
     <string name="data">Send MSG</string>
-    <string name="paired">No devices paired</string>
 
     <string name="duration">Duration</string>
     <string name="box_office">Box Office</string>
