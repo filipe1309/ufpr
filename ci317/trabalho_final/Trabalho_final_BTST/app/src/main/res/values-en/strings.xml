@@ -11,10 +11,10 @@
     <string name="text">Status: ----</string>
     <string name="data">Send MSG</string>
 
-    <string name="duration">Duration  </string>
+    <string name="duration">Duration</string>
     <string name="box_office">Box Office</string>
-    <string name="oscars">Oscar     </string>
-    <string name="imdb_score">IMDB      </string>
+    <string name="oscars">Oscar</string>
+    <string name="imdb_score">IMDB</string>
     <string name="empty_field">…</string>
     <string name="round">Round</string>
     <string name="me">Me</string>
@@ -54,6 +54,7 @@
     <string name="you_win_the_game">Congratulations, you win =), play again?</string>
     <string name="you_lost_the_game">You lost :(, play again?</string>
     <string name="tied_play_again">Tied :P, play again?</string>
+    <string name="waiting_opponent">Waiting opponent…</string>
 
     <!-- Options Menu -->
     <string name="connect">Connect a device</string>

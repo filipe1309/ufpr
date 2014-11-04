@@ -221,7 +221,7 @@ public class SuperTrunfo extends Activity {
     }
 
     public void launchRingDialog() {
-        ringProgressDialog = ProgressDialog.show(SuperTrunfo.this, getResources().getString(R.string.please_wait),	"Esperando oponente ...", true);
+        ringProgressDialog = ProgressDialog.show(SuperTrunfo.this, getResources().getString(R.string.please_wait),	getResources().getString(R.string.waiting_opponent), true);
         ringProgressDialog.setCancelable(false);
         new Thread(new Runnable() {
             @Override
@@ -282,10 +282,10 @@ public class SuperTrunfo extends Activity {
 
     private void updateCard(Card selectedCard) {
         card_image.setImageResource(selectedCard.card_image);
-        duration.setText(getResources().getString(R.string.duration) +"    "+String.valueOf(selectedCard.duration)+" Min");
-        box_office.setText(getResources().getString(R.string.box_office) +" $ "+String.valueOf(selectedCard.box_office)+" M");
-        oscar.setText(String.valueOf(getResources().getString(R.string.oscars)+"        " +selectedCard.oscar));
-        imdb.setText(String.valueOf(getResources().getString(R.string.imdb_score)+ "         " +selectedCard.imdb));
+        duration.setText(getResources().getString(R.string.duration) +"      "+String.valueOf(selectedCard.duration)+" Min");
+        box_office.setText(getResources().getString(R.string.box_office) +" $ "+String.valueOf(selectedCard.box_office)+" Mi");
+        oscar.setText(String.valueOf(getResources().getString(R.string.oscars)+"         " +selectedCard.oscar));
+        imdb.setText(String.valueOf(getResources().getString(R.string.imdb_score)+ "            " +selectedCard.imdb));
     }
 
     private void configureViews() {
