@@ -86,7 +86,14 @@ public class SuperTrunfo extends Activity {
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
 
-                    if(!Globals.server && !initialData) {
+                    if (Globals.server && newGame) {
+                        if (readMessage.equals(getResources().getString(R.string.yes))) {
+                            ringProgressDialog.dismiss();
+                            recreate();
+                        } else if (readMessage.equals(getResources().getString(R.string.no))) {
+                            finish();
+                        }
+                    } else if(!Globals.server && !initialData) {
 //                        Toast.makeText(getApplicationContext(),
 //                                "MSG received: "+ readMessage,
 //                                Toast.LENGTH_SHORT).show();
@@ -203,13 +210,20 @@ public class SuperTrunfo extends Activity {
         alertDialogBuilder.setPositiveButton(getResources().getString(R.string.yes),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 newGame = true;
-                recreate();
+                if (Globals.server)
+                    launchRingDialog();
+                else {
+                    sendBtMessage(getResources().getString(R.string.yes));
+                    recreate();
+                }
             }
         });
         // set negative button: No message
         alertDialogBuilder.setNegativeButton(getResources().getString(R.string.no),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 // cancel the alert box and put a Toast to the user
+                if (!Globals.server)
+                    sendBtMessage(getResources().getString(R.string.no));
                 dialog.cancel();
                 finish();
             }
