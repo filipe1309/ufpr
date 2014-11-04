@@ -480,6 +480,7 @@ public class BluetoothService {
 			while (true) {
                 byte[] buffer = new byte[1024];
 				try {
+
 					// Read from the InputStream
 					bytes = mmInStream.read(buffer);
 
@@ -492,6 +493,7 @@ public class BluetoothService {
 				} catch (IOException e) {
 					Log.e(TAG, "disconnected", e);
 					connectionLost();
+
 					// Start the service over to restart listening mode
 					BluetoothService.this.start();
 					break;

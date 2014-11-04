@@ -109,7 +109,7 @@
                 android:id="@+id/tv_text_opponent_score"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#fff54842"
+                android:textColor="#f54842"
                 android:layout_margin="5dp" />
         </LinearLayout>
 
@@ -153,7 +153,7 @@
                 android:text="@string/empty_field"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#fff54842"
+                android:textColor="#f54842"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="35dp"
                 android:layout_marginRight="15dp"

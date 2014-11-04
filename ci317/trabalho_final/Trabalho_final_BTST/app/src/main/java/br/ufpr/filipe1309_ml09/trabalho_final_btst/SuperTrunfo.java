@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,18 +74,11 @@ public class SuperTrunfo extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_WRITE:
-//                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-//                    String writeMessage = new String(writeBuf);
-//                    Toast.makeText(getApplicationContext(),
-//                            "MSG writed: "+ writeMessage,
-//                            Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-
                     if (Globals.server && newGame) {
                         if (readMessage.equals(getResources().getString(R.string.yes))) {
                             if (ringProgressDialog != null)
@@ -98,9 +90,6 @@ public class SuperTrunfo extends Activity {
                             finish();
                         }
                     } else if(!Globals.server && !initialData) {
-//                        Toast.makeText(getApplicationContext(),
-//                                "MSG received: "+ readMessage,
-//                                Toast.LENGTH_SHORT).show();
                         ringProgressDialog.dismiss();
                         reorganizeClientCards(readMessage);
                         initialData = true;
@@ -145,15 +134,10 @@ public class SuperTrunfo extends Activity {
         super.onStart();
         if (!initialData && !appStopped) {
             if (Globals.server) {
-                //sendBtMessage(clientIds);
                 initialData = true;
-                //Toast.makeText(getApplicationContext(), "Server",
-                //        Toast.LENGTH_SHORT).show();
                 if (!newGame)
                     openAlert();
             } else {
-                //Toast.makeText(getApplicationContext(), "Client",
-                //        Toast.LENGTH_SHORT).show();
                 if (mBTService != null)
                     launchRingDialog();
             }
@@ -172,12 +156,12 @@ public class SuperTrunfo extends Activity {
         }
         if (round < ((myCards.size()/2))) {
             if(b) {
-                Toast.makeText(this, getResources().getString(R.string.you_win), Toast.LENGTH_SHORT)
-                        .show();
+                tv_my_score.setTextColor(Color.YELLOW);
+                tv_opponent_score.setTextColor(Color.parseColor("#f54842"));
                 my_score++;
             } else {
-                Toast.makeText(this, getResources().getString(R.string.you_lost), Toast.LENGTH_SHORT)
-                        .show();
+                tv_my_score.setTextColor(Color.parseColor("#4761f5"));
+                tv_opponent_score.setTextColor(Color.YELLOW);
                 opponent_score++;
             }
         }
@@ -231,7 +215,7 @@ public class SuperTrunfo extends Activity {
         // set negative button: No message
         alertDialogBuilder.setNegativeButton(getResources().getString(R.string.no),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-                // cancel the alert box and put a Toast to the user
+                // cancel the alert box and if is a client send a message to inform the server
                 if (!Globals.server)
                     sendBtMessage(getResources().getString(R.string.no));
                 dialog.cancel();
@@ -401,11 +385,10 @@ public class SuperTrunfo extends Activity {
     }
 
     /*
-        Reordena o vetor randomicamente, atribuindo a primeira metade para
-        o player 1 e a segunda para o player2
+    *   Reorders the vector randomly assigning the first half to
+    *   the player1(server) and the second for player2(client)
     */
     private void reorganizeCards() {
-        /*Mistura o baralho e envia os ids da primeira metade para o player2(client)*/
         if (Globals.server) {
             Collections.shuffle(myCards);
             myCardRound = 0;
@@ -473,7 +456,7 @@ public class SuperTrunfo extends Activity {
 
         // Check that there's actually something to send
         if (message.length() > 0) {
-            // Get the message bytes and tell the BluetoothChatService to write
+            // Get the message bytes and tell the BluetoothService to write
             byte[] send = message.getBytes();
             mBTService.write(send);
         }
