@@ -50,7 +50,8 @@ public class SuperTrunfo extends Activity {
     int round, myCardRound, my_score, opponent_score;
     Card selectedCard;
     ProgressDialog ringProgressDialog;
-    boolean initialData, newGame;
+    AlertDialog alertDialog;
+    boolean initialData, newGame, appStopped;
 
     public class Card {
         int card_image;
@@ -88,7 +89,10 @@ public class SuperTrunfo extends Activity {
 
                     if (Globals.server && newGame) {
                         if (readMessage.equals(getResources().getString(R.string.yes))) {
-                            ringProgressDialog.dismiss();
+                            if (ringProgressDialog != null)
+                                ringProgressDialog.dismiss();
+                            if (alertDialog  != null)
+                                alertDialog .cancel();
                             recreate();
                         } else if (readMessage.equals(getResources().getString(R.string.no))) {
                             finish();
@@ -139,13 +143,14 @@ public class SuperTrunfo extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (!initialData) {
+        if (!initialData && !appStopped) {
             if (Globals.server) {
                 //sendBtMessage(clientIds);
                 initialData = true;
                 //Toast.makeText(getApplicationContext(), "Server",
                 //        Toast.LENGTH_SHORT).show();
-                openAlert();
+                if (!newGame)
+                    openAlert();
             } else {
                 //Toast.makeText(getApplicationContext(), "Client",
                 //        Toast.LENGTH_SHORT).show();
@@ -153,6 +158,12 @@ public class SuperTrunfo extends Activity {
                     launchRingDialog();
             }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        appStopped = true;
     }
 
     private void changeStateOfRoundCard(boolean b) {
@@ -209,7 +220,6 @@ public class SuperTrunfo extends Activity {
         // set positive button: Yes message
         alertDialogBuilder.setPositiveButton(getResources().getString(R.string.yes),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-                newGame = true;
                 if (Globals.server)
                     launchRingDialog();
                 else {
@@ -229,7 +239,7 @@ public class SuperTrunfo extends Activity {
             }
         });
 
-        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog = alertDialogBuilder.create();
         // show alert
         alertDialog.show();
     }
@@ -253,7 +263,7 @@ public class SuperTrunfo extends Activity {
     }
 
     private void setupBluetoothService() {
-        initialData = false;
+        initialData = appStopped = false;
         st = this;
         mBTService = Globals.myBTService;
         if(mBTService != null)
@@ -291,6 +301,7 @@ public class SuperTrunfo extends Activity {
             msg = getResources().getString(R.string.you_lost_the_game);
         else
             msg = getResources().getString(R.string.tied_play_again);
+        newGame = true;
         newGameAlert(msg);
     }
 
