@@ -38,9 +38,11 @@ public class Bluetooth extends Activity {
     // Views
     private Button bt_find_stop;
     private Button bt_disc;
-    private Button bt_data;
     private TextView tv_text;
     private TextView title_new_devices;
+    private TextView tv_select_a_device;
+    ListView newDevicesListView;
+
 
     int DISCOVERABLE_DURATION = 15;
     ArrayList<BluetoothDevice> devices;
@@ -127,12 +129,15 @@ public class Bluetooth extends Activity {
                     // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(getApplicationContext(),
-                            getResources().getString(R.string.title_connected_to) + mConnectedDeviceName,
+                            getResources().getString(R.string.title_connected_to)+" " + mConnectedDeviceName,
                             Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_TOAST:
+                    //Toast.makeText(getApplicationContext(),
+                    //        msg.getData().getString(TOAST), Toast.LENGTH_SHORT)
+                    //        .show();
                     Toast.makeText(getApplicationContext(),
-                            msg.getData().getString(TOAST), Toast.LENGTH_SHORT)
+                            getResources().getString(R.string.unable_to_connect), Toast.LENGTH_SHORT)
                             .show();
                     Globals.server = false;
                     restartActivity();
@@ -182,7 +187,7 @@ public class Bluetooth extends Activity {
         pairedListView.setOnItemClickListener(mDeviceClickListener);
 
         // Find and set up the ListView for newly discovered devices
-        ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
+        newDevicesListView = (ListView) findViewById(R.id.new_devices);
         newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
         newDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
@@ -197,10 +202,10 @@ public class Bluetooth extends Activity {
 
         // If there are paired devices, add each one to the ArrayAdapter
         if (pairedDevices.size() > 0) {
+            tv_select_a_device.setVisibility(View.VISIBLE);
             findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
             for (BluetoothDevice device : pairedDevices) {
-                mPairedDevicesArrayAdapter.add(device.getName() + "\n"
-                        + device.getAddress());
+                mPairedDevicesArrayAdapter.add(device.getName()+"\n"+device.getAddress());
             }
         } else {
             String noDevices = getResources().getText(R.string.none_paired)
@@ -216,6 +221,7 @@ public class Bluetooth extends Activity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         devices = new ArrayList<BluetoothDevice>();
         title_new_devices = (TextView) findViewById(R.id.title_new_devices);
+        tv_select_a_device = (TextView) findViewById(R.id.tv_select_a_device);
     }
 
     @Override
@@ -274,6 +280,9 @@ public class Bluetooth extends Activity {
         bt_find_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Para lista voltar ao tamanho original
+                newDevicesListView.setVisibility(View.GONE);
+                newDevicesListView.setVisibility(View.VISIBLE);
                 find();
             }
         });
@@ -333,10 +342,9 @@ public class Bluetooth extends Activity {
                 // If it's already paired, skip it, because it's been listed
                 // already
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    mNewDevicesArrayAdapter.add(device.getName() + "\n"
-                            + device.getAddress());
+                    mNewDevicesArrayAdapter.add(device.getName()+"\n"+device.getAddress());
                 } else {
-                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.already_paired)+device.getName(),
+                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.already_paired)+" "+device.getName(),
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -347,8 +355,10 @@ public class Bluetooth extends Activity {
                 bt_find_stop.setText(R.string.find_stop);
                 if (mNewDevicesArrayAdapter.getCount() == 0) {
                     String noDevices = getResources().getText(
-                            R.string.none_found).toString();
+                            R.string.none_found).toString()+"\n";
                     mNewDevicesArrayAdapter.add(noDevices);
+                } else {
+                    tv_select_a_device.setVisibility(View.VISIBLE);
                 }
 
             } else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {

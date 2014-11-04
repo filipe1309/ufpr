@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Trabalho_final_BTST</string>
+    <string name="app_name">MovieTrump</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_super_trunfo">SuperTrunfo</string>
+    <string name="action_settings">Configurações</string>
+    <string name="title_activity_super_trunfo">MovieTrump</string>
     <string name="text_bt_new_game">Novo Jogo</string>
     <string name="title_activity_bluetooth">Bluetooth</string>
     <string name="find_stop">Buscar</string>
@@ -29,12 +29,12 @@
     <string name="title_not_connected">não conectado</string>
     <string name="connection_lost">Conexão perdida</string>
     <string name="bt_not_supported_leaving">Bluetooth não é suportado. Finalizando Super Trunfo…</string>
-    <string name="already_paired">Dispositivo encontrado já pareado: </string>
+    <string name="already_paired">Dispositivo encontrado já pareado:</string>
     <string name="unable_to_connect">Não é possível se conectar neste dispositivo</string>
 
     <!--  List -->
     <string name="scanning">buscando por dispositivos…</string>
-    <string name="select_device">selecione um dispositivo para conectar</string>
+    <string name="select_device">Selecione um dispositivo para se conectar</string>
     <string name="none_paired">Nenhum dispositivo foi pareado</string>
     <string name="none_found">Nenhum dispositivo encontrado</string>
     <string name="title_paired_devices">Dispositivos Pareados</string>
@@ -51,9 +51,9 @@
     <string name="start_new_game">Iniciar nova partida?</string>
     <string name="please_wait">Por favor aguarde…</string>
     <string name="end_game">Fim de jogo</string>
-    <string name="you_win_the_game">Parabéns voce ganhou =), jogar novamente?</string>
-    <string name="you_lost_the_game">Você perdeu :(, jogar novamente?</string>
-    <string name="tied_play_again">Empatou :P, jogar novamente?</string>
+    <string name="you_win_the_game">Parabéns você ganhou =)</string>
+    <string name="you_lost_the_game">Eita, Você perdeu :(</string>
+    <string name="tied_play_again">Empatou :P</string>
     <string name="waiting_opponent">Esperando oponente…</string>
 
     <!-- Options Menu -->

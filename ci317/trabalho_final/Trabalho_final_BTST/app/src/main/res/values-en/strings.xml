@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Trabalho_final_BTST</string>
+    <string name="app_name">MovieTrump</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_super_trunfo">SuperTrunfo</string>
+    <string name="title_activity_super_trunfo">MovieTrump</string>
     <string name="text_bt_new_game">New Game</string>
     <string name="title_activity_bluetooth">Bluetooth</string>
     <string name="find_stop">Find</string>
@@ -51,9 +51,9 @@
     <string name="start_new_game">Start new game?</string>
     <string name="please_wait">Please wait…</string>
     <string name="end_game">Endgame</string>
-    <string name="you_win_the_game">Congratulations, you win =), play again?</string>
-    <string name="you_lost_the_game">You lost :(, play again?</string>
-    <string name="tied_play_again">Tied :P, play again?</string>
+    <string name="you_win_the_game">Congratulations, you win =)</string>
+    <string name="you_lost_the_game">You lost :(</string>
+    <string name="tied_play_again">Tied :P</string>
     <string name="waiting_opponent">Waiting opponent…</string>
 
     <!-- Options Menu -->
